@@ -4,11 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class Splash : MonoBehaviour {
 	//Seconds to wait on splash
-	int duration = 2;
+	[Header("Splash duration")]
+	public float duration = 2;
 
 	// Use this for initialization
 	void Start () {
-		Invoke (OpenMenu, (float)duration);
+		Invoke ("OpenMenu", (float)duration);
 	}
 
 	void OpenMenu(){
