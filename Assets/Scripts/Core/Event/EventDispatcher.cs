@@ -17,18 +17,32 @@ namespace AFKHero.Core.Event{
 
 		public delegate void GenericEventHandler<T>(T e) where T : GameEvent;
 
-		private Dictionary<EventType, List<Listener>> registrations = new Dictionary<EventType, List<Listener>>();
+		private Dictionary<string, List<Listener>> registrations = new Dictionary<string, List<Listener>>();
 
 		/// <summary>
 		/// Ajoute le listener sur le type donné avec sa priorité.
 		/// </summary>
 		/// <param name="type">Le type d'event</param>
 		/// <param name="listener">Le listener à ajouter</param>
-		public void register(EventType type, Listener listener){
+		public void register(string type, Listener listener){
 			if (!this.registrations.ContainsKey (type)) {
 				this.registrations.Add (type, new List<Listener> ());
 			}
 			this.registrations[type].Add(listener);
+		}
+
+		/// <summary>
+		/// Permet d'enregistrer un subscriber sur l'eventDispatcher.
+		/// </summary>
+		/// <param name="subscriber">Subscriber.</param>
+		public void subscribe(Subscriber subscriber){
+			foreach (string key in subscriber.getSubscribedEvents().Keys) {
+				List<Listener> ls;
+				subscriber.getSubscribedEvents ().TryGetValue (key, out ls);
+				foreach (Listener l in ls) {
+					this.register (key, l);
+				}
+			}
 		}
 
 		/// <summary>
@@ -39,7 +53,7 @@ namespace AFKHero.Core.Event{
 		/// </summary>
 		/// <param name="type">Type.</param>
 		/// <param name="eventData">Event data.</param>
-		public GameEvent dispatch(EventType type, GameEvent eventData){
+		public GameEvent dispatch(string type, GameEvent eventData){
 			List<Listener> ls;
 			this.registrations.TryGetValue (type, out ls);
 			ls.Sort ((x, y) => y.Priority - x.Priority);
