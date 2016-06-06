@@ -5,7 +5,7 @@ namespace AFKHero.Core.Event{
 	/// <summary>
 	/// Représente un listener de base pour l'EventDispatcher
 	/// </summary>
-	public class Listener<T> : MonoBehaviour, IListener where T : GameEvent{
+	public class Listener<T> : IListener where T : GameEvent{
 
 		/// <summary>
 		/// La delegate à implémenter 

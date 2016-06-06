@@ -5,6 +5,16 @@ using AFKHero.Common;
 namespace AFKHero.Stat{
 	public class Vitality : Stat {
 
-		double currentHp;
+		public bool isMortal;
+
+		public double currentHp;
+
+		void Start(){
+			this.currentHp = Value;
+		}
+
+		public void Init(){
+			this.Start ();
+		}
 	}
 }
