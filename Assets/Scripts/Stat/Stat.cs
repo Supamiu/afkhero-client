@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using AFKHero.Common;
+using System;
 
 namespace AFKHero.Stat{
 	public abstract class Stat : MonoBehaviour {
@@ -17,7 +18,7 @@ namespace AFKHero.Stat{
 
 		public double Value{ 
 			get { 
-				return this.amount * this.ratio;
+				return Math.Round(this.amount * this.ratio);
 			} 
 		}
 	}

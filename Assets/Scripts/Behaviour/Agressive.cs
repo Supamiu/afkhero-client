@@ -16,11 +16,14 @@ namespace AFKHero.Behaviour{
 
 		private Strength str;
 
+		[Header("Pour définir l'animation après un kill (Idle ou Walk)")]
+		public bool moveAfterKill = false;
+
 		void Start(){
 			this.str = GetComponent<Strength> ();
 			this.anim = GetComponent<SkeletonAnimation> ();
 			this.anim.state.Complete += (Spine.AnimationState state, int trackIndex, int loopCount) => {
-				if(trackIndex == 10){
+				if(state.GetCurrent(trackIndex).Animation.Name == "Attack"){
 					EventDispatcher.Instance.dispatch ("attack", new GenericGameEvent<Attack>(new Attack (this.str.Value, this.target, this)));
 				}
 			};
@@ -28,7 +31,14 @@ namespace AFKHero.Behaviour{
 
 		void OnCollisionEnter2D(Collision2D coll){
 			this.target = coll.gameObject.GetComponent<Damageable> ();
-			this.anim.state.SetAnimation (10, "Attack", true);
+			this.target.onDeath += OnTargetDeath;
+			this.anim.AnimationName = "Attack";
+		}
+
+		void OnTargetDeath(){
+			this.target = null;
+			string animation = moveAfterKill ? "Walk" : "Idle";
+			this.anim.AnimationName = animation;
 		}
 	}
 }
