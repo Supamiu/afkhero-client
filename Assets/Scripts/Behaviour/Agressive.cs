@@ -5,10 +5,12 @@ using AFKHero.Core.Event;
 using AFKHero.EventData;
 using AFKHero.Stat;
 
-namespace AFKHero.Behaviour{
+namespace AFKHero.Behaviour
+{
 	
-	[RequireComponent(typeof(Strength))]
-	public class Agressive : MonoBehaviour {
+	[RequireComponent (typeof(Strength))]
+	public class Agressive : MonoBehaviour
+	{
 
 		private SkeletonAnimation anim;
 
@@ -16,28 +18,44 @@ namespace AFKHero.Behaviour{
 
 		private Strength str;
 
-		[Header("Pour définir l'animation après un kill (Idle ou Walk)")]
+		[Header ("Animations")]
+		[SpineAnimation (dataField: "skeletonAnimation")]
+		public string walkName = "Walk";
+
+		[SpineAnimation (dataField: "skeletonAnimation")]
+		public string attackName = "Attack";
+
+		[SpineAnimation (dataField: "skeletonAnimation")]
+		public string idleName = "Idle";
+
+		[Header ("Pour définir l'animation après un kill (Idle ou Walk)")]
 		public bool moveAfterKill = false;
 
-		void Start(){
+		void Start ()
+		{
 			this.str = GetComponent<Strength> ();
 			this.anim = GetComponent<SkeletonAnimation> ();
 			this.anim.state.Complete += (Spine.AnimationState state, int trackIndex, int loopCount) => {
-				if(state.GetCurrent(trackIndex).Animation.Name == "Attack"){
-					EventDispatcher.Instance.dispatch ("attack", new GenericGameEvent<Attack>(new Attack (this.str.Value, this.target, this)));
+				if (state.GetCurrent (trackIndex).Animation.Name == attackName) {
+					EventDispatcher.Instance.dispatch ("attack", new GenericGameEvent<Attack> (new Attack (this.str.Value, this.target, this)));
 				}
 			};
 		}
 
-		void OnCollisionEnter2D(Collision2D coll){
-			this.target = coll.gameObject.GetComponent<Damageable> ();
-			this.target.onDeath += OnTargetDeath;
-			this.anim.AnimationName = "Attack";
+		void OnCollisionEnter2D (Collision2D coll)
+		{
+			Damageable collider = coll.gameObject.GetComponent<Damageable> ();
+			if (collider != null) {
+				this.target = collider;
+				this.target.onDeath += OnTargetDeath;
+				this.anim.AnimationName = attackName;
+			}
 		}
 
-		void OnTargetDeath(){
+		void OnTargetDeath ()
+		{
 			this.target = null;
-			string animation = moveAfterKill ? "Walk" : "Idle";
+			string animation = moveAfterKill ? walkName : idleName;
 			this.anim.AnimationName = animation;
 		}
 	}

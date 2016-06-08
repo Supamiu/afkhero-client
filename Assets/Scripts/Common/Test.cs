@@ -13,8 +13,6 @@ namespace AFKHero.Common{
 		/// </summary>
 		public void TestFormatter ()
 		{
-				System.Random rdm = new System.Random ();
-
 				double value = 0D;
 				Debug.Log ("Value : " + value + " ==> " + Formatter.Format(value));
 

@@ -1,0 +1,161 @@
+fileFormatVersion: 2
+guid: ffd77414b932ced4699a62a0b0005e29
+timeCreated: 1465365245
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: sword-1
+    21300002: sword-2
+    21300004: shield-1
+    21300006: shield-2
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: sword-1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 95
+        width: 165
+        height: 33
+      alignment: 9
+      pivot: {x: 0.21556218, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -35.56776, y: -12.5}
+        - {x: -28.56776, y: -16.5}
+        - {x: 108.432236, y: -16.5}
+        - {x: 129.43224, y: -12.5}
+        - {x: 129.43224, y: 7.5}
+        - {x: 116.432236, y: 16.5}
+        - {x: -34.56776, y: 16.5}
+        - {x: -35.56776, y: 12.5}
+    - name: sword-2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 22
+        width: 217
+        height: 72
+      alignment: 9
+      pivot: {x: 0.19680712, y: 0.5121838}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16.707146, y: 35.12277}
+        - {x: -42.707146, y: 9.122768}
+        - {x: -42.707146, y: -21.877232}
+        - {x: -21.707146, y: -36.87723}
+        - {x: 101.292854, y: -36.87723}
+        - {x: 139.29285, y: -25.877232}
+        - {x: 174.29285, y: -8.877232}
+        - {x: 174.29285, y: 27.122768}
+        - {x: 139.29285, y: 35.12277}
+      - - {x: -10.707146, y: -19.877232}
+        - {x: -10.707146, y: -23.877232}
+        - {x: -7.7071457, y: -26.877232}
+        - {x: -5.7071457, y: -26.877232}
+        - {x: -3.7071457, y: -24.877232}
+        - {x: -3.7071457, y: -22.877232}
+        - {x: -7.7071457, y: -18.877232}
+      - - {x: -2.7071457, y: -13.877232}
+        - {x: -4.7071457, y: -15.877232}
+        - {x: -2.7071457, y: -20.877232}
+        - {x: 0.2928543, y: -20.877232}
+        - {x: 2.2928543, y: -19.877232}
+        - {x: 2.2928543, y: -16.877232}
+        - {x: 1.2928543, y: -13.877232}
+      - - {x: 40.292854, y: 31.122768}
+        - {x: 35.292854, y: 27.122768}
+        - {x: 36.292854, y: 24.122768}
+        - {x: 40.292854, y: 24.122768}
+        - {x: 44.292854, y: 27.122768}
+        - {x: 44.292854, y: 29.122768}
+        - {x: 42.292854, y: 31.122768}
+    - name: shield-1
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 20
+        width: 119
+        height: 74
+      alignment: 9
+      pivot: {x: 0.46314144, y: 0.45258167}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9.886169, y: 40.508957}
+        - {x: -40.11383, y: 40.508957}
+        - {x: -55.11383, y: 21.508957}
+        - {x: -55.11383, y: -17.491043}
+        - {x: -16.11383, y: -31.491043}
+        - {x: 50.88617, y: -31.491043}
+        - {x: 55.88617, y: -29.491043}
+        - {x: 63.88617, y: -12.491043}
+        - {x: 63.88617, y: 12.508957}
+        - {x: 28.88617, y: 39.508957}
+    - name: shield-2
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 24
+        width: 112
+        height: 81
+      alignment: 9
+      pivot: {x: 0.54307884, y: 0.40252906}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 15.175171, y: 43.395145}
+        - {x: -6.824829, y: 48.395145}
+        - {x: -60.82483, y: 48.395145}
+        - {x: -60.82483, y: -32.604855}
+        - {x: 25.17517, y: -32.604855}
+        - {x: 51.17517, y: -8.604855}
+        - {x: 51.17517, y: 7.3951454}
+        - {x: 18.17517, y: 45.395145}
+    outline: []
+  spritePackingTag: Equipement
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
