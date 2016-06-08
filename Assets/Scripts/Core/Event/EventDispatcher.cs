@@ -28,6 +28,9 @@ namespace AFKHero.Core.Event
 		/// <param name="listener">Le listener à ajouter</param>
 		public void register (string type, IListener listener)
 		{
+			if (listener == null) {
+				return;
+			}
 			if (!this.registrations.ContainsKey (type)) {
 				this.registrations.Add (type, new List<IListener> ());
 			}

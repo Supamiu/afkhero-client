@@ -86,5 +86,21 @@ namespace AFKHero.Common{
 
 			return result;
 		}
+
+		/// <summary>
+		/// Permet de formatter simplement une distance avec son unité.
+		/// </summary>
+		/// <returns>The distance string.</returns>
+		/// <param name="distance">Distance.</param>
+		public static string ToDistanceString(float distance){
+			
+			if (distance > 999) {
+				return String.Format ("{0:0.0#}km", (distance / 1000f)) ;
+			} else if (distance > 999999) {
+				return String.Format ("{0:0.0#}Mm", (distance / 1000000f)) ;
+			} else {
+				return String.Format ("{0:0.0#}m", distance) ;
+			}
+		}
 	}
 }
