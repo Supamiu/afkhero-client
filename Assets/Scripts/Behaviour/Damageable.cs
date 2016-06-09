@@ -6,6 +6,8 @@ using AFKHero.Core.Event;
 using AFKHero.EventData;
 using System.Linq;
 
+using AFKHero.Common;
+
 namespace AFKHero.Behaviour
 {
 	[RequireComponent (typeof(Vitality))]	

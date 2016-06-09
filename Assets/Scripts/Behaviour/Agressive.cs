@@ -35,8 +35,8 @@ namespace AFKHero.Behaviour
 		{
 			this.str = GetComponent<Strength> ();
 			this.anim = GetComponent<SkeletonAnimation> ();
-			this.anim.state.Complete += (Spine.AnimationState state, int trackIndex, int loopCount) => {
-				if (state.GetCurrent (trackIndex).Animation.Name == attackName) {
+			this.anim.state.Event += (Spine.AnimationState state, int trackIndex, Spine.Event e) => {
+				if (this.target != null && e.Data.Name == "Hit" && state.GetCurrent (trackIndex).Animation.Name == attackName) {
 					EventDispatcher.Instance.dispatch ("attack", new GenericGameEvent<Attack> (new Attack (this.str.Value, this.target, this)));
 				}
 			};
