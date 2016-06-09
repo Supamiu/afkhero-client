@@ -1990,7 +1990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a81d6c202edd14999ba29fab0d48b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 11441152, guid: 059cfa0f29b80e248821bf04f1384966, type: 2}
+  prefab: {fileID: 11478520, guid: 059cfa0f29b80e248821bf04f1384966, type: 2}
   canvas: {fileID: 104474581}
 --- !u!1 &1458903384
 GameObject:
