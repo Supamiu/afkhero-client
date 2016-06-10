@@ -23,7 +23,7 @@ namespace AFKHero.Core
 		void Start ()
 		{
 			this.spawnPosition = this.transform.position;
-			EventDispatcher.Instance.register ("movement.moved", new Listener<GenericGameEvent<float>>((ref GenericGameEvent<float> e) => {
+			EventDispatcher.Instance.Register ("movement.moved", new Listener<GenericGameEvent<float>>((ref GenericGameEvent<float> e) => {
 				this.moved += e.Data;
 				if(this.moved >= this.spawnInterval && PercentageUtils.Instance.GetResult(this.spawnChances)){
 					this.Spawn(this.monsters[0]);

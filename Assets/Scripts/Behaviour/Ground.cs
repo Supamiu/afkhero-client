@@ -20,7 +20,7 @@ namespace AFKHero.Behaviour
 
 		void Move() {
 			if (scrolling.moving) {
-				EventDispatcher.Instance.dispatch("movement.moved", new GenericGameEvent<float>(scrolling.speed.x/10f));
+				EventDispatcher.Instance.Dispatch("movement.moved", new GenericGameEvent<float>(scrolling.speed.x/10f));
 			}
 		}
 	}

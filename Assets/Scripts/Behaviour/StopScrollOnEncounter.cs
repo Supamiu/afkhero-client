@@ -10,7 +10,7 @@ namespace AFKHero.Behaviour
 	{
 		void OnCollisionEnter2D (Collision2D coll)
 		{
-			EventDispatcher.Instance.dispatch ("movement.enabled", new GenericGameEvent<bool> (false));
+			EventDispatcher.Instance.Dispatch ("movement.enabled", new GenericGameEvent<bool> (false));
 			Damageable target = coll.gameObject.GetComponent<Damageable> ();
 			if (target != null) {
 				target.onDeath += OnTargetDeath;
@@ -19,11 +19,11 @@ namespace AFKHero.Behaviour
 
 		void OnCollisionExit2D (Collision2D coll)
 		{
-			EventDispatcher.Instance.dispatch ("movement.enabled", new GenericGameEvent<bool> (true));
+			EventDispatcher.Instance.Dispatch ("movement.enabled", new GenericGameEvent<bool> (true));
 		}
 
 		public void OnTargetDeath(){
-			EventDispatcher.Instance.dispatch ("movement.enabled", new GenericGameEvent<bool> (true));
+			EventDispatcher.Instance.Dispatch ("movement.enabled", new GenericGameEvent<bool> (true));
 		}
 	}
 }

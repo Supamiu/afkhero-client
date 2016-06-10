@@ -26,7 +26,7 @@ namespace AFKHero.Core.Event
 		/// </summary>
 		/// <param name="type">Le type d'event</param>
 		/// <param name="listener">Le listener à ajouter</param>
-		public void register (string type, IListener listener)
+		public void Register (string type, IListener listener)
 		{
 			if (listener == null) {
 				return;
@@ -42,7 +42,7 @@ namespace AFKHero.Core.Event
 		/// </summary>
 		/// <param name="type">Type.</param>
 		/// <param name="listener">Listener.</param>
-		public void unregister (string type, IListener listener)
+		public void Unregister (string type, IListener listener)
 		{
 			if (!this.registrations.ContainsKey (type)) {
 				return;
@@ -56,13 +56,13 @@ namespace AFKHero.Core.Event
 		/// Permet d'enregistrer un subscriber sur l'eventDispatcher.
 		/// </summary>
 		/// <param name="subscriber">Subscriber.</param>
-		public void subscribe (Subscriber subscriber)
+		public void Subscribe (Subscriber subscriber)
 		{
 			foreach (string key in subscriber.getSubscribedEvents().Keys) {
 				List<IListener> ls;
 				subscriber.getSubscribedEvents ().TryGetValue (key, out ls);
 				foreach (IListener l in ls) {
-					this.register (key, l);
+					this.Register (key, l);
 				}
 			}
 		}
@@ -75,7 +75,7 @@ namespace AFKHero.Core.Event
 		/// </summary>
 		/// <param name="type">Type.</param>
 		/// <param name="eventData">Event data.</param>
-		public GameEvent dispatch (string type, GameEvent eventData)
+		public GameEvent Dispatch (string type, GameEvent eventData)
 		{
 			List<IListener> ls;
 			Object e = (object)eventData;
