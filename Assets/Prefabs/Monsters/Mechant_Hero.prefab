@@ -169,6 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d708d53e3264604581a304bd11bbb5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weight: 1
   vitalityRatio: 1
   strengthRatio: 1
 --- !u!114 &11459002

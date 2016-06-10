@@ -174,6 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d708d53e3264604581a304bd11bbb5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weight: 1
   vitalityRatio: 10
   strengthRatio: 1.5
 --- !u!114 &11468952
@@ -188,6 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMortal: 1
+  deathAnimation: 
 --- !u!114 &11491948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -199,10 +201,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1785cb35b70013c4a82c17639c3fb4eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEvent: Hit
   walkName: flying
   attackName: flying
-  idleName: flying
-  moveAfterKill: 0
+  afterKillName: Idle
 --- !u!114 &11498254
 MonoBehaviour:
   m_ObjectHideFlags: 1
