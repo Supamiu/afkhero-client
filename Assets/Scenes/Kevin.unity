@@ -2031,12 +2031,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1443851042}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63a81d6c202edd14999ba29fab0d48b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 11483478, guid: 059cfa0f29b80e248821bf04f1384966, type: 2}
+  prefab: {fileID: 11455696, guid: a6a46cbb294a5c4448713ea82373ae8d, type: 2}
   canvas: {fileID: 104474581}
 --- !u!1 &1458903384
 GameObject:
