@@ -9,7 +9,7 @@ namespace AFKHero.Common{
 			Listener<GenericGameEvent<string>> listener = new Listener<GenericGameEvent<string>> ((ref GenericGameEvent<string> e) => {
 				Debug.Log(e.Data);
 			});
-			EventDispatcher.Instance.register ("debug", listener);
+			EventDispatcher.Instance.Register ("debug", listener);
 			Debug.Log ("Debugger started");
 		}
 	}

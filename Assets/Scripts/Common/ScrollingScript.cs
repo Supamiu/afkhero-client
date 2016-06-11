@@ -40,7 +40,7 @@ namespace AFKHero.Common
 		// 3 - Get all the children
 		void Start ()
 		{
-			EventDispatcher.Instance.register ("movement.enabled", new Listener<GenericGameEvent<bool>> ((ref GenericGameEvent<bool> e) => {
+			EventDispatcher.Instance.Register ("movement.enabled", new Listener<GenericGameEvent<bool>> ((ref GenericGameEvent<bool> e) => {
 				this.moving = e.Data;
 			}));
 

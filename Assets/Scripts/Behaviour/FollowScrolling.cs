@@ -18,11 +18,11 @@ namespace AFKHero.Behaviour
 			this.listener = new Listener<GenericGameEvent<bool>>((ref GenericGameEvent<bool> e) => {
 				this.movement.enabled = e.Data;
 			}, 10);
-				EventDispatcher.Instance.register("movement.enabled", this.listener);
+				EventDispatcher.Instance.Register("movement.enabled", this.listener);
 		}
 
 		public void OnDeath(){
-			EventDispatcher.Instance.unregister ("movement.enabled", this.listener);
+			EventDispatcher.Instance.Unregister ("movement.enabled", this.listener);
 		}
 	}
 }

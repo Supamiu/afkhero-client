@@ -9,7 +9,7 @@ namespace AFKHero.Core
 {
 	public class SpawnEngine : MonoBehaviour
 	{
-		public Spawnable[] monsters;
+		public WorldManager worldManager;
 
 		public float spawnInterval = 0.5f;
 
@@ -23,10 +23,10 @@ namespace AFKHero.Core
 		void Start ()
 		{
 			this.spawnPosition = this.transform.position;
-			EventDispatcher.Instance.register ("movement.moved", new Listener<GenericGameEvent<float>>((ref GenericGameEvent<float> e) => {
+			EventDispatcher.Instance.Register ("movement.moved", new Listener<GenericGameEvent<float>>((ref GenericGameEvent<float> e) => {
 				this.moved += e.Data;
 				if(this.moved >= this.spawnInterval && PercentageUtils.Instance.GetResult(this.spawnChances)){
-					this.Spawn(this.monsters[0]);
+					this.Spawn(PercentageUtils.Instance.GetItemFromPonderables<Spawnable>(this.worldManager.GetCurrentWorld().bestiary));
 					this.moved = 0f;
 				}else if(this.moved >= this.spawnInterval){
 					this.moved = 0f;

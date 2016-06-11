@@ -13,11 +13,11 @@ public class CombatTextController : MonoBehaviour {
 
 	void Start ()
 	{
-		this.listener = new Listener<GenericGameEvent<Attack>> ((ref GenericGameEvent<Attack> gameEvent) => {
-			this.CreateCombatText(Formatter.Format(gameEvent.Data.getDamage()), gameEvent.Data.target.transform);
+		this.listener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
+			this.CreateCombatText(Formatter.Format(gameEvent.Data.damage), gameEvent.Data.target.transform);
 		}, -100);
 
-		EventDispatcher.Instance.register ("attack", this.listener);
+		EventDispatcher.Instance.Register ("attack.damage", this.listener);
 	}
 
 	private void CreateCombatText(string text, Transform location)

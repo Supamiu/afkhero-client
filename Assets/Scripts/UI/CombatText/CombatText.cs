@@ -15,6 +15,6 @@ public class CombatText : MonoBehaviour {
 
 	public void SetText(string text)
 	{
-		animator.GetComponent<Text>().text = text;
+		damageText.text = text;
 	}
 }

@@ -5,12 +5,13 @@ using AFKHero.Stat;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 using System.Linq;
+using Spine.Unity;
 
 using AFKHero.Common;
 
 namespace AFKHero.Behaviour
 {
-	[RequireComponent (typeof(Vitality))]	
+	[RequireComponent (typeof(Vitality))]
 	public class Damageable : MonoBehaviour
 	{
 
@@ -22,24 +23,36 @@ namespace AFKHero.Behaviour
 
 		public event DeathEvent onDeath;
 
+		private SkeletonAnimation anim;
+
 		private IListener listener;
+
+		[SpineAnimation (dataField: "skeletonAnimation")]
+		public string deathAnimation = "Die";
 
 		void Start ()
 		{
+			this.anim = GetComponent<SkeletonAnimation> ();
 			this.vitality = GetComponent<Vitality> ();
-			this.listener = new Listener<GenericGameEvent<Attack>> ((ref GenericGameEvent<Attack> gameEvent) => {
+			this.listener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
 				if (gameEvent.Data.target == this) {
-					this.Damage (gameEvent.Data.getDamage ());
+					this.Damage (gameEvent.Data.damage);
 				}
 			}, 0);
-			EventDispatcher.Instance.register ("attack", this.listener);
+			EventDispatcher.Instance.Register ("attack.damage", this.listener);
+			this.anim.state.Complete += (Spine.AnimationState state, int trackIndex, int loopCount) => {
+				if(state.GetCurrent(trackIndex).Animation.Name == this.deathAnimation){
+					this.Die ();
+				}
+			};
 		}
 
 		void Damage (double amount)
 		{
 			this.vitality.currentHp -= amount;
+			EventDispatcher.Instance.Dispatch ("debug", new GenericGameEvent<string> (amount.ToString ()));
 			if (this.vitality.currentHp <= 0 && this.isMortal) {
-				this.Die ();
+				this.anim.AnimationName = this.deathAnimation;
 			}
 		}
 
@@ -49,7 +62,7 @@ namespace AFKHero.Behaviour
 			foreach (IOnDeath listener in deathListeners) {
 				listener.OnDeath ();
 			}
-			EventDispatcher.Instance.unregister ("attack", this.listener);
+			EventDispatcher.Instance.Unregister ("attack.damage", this.listener);
 			if (this.onDeath != null) {
 				this.onDeath ();
 			}

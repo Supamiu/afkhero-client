@@ -24,7 +24,7 @@ namespace AFKHero.Model
 		{
 			this.listener = new Listener<GenericGameEvent<Attack>> ((ref GenericGameEvent<Attack> e) => {
 				if(e.Data.attacker.name == this.agressive.name){
-					e.Data.damage *= this.attack;
+					e.Data.baseDamage *= this.attack;
 				}
 			}, 2000);
 			this.isInit = true;
@@ -38,12 +38,12 @@ namespace AFKHero.Model
 				return;
 			}
 			this.agressive = agressive;
-			EventDispatcher.Instance.register ("attack", this.listener);
+			EventDispatcher.Instance.Register ("attack.compute", this.listener);
 		}
 
 		public void Detach ()
 		{
-			EventDispatcher.Instance.unregister ("attack", this.listener);
+			EventDispatcher.Instance.Unregister ("attack.compute", this.listener);
 		}
 	}
 }
