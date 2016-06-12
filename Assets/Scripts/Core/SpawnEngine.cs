@@ -37,7 +37,7 @@ namespace AFKHero.Core
 		void Spawn (Spawnable s)
 		{
 			GameObject spawned = GameObject.Instantiate (s.gameObject, this.spawnPosition, Quaternion.identity) as GameObject;
-			spawned.GetComponent<Spawnable> ().Distance = AFKHero.distance;
+			spawned.GetComponent<Spawnable> ().Init (AFKHero.distance);
 		}
 	}
 }
