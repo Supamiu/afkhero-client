@@ -8,8 +8,6 @@ public class CombatText : MonoBehaviour {
 
 	void OnEnable()
 	{
-		Debug.Log ("Start");
-		Debug.Log (animator);
 		AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo (0);
 		Destroy (gameObject, clipInfo[0].clip.length);
 		damageText = animator.GetComponent<Text> ();
@@ -17,7 +15,6 @@ public class CombatText : MonoBehaviour {
 
 	public void SetText(string text)
 	{
-		Debug.Log ("SetText");
 		damageText.text = text;
 	}
 }

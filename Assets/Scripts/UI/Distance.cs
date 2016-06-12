@@ -17,8 +17,8 @@ namespace AFKHero.UI
 		{
 			this.text = GetComponent<Text> ();
 			EventDispatcher.Instance.Register ("movement.moved", new Listener<GenericGameEvent<float>> ((ref GenericGameEvent<float> e) => {
-				this.distance += e.Data;
-				this.text.text = Formatter.ToDistanceString(this.distance);
+				this.distance = AFKHero.distance;
+				this.text.text = Formatter.ToDistanceString (this.distance);
 			}));
 		}
 	}

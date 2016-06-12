@@ -25,9 +25,7 @@ namespace AFKHero.Tools
 				}
 				total += item.GetWeight ();
 			}
-			Debug.Log("Total weight : "+total);
 			int result = Random.Range (1, total + 1);
-			Debug.Log("Result : "+result);
 			foreach (T item in items) {
 				result -= item.GetWeight ();
 				if (result <= 0) {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using AFKHero.Behaviour;
+using AFKHero.Behaviour.Monster;
 
 namespace AFKHero.Model
 {

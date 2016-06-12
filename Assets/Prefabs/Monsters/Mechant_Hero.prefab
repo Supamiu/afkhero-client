@@ -155,7 +155,7 @@ MonoBehaviour:
   frontFacing: 0
   logErrors: 0
   disableRenderingOnOverride: 1
-  _animationName: Move
+  _animationName: Idle
   loop: 1
   timeScale: 1
 --- !u!114 &11455734
@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveUnitsPerSecond:
-    value: {x: -2, y: 0, z: 0}
+    value: {x: -1, y: 0, z: 0}
     space: 0
   rotateDegreesPerSecond:
     value: {x: 0, y: 0, z: 0}
