@@ -22,6 +22,8 @@ GameObject:
   - 114: {fileID: 11434700}
   - 114: {fileID: 11491922}
   - 114: {fileID: 11403824}
+  - 114: {fileID: 11499002}
+  - 114: {fileID: 11481744}
   m_Layer: 0
   m_Name: Mechant_Hero
   m_TagString: Untagged
@@ -157,7 +159,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   _animationName: Idle
   loop: 1
-  timeScale: 1
+  timeScale: 0.7
 --- !u!114 &11455734
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -227,6 +229,18 @@ MonoBehaviour:
   amount: 10
   ratio: 10
   currentHp: 0
+--- !u!114 &11481744
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b855e6d10133954091fa63b2160795c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xpRatio: 0.3
 --- !u!114 &11484610
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,12 +266,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveUnitsPerSecond:
-    value: {x: -1, y: 0, z: 0}
+    value: {x: -3, y: 0, z: 0}
     space: 0
   rotateDegreesPerSecond:
     value: {x: 0, y: 0, z: 0}
     space: 1
   ignoreTimescale: 0
+--- !u!114 &11499002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd660990ce4c6742b79616562f41383, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xpRatio: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
