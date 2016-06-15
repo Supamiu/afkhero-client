@@ -4,7 +4,7 @@ using AFKHero.Common;
 using System;
 
 namespace AFKHero.Stat{
-	public abstract class Stat : MonoBehaviour {
+	public abstract class AbstractStat : MonoBehaviour {
 
 		/// <summary>
 		/// Montant actuel contenu dans la stat
@@ -15,6 +15,8 @@ namespace AFKHero.Stat{
 		/// Ratio qui régis la relation entre le montant et la valeur servant aux calculs.
 		/// </summary>
 		public float ratio = 1;
+
+		public abstract string GetName();
 
 		public double Value{ 
 			get { 

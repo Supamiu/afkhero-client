@@ -5,7 +5,11 @@ namespace AFKHero.Stat{
 	/// <summary>
 	/// Influence les damages de l'attaque par clic.
 	/// </summary>
-	public class Intelligence : MonoBehaviour {
+	public class Intelligence : AbstractStat {
 
+
+		public override string GetName() {
+			return "Intélligence";
+		}
 	}
 }

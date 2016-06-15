@@ -3,7 +3,7 @@ using System.Collections;
 using AFKHero.Common;
 
 namespace AFKHero.Stat{
-	public class Vitality : Stat {
+	public class Vitality : AbstractStat {
 
 		public double currentHp;
 
@@ -13,6 +13,10 @@ namespace AFKHero.Stat{
 
 		public void Init(){
 			this.Start ();
+		}
+
+		public override string GetName() {
+			return "Vitalité";
 		}
 	}
 }

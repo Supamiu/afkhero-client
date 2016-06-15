@@ -5,7 +5,11 @@ namespace AFKHero.Stat{
 	/// <summary>
 	/// Affacte les taux de loot.
 	/// </summary>
-	public class Luck : Stat {
+	public class Luck : AbstractStat {
 
+
+		public override string GetName() {
+			return "Chance";
+		}
 	}
 }
