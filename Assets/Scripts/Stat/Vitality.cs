@@ -16,7 +16,7 @@ namespace AFKHero.Stat{
 		}
 
 		public override string GetName() {
-			return "Vitalité";
+			return "vitality";
 		}
 	}
 }

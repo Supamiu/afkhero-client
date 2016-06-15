@@ -15,7 +15,7 @@ namespace AFKHero.Stat{
 		}
 
 		public override string GetName() {
-			return "Agilité";
+			return "agility";
 		}
 	}
 }

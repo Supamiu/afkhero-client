@@ -2,6 +2,7 @@
 using System.Collections;
 using AFKHero.Common;
 using System;
+using AFKHero.Core.Event;
 
 namespace AFKHero.Stat{
 	public abstract class AbstractStat : MonoBehaviour {
@@ -20,7 +21,7 @@ namespace AFKHero.Stat{
 
 		public double Value{ 
 			get { 
-				return Math.Round(this.amount * this.ratio);
+				return ((GenericGameEvent<double>)EventDispatcher.Instance.Dispatch("stat.compute."+this.GetName(), new GenericGameEvent<double>(Math.Round(this.amount * this.ratio)))).Data;
 			} 
 		}
 	}

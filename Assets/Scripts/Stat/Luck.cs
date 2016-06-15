@@ -9,7 +9,7 @@ namespace AFKHero.Stat{
 
 
 		public override string GetName() {
-			return "Chance";
+			return "luck";
 		}
 	}
 }

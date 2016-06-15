@@ -50,7 +50,6 @@ namespace AFKHero.Behaviour
 		void Damage (double amount)
 		{
 			this.vitality.currentHp -= amount;
-			EventDispatcher.Instance.Dispatch ("debug", new GenericGameEvent<string> (amount.ToString ()));
 			if (this.vitality.currentHp <= 0 && this.isMortal) {
 				this.anim.AnimationName = this.deathAnimation;
 			}

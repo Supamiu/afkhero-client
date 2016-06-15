@@ -20,7 +20,7 @@ namespace AFKHero{
 		public static float distance = 0f;
 
 		public static class Config{
-			
+			public static readonly int STAT_POINTS_PER_LEVEL = 5;			
 		}
 
 		public static class Colors

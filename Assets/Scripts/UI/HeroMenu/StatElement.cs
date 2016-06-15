@@ -14,19 +14,7 @@ namespace AFKHero.UI.HeroMenu
 		private AbstractStat stat;
 		public Text text;
 
-		void Start() {
-
-			// Récupération de l'event ui.stat.increase
-			IListener listener = new Listener<GenericGameEvent<StatIncrease>> ((ref GenericGameEvent<StatIncrease> gameEvent) => {
-				if (gameEvent.Data.stat == this.stat)
-				{
-					Debug.Log(gameEvent.Data.stat.GetName() + " + " + gameEvent.Data.value);
-					this.stat.amount += gameEvent.Data.value;
-					EventDispatcher.Instance.Dispatch("ui.stat.updated", new GenericGameEvent<AbstractStat>(this.stat));
-				}
-			}, 100);				
-			EventDispatcher.Instance.Register ("ui.stat.increase", listener);
-				
+		void Start() {				
 			// Récupération de l'event ui.stat.updated pour mettre à jour le texte
 			this.listener = new Listener<GenericGameEvent<AbstractStat>> ((ref GenericGameEvent<AbstractStat> gameEvent) => {
 				if (gameEvent.Data == this.stat)
