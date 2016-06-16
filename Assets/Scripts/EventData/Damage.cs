@@ -2,22 +2,25 @@
 using AFKHero.Behaviour;
 using System;
 
-public class Damage
+namespace AFKHero.EventData
 {
-
-	public double damage{ get; private set; }
-
-	public bool critical{ get; private set; }
-
-	public Damageable target{ get; private set; }
-
-	public Agressive attacker { get; private set; }
-
-	public Damage (Agressive attacker, Damageable target, double damage, bool crit)
+	public class Damage
 	{
-		this.damage = Math.Round(damage);
-		this.critical = crit;
-		this.target = target;
-		this.attacker = attacker;
+
+		public double damage{ get; private set; }
+
+		public bool critical{ get; private set; }
+
+		public Damageable target{ get; private set; }
+
+		public Agressive attacker { get; private set; }
+
+		public Damage (Agressive attacker, Damageable target, double damage, bool crit)
+		{
+			this.damage = Math.Round (damage);
+			this.critical = crit;
+			this.target = target;
+			this.attacker = attacker;
+		}
 	}
 }

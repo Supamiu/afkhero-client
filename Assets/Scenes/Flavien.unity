@@ -1284,6 +1284,10 @@ Prefab:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 104474581}
+    - target: {fileID: 11423004, guid: 2dc0d4fec3c9e014d9ba054f3ce4130f, type: 2}
+      propertyPath: hero
+      value: 
+      objectReference: {fileID: 328688769}
     m_RemovedComponents:
     - {fileID: 11438608, guid: 2dc0d4fec3c9e014d9ba054f3ce4130f, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 2dc0d4fec3c9e014d9ba054f3ce4130f, type: 2}

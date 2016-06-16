@@ -15,14 +15,24 @@ namespace AFKHero.Core
 
 		public float spawnChances = 0.5f;
 
+		[Header("Juste pour récupérer l'offset")]
+		public Transform hero;
+
 		private Vector3 spawnPosition;
 
 		private float moved = 0f;
+
+		/// <summary>
+		/// L'offset de spawn (la distance entre le héro et le spawnEngine pour avoir des monstres bien scale en damage.
+		/// </summary>
+		private float offset = 0f;
 
 		// Use this for initialization
 		void Start ()
 		{
 			this.spawnPosition = this.transform.position;
+			this.offset = Vector2.Distance (hero.position, this.transform.position);
+			Debug.Log ("spawn offset : " + this.offset.ToString ());
 			EventDispatcher.Instance.Register ("movement.moved", new Listener<GenericGameEvent<float>> ((ref GenericGameEvent<float> e) => {
 				this.moved += e.Data;
 				if (this.moved >= this.spawnInterval && PercentageUtils.Instance.GetResult (this.spawnChances)) {
@@ -37,7 +47,7 @@ namespace AFKHero.Core
 		void Spawn (Spawnable s)
 		{
 			GameObject spawned = GameObject.Instantiate (s.gameObject, this.spawnPosition, Quaternion.identity) as GameObject;
-			spawned.GetComponent<Spawnable> ().Init (AFKHero.distance);
+			spawned.GetComponent<Spawnable> ().Init (AFKHero.distance + this.offset);
 		}
 	}
 }
