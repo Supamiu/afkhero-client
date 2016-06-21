@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
+using AFKHero.Stat;
 
 
 namespace AFKHero.Debugger
@@ -14,6 +15,12 @@ namespace AFKHero.Debugger
 		public Text xp;
 
 		public Text gold;
+
+		public Text hp;
+
+		private double hpActual = 5;
+
+		private double hpMax = 5;
 
 		private double goldAmount = 0;
 
@@ -31,6 +38,21 @@ namespace AFKHero.Debugger
 			EventDispatcher.Instance.Register ("gold", new Listener<GenericGameEvent<double>> ((ref GenericGameEvent<double> e) => {
 				this.goldAmount += e.Data;
 				this.gold.text = "Gold : " + this.goldAmount;
+			}, -1));
+
+			EventDispatcher.Instance.Register ("attack.damage", new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> e) => {
+				if (e.Data.target.gameObject.name == "Hero") {
+					this.hpActual -= e.Data.damage;
+					this.hp.text = "HP : " + this.hpActual + "/" + this.hpMax;
+				}
+			}, -1));
+
+			EventDispatcher.Instance.Register ("ui.stat.updated", new Listener<GenericGameEvent<AbstractStat>> ((ref GenericGameEvent<AbstractStat> e) => {
+				if (e.Data.GetName () == "vitality") {
+					this.hpActual = ((Vitality)e.Data).currentHp;
+					this.hpMax = e.Data.Value;
+					this.hp.text = "HP : " + ((Vitality)e.Data).currentHp + "/" + e.Data.Value;
+				}
 			}, -1));
 		}
 	}

@@ -1,14 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace AFKHero.Stat{
+namespace AFKHero.Stat
+{
 	/// <summary>
 	/// Affacte les taux de loot.
 	/// </summary>
-	public class Luck : AbstractStat {
+	public class Luck : AbstractStat
+	{
 
+		public override void Add (int amount)
+		{
+			this.amount += amount;
+		}
 
-		public override string GetName() {
+		public override string GetName ()
+		{
 			return "luck";
 		}
 	}

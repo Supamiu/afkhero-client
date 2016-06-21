@@ -91,9 +91,17 @@ namespace AFKHero.Core.Event
 					}
 				}
 			} else {
-				Debug.LogWarning ("Event "+type+" called with no listeners.");
+				//Debug.LogWarning ("Event "+type+" called with no listeners.");
 			}
 			return eventData;
+		}
+
+
+		/// <summary>
+		/// Reset entièrement l'EventManager.
+		/// </summary>
+		public void Clear(){
+			this.registrations = new Dictionary<string, List<IListener>> ();
 		}
 	}
 }

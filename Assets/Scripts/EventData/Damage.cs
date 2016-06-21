@@ -11,16 +11,19 @@ namespace AFKHero.EventData
 
 		public bool critical{ get; private set; }
 
+		public bool hits { get; private set; }
+
 		public Damageable target{ get; private set; }
 
 		public Agressive attacker { get; private set; }
 
-		public Damage (Agressive attacker, Damageable target, double damage, bool crit)
+		public Damage (Agressive attacker, Damageable target, double damage, bool crit, bool hits)
 		{
 			this.damage = Math.Round (damage);
 			this.critical = crit;
 			this.target = target;
 			this.attacker = attacker;
+			this.hits = hits;
 		}
 	}
 }

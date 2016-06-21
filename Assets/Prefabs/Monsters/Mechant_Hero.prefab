@@ -24,6 +24,7 @@ GameObject:
   - 114: {fileID: 11403824}
   - 114: {fileID: 11499002}
   - 114: {fileID: 11481744}
+  - 114: {fileID: 11401054}
   m_Layer: 0
   m_Name: Mechant_Hero
   m_TagString: Untagged
@@ -108,6 +109,19 @@ BoxCollider2D:
   m_Offset: {x: -0.26, y: 1.01}
   serializedVersion: 2
   m_Size: {x: 1.76, y: 2.04}
+--- !u!114 &11401054
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12d9e3295b030b4ca0d12136de30630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount: 1
+  ratio: 1
 --- !u!114 &11403824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,6 +188,7 @@ MonoBehaviour:
   weight: 1
   vitalityRatio: 1
   strengthRatio: 1
+  dodgeRatio: 1
 --- !u!114 &11459002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -188,7 +203,7 @@ MonoBehaviour:
   hitEvent: Hit
   walkName: Move
   attackName: Attack
-  afterKillName: Move
+  afterKillName: Idle
 --- !u!114 &11466050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -215,6 +230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMortal: 1
   deathAnimation: DeathBackward
+  destroyOnDeath: 1
 --- !u!114 &11480618
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -7,6 +7,10 @@ namespace AFKHero.Stat{
 	/// </summary>
 	public class Intelligence : AbstractStat {
 
+		public override void Add (int amount)
+		{
+			this.amount += amount;
+		}
 
 		public override string GetName() {
 			return "intelligence";

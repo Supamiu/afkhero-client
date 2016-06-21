@@ -3,18 +3,26 @@ using System.Collections;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 
-namespace AFKHero.Stat{
+namespace AFKHero.Stat
+{
 	/// <summary>
 	/// Influence la précision et le taux de critiques.
 	/// </summary>
-	public class Agility : AbstractStat {
-
+	public class Agility : AbstractStat
+	{
 		// Use this for initialization
-		void Start () {
+		void Start ()
+		{
 			
 		}
 
-		public override string GetName() {
+		public override void Add (int amount)
+		{
+			this.amount += amount;
+		}
+
+		public override string GetName ()
+		{
 			return "agility";
 		}
 	}

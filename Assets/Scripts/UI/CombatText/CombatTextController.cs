@@ -15,7 +15,15 @@ namespace AFKHero.UI.CombatText
 		void Start ()
 		{
 			this.listener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
-				this.CreateCombatText(Formatter.Format(gameEvent.Data.damage), gameEvent.Data.target.transform);
+				if(gameEvent.Data.hits){
+					if(gameEvent.Data.critical){
+						this.CreateCombatText(Formatter.Format(gameEvent.Data.damage)+"!!", gameEvent.Data.target.transform);
+					}else{
+						this.CreateCombatText(Formatter.Format(gameEvent.Data.damage), gameEvent.Data.target.transform);
+					}
+				}else{
+					this.CreateCombatText("Miss !", gameEvent.Data.target.transform);
+				}
 			}, -100);
 
 			EventDispatcher.Instance.Register ("attack.damage", this.listener);

@@ -19,6 +19,9 @@ namespace AFKHero.Behaviour.Monster
 		[Header ("Ratio strength/m")]
 		public float strengthRatio = 1f;
 
+		[Header ("Ratio dodge/m")]
+		public float dodgeRatio = 1f;
+
 		public float Distance{ get; private set; }
 
 		public int GetWeight ()
@@ -26,11 +29,13 @@ namespace AFKHero.Behaviour.Monster
 			return this.weight;
 		}
 
-		public void Init (float distance)
+		public Spawnable Init (float distance)
 		{
 			this.Distance = distance;
 			this.GetComponent<Strength> ().amount = RatioEngine.Instance.GetEnemyDamage (this.strengthRatio, distance);
 			this.GetComponent<Vitality> ().amount = RatioEngine.Instance.GetEnemyHealth (this.vitalityRatio, distance);
+			this.GetComponent<Dodge> ().amount = RatioEngine.Instance.GetEnemyDodge (this.dodgeRatio, distance);
+			return this;
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace AFKHero.Behaviour.Hero
 			}));
 			EventDispatcher.Instance.Register("ui.stat.increase", new Listener<GenericGameEvent<StatIncrease>>((ref GenericGameEvent<StatIncrease> e) => {
 				if(this.points - e.Data.value >= 0){
-					this.stats[e.Data.stat.GetName()].amount += e.Data.value;
+					this.stats[e.Data.stat.GetName()].Add(e.Data.value);
 					this.RemovePoints(e.Data.value);
 					EventDispatcher.Instance.Dispatch("ui.stat.updated", new GenericGameEvent<AbstractStat>(this.stats[e.Data.stat.GetName()]));
 				}

@@ -17,6 +17,8 @@ namespace AFKHero.Stat{
 		/// </summary>
 		public float ratio = 1;
 
+		public abstract void Add(int amount);
+
 		public abstract string GetName();
 
 		public double Value{ 

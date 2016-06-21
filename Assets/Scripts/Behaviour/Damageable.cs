@@ -30,18 +30,23 @@ namespace AFKHero.Behaviour
 		[SpineAnimation (dataField: "skeletonAnimation")]
 		public string deathAnimation = "Die";
 
+		[Header ("Doit-on détruire le gameObject à sa mort physique?")]
+		public bool destroyOnDeath = true;
+
 		void Start ()
 		{
 			this.anim = GetComponent<SkeletonAnimation> ();
 			this.vitality = GetComponent<Vitality> ();
 			this.listener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
 				if (gameEvent.Data.target == this) {
-					this.Damage (gameEvent.Data.damage);
+					if (gameEvent.Data.hits) {
+						this.Damage (gameEvent.Data.damage);
+					}
 				}
 			}, 0);
 			EventDispatcher.Instance.Register ("attack.damage", this.listener);
 			this.anim.state.Complete += (Spine.AnimationState state, int trackIndex, int loopCount) => {
-				if(state.GetCurrent(trackIndex).Animation.Name == this.deathAnimation){
+				if (state.GetCurrent (trackIndex).Animation.Name == this.deathAnimation) {
 					this.Die ();
 				}
 			};
@@ -51,6 +56,7 @@ namespace AFKHero.Behaviour
 		{
 			this.vitality.currentHp -= amount;
 			if (this.vitality.currentHp <= 0 && this.isMortal) {
+				this.anim.loop = false;
 				this.anim.AnimationName = this.deathAnimation;
 			}
 		}
@@ -65,7 +71,9 @@ namespace AFKHero.Behaviour
 			if (this.onDeath != null) {
 				this.onDeath ();
 			}
-			Destroy (this.gameObject);
+			if (this.destroyOnDeath) {
+				Destroy (this.gameObject);
+			}
 		}
 	}
 }

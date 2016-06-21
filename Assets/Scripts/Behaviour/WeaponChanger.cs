@@ -18,7 +18,7 @@ namespace AFKHero.Behaviour
 
 		private Skeleton skeleton;
 
-		private int actualWeapon = 0;
+		private int actualWeapon = 1;
 
 		private Weapon equiped;
 

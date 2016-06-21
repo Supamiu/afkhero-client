@@ -23,5 +23,11 @@ namespace AFKHero.Model
 
 		[Header("Bestiaire du monde")]
 		public Spawnable[] bestiary;
+
+		[Header("La distance de début")]
+		public float start;
+
+		[Header("La distance de fin")]
+		public float end;
 	}
 }

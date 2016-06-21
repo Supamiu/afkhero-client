@@ -13,7 +13,7 @@ namespace AFKHero.Tools
 
 		public bool GetResult (float percentage)
 		{
-			return (percentage * 100) > Random.Range (1, 100);
+			return percentage > Random.Range (0, 1f);
 		}
 
 		public T GetItemFromPonderables<T> (T[] items) where T : Ponderable
