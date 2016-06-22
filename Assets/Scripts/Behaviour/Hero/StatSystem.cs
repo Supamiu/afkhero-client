@@ -4,10 +4,11 @@ using System.Collections;
 using AFKHero.Stat;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
+using AFKHero.Core.Save;
 
 namespace AFKHero.Behaviour.Hero
 {
-	public class StatSystem : MonoBehaviour
+	public class StatSystem : MonoBehaviour, Saveable
 	{
 		private int points;
 
@@ -40,6 +41,18 @@ namespace AFKHero.Behaviour.Hero
 			EventDispatcher.Instance.Dispatch ("stat.points.updated", new GenericGameEvent<int>(this.points));
 		}
 
+		public string GetIdentifier(){
+			return "statSystem";
+		}
 
+		public object[] Save(){
+			object[] data = { this.points };
+			return data;
+		}
+
+		public void Load(object[] data){
+			this.points = (int)data [0];
+			EventDispatcher.Instance.Dispatch ("stat.points.updated", new GenericGameEvent<int>(this.points));
+		}
 	}
 }

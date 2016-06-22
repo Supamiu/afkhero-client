@@ -96,6 +96,31 @@ namespace AFKHero.Core.Event
 			return eventData;
 		}
 
+		/// <summary>
+		/// Dispatch the specified type.
+		/// </summary>
+		/// <param name="type">Type.</param>
+		public GameEvent Dispatch (string type)
+		{
+			GameEvent eventData = new GameEvent ();
+			List<IListener> ls;
+			object e = (object)eventData;
+			this.registrations.TryGetValue (type, out ls);
+			if (ls != null) {
+				List<IListener> tmp = new List<IListener> (ls);
+				ls.Sort ((x, y) => y.getPriority () - x.getPriority ());
+				foreach (IListener l in tmp) {
+					l.Call (ref e);
+					if (eventData.isPropagationStopped ()) {
+						break;
+					}
+				}
+			} else {
+				//Debug.LogWarning ("Event "+type+" called with no listeners.");
+			}
+			return eventData;
+		}
+
 
 		/// <summary>
 		/// Reset entièrement l'EventManager.

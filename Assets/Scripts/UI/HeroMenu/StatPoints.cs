@@ -11,7 +11,7 @@ namespace AFKHero.UI
 	{
 		private Text text;
 
-		void Start(){
+		void Awake(){
 			this.text = GetComponent<Text> ();
 			EventDispatcher.Instance.Register ("stat.points.updated", new Listener<GenericGameEvent<int>> ((ref GenericGameEvent<int> e) => {
 				this.text.text = e.Data.ToString();

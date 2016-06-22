@@ -68,6 +68,7 @@ namespace AFKHero
 
 		private void GameOver ()
 		{
+			EventDispatcher.Instance.Dispatch ("save");
 			this.gameOver.Init (distance);
 			this.gameOver.gameObject.SetActive (true);
 		}
