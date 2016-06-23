@@ -35,7 +35,6 @@ namespace AFKHero.Core
 		{
 			this.spawnPosition = this.transform.position;
 			this.offset = Vector2.Distance (hero.position, this.transform.position);
-			Debug.Log ("spawn offset : " + this.offset.ToString ());
 			EventDispatcher.Instance.Register ("movement.moved", new Listener<GenericGameEvent<float>> ((ref GenericGameEvent<float> e) => {
 				this.moved += e.Data;
 				if (this.moved >= this.spawnInterval && PercentageUtils.Instance.GetResult (this.spawnChances)) {

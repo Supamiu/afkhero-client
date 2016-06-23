@@ -12,12 +12,16 @@ namespace AFKHero.UI.CombatText
 		{
 			AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo (0);
 			Destroy (gameObject, clipInfo[0].clip.length);
-			damageText = animator.GetComponent<Text> ();
+			damageText = animator.gameObject.GetComponent<Text> ();
 		}
 
 		public void SetText(string text)
 		{
 			damageText.text = text;
+		}
+
+		public void SetColor(Color color){
+			damageText.color = color;
 		}
 	}
 }

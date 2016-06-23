@@ -16,6 +16,16 @@ namespace AFKHero.Stat
 			this.currentHp = ratio * this.Value;
 		}
 
+		public double heal(double amount){
+			if (this.currentHp + amount <= this.Value) {
+				this.currentHp += amount;
+				return amount;
+			} else {
+				this.currentHp = this.Value;
+				return this.Value - this.currentHp;
+			}
+		}
+
 		void Start ()
 		{
 			this.currentHp = Value;

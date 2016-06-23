@@ -139,7 +139,7 @@ Prefab:
     - target: {fileID: 11455650, guid: 2dc0d4fec3c9e014d9ba054f3ce4130f, type: 2}
       propertyPath: canvas
       value: 
-      objectReference: {fileID: 104474581}
+      objectReference: {fileID: 104474584}
     - target: {fileID: 11448174, guid: 2dc0d4fec3c9e014d9ba054f3ce4130f, type: 2}
       propertyPath: parallaxFirstPlan
       value: 
@@ -152,6 +152,11 @@ Prefab:
       propertyPath: parallaxThirdPlan
       value: 
       objectReference: {fileID: 238934570}
+    - target: {fileID: 11455650, guid: 2dc0d4fec3c9e014d9ba054f3ce4130f, type: 2}
+      propertyPath: prefab
+      value: 
+      objectReference: {fileID: 11455696, guid: a6a46cbb294a5c4448713ea82373ae8d,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2dc0d4fec3c9e014d9ba054f3ce4130f, type: 2}
   m_IsPrefabParent: 0
@@ -556,6 +561,7 @@ GameObject:
   - 114: {fileID: 328688778}
   - 114: {fileID: 328688780}
   - 114: {fileID: 328688779}
+  - 114: {fileID: 328688781}
   m_Layer: 8
   m_Name: Hero
   m_TagString: Untagged
@@ -785,6 +791,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xpForNextLevel: 5
+--- !u!114 &328688781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 328688765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0997041cfc73ca4db2d1841553d2aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &332830650
 GameObject:
   m_ObjectHideFlags: 0
@@ -3876,7 +3893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moving: 1
-  speed: {x: 3, y: 0}
+  speed: {x: 2, y: 0}
   direction: {x: -1, y: 0}
   isLinkedToCamera: 0
   isLooping: 1

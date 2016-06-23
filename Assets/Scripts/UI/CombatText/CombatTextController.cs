@@ -8,33 +8,41 @@ namespace AFKHero.UI.CombatText
 {
 	public class CombatTextController : MonoBehaviour {
 		public CombatText prefab;
-		public GameObject canvas;
+		public Canvas canvas;
 
-		private IListener listener;
+		private IListener damageListener;
+
+		private IListener healListener;
 
 		void Start ()
 		{
-			this.listener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
+			this.damageListener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
 				if(gameEvent.Data.hits){
 					if(gameEvent.Data.critical){
-						this.CreateCombatText(Formatter.Format(gameEvent.Data.damage)+"!!", gameEvent.Data.target.transform);
+						this.CreateCombatText(Formatter.Format(gameEvent.Data.damage)+"!!", gameEvent.Data.target.transform, CombatTextType.DAMAGE);
 					}else{
-						this.CreateCombatText(Formatter.Format(gameEvent.Data.damage), gameEvent.Data.target.transform);
+						this.CreateCombatText(Formatter.Format(gameEvent.Data.damage), gameEvent.Data.target.transform, CombatTextType.DAMAGE);
 					}
 				}else{
-					this.CreateCombatText("Miss !", gameEvent.Data.target.transform);
+					this.CreateCombatText("Miss !", gameEvent.Data.target.transform, CombatTextType.MISS);
 				}
 			}, -100);
 
-			EventDispatcher.Instance.Register ("attack.damage", this.listener);
+			this.healListener = new Listener<GenericGameEvent<Heal>>((ref GenericGameEvent<Heal> e) => {
+				this.CreateCombatText(Formatter.Format(e.Data.amount), e.Data.target.transform, CombatTextType.HEAL);
+			});
+
+			EventDispatcher.Instance.Register ("attack.damage", this.damageListener);
+			EventDispatcher.Instance.Register ("heal", this.healListener);
 		}
 
-		private void CreateCombatText(string text, Transform location)
+		private void CreateCombatText(string text, Transform location, CombatTextType type)
 		{
 			CombatText instance = Instantiate (prefab);
 
 			instance.transform.SetParent (canvas.transform, false);
 			instance.transform.position = location.position;
+			instance.SetColor (type.GetColor ());
 			instance.SetText (text);
 		}
 	}
