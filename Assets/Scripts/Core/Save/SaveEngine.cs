@@ -1,37 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System.Runtime.Serialization.Formatters.Binary;
 using AFKHero.Core.Event;
+using System.IO;
 
 
 namespace AFKHero.Core.Save
 {
 	public class SaveEngine : MonoBehaviour
 	{
-		List<Saveable> saveables = new List<Saveable> ();
+		List<Saveable> saveables;
 
 		Dictionary<string, object[]> save = new Dictionary<string, object[]> ();
 
 		void Awake ()
 		{
-			DontDestroyOnLoad (this.gameObject);
-			EventDispatcher.Instance.Register ("save", new Listener<GameEvent>((ref GameEvent e) => {
-				this.Save();
+			DontDestroyOnLoad (this);
+			EventDispatcher.Instance.Register ("save", new Listener<GameEvent> ((ref GameEvent e) => {
+				this.Save ();
 			}));
 			EventDispatcher.Instance.Register ("load", new Listener<GameEvent> ((ref GameEvent e) => {
-				this.Load();
+				this.Load ();
 			}));
 		}
 
 		// Use this for initialization
 		void Start ()
 		{
+			this.saveables = new List<Saveable> ();
 			GameObject[] allGO = FindObjectsOfType<GameObject> ();
 			foreach (GameObject go in allGO) {
 				saveables.AddRange (go.GetComponents<Saveable> ());
 			}
 		}
 
-		void OnLevelWasLoaded(int level){
+		void OnLevelWasLoaded (int level)
+		{
 			this.Start ();
 			this.Load ();
 		}
@@ -42,26 +47,32 @@ namespace AFKHero.Core.Save
 		public void Save ()
 		{
 			foreach (Saveable s in this.saveables) {
-				if (this.save.ContainsKey (s.GetIdentifier ())) {
-					this.save [s.GetIdentifier ()] = s.Save ();
-				} else {
-					this.save.Add (s.GetIdentifier (), s.Save ());
-				}
+				this.save [s.GetIdentifier ()] = s.Save ();
 			}
 		}
 
 		/// <summary>
 		/// Load this instance.
 		/// </summary>
-		public void Load()
+		public void Load ()
 		{
 			foreach (Saveable s in this.saveables) {
 				object[] data;
-				this.save.TryGetValue (s.GetIdentifier(), out data);
+				this.save.TryGetValue (s.GetIdentifier (), out data);
 				if (data != null) {
 					s.Load (data);
 				}
 			}
+		}
+
+		public void Persist ()
+		{
+			SaveData save = new SaveData ();
+			save.data = this.save;
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Create (Application.persistentDataPath + "/AFKHero.gd");
+			bf.Serialize (file, save);
+			file.Close ();
 		}
 	}
 }

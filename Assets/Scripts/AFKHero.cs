@@ -35,7 +35,11 @@ namespace AFKHero
 			Application.targetFrameRate = 60;
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			EventDispatcher.Instance.Register ("movement.moved", new Listener<GenericGameEvent<float>> ((ref GenericGameEvent<float> e) => {
-				distance += e.Data;
+				if(offsetDistance - offsetDistanceDone <= 0){
+					distance += e.Data;				
+				}else{
+					offsetDistanceDone += e.Data;
+				}
 			}));
 		}
 
@@ -44,6 +48,8 @@ namespace AFKHero
 		private static float distance = 0f;
 
 		private static float offsetDistance = 20f;
+
+		private static float offsetDistanceDone = 0f;
 
 		public static class Config
 		{
@@ -57,7 +63,7 @@ namespace AFKHero
 
 		public static float GetDistance ()
 		{
-			return distance - offsetDistance > 0f ? distance - offsetDistance : 0f;
+			return distance;
 		}
 
 		public void StartGame ()
