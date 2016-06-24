@@ -33,6 +33,9 @@ namespace AFKHero.Core.Save
 			foreach (GameObject go in allGO) {
 				saveables.AddRange (go.GetComponents<Saveable> ());
 			}
+			if (File.Exists (Application.persistentDataPath + "/AFKHero.gd")) {
+				//TODO load data.
+			}
 		}
 
 		void OnLevelWasLoaded (int level)

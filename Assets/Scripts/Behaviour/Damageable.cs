@@ -6,6 +6,7 @@ using AFKHero.Core.Event;
 using AFKHero.EventData;
 using System.Linq;
 using Spine.Unity;
+using System;
 
 using AFKHero.Common;
 
@@ -14,6 +15,9 @@ namespace AFKHero.Behaviour
 	[RequireComponent (typeof(Vitality))]
 	public class Damageable : MonoBehaviour
 	{
+		public delegate void Damaged();
+
+		public event Damaged OnDamaged;
 
 		public bool isMortal = true;
 
@@ -54,10 +58,14 @@ namespace AFKHero.Behaviour
 
 		void Damage (double amount)
 		{
+			amount = Math.Round (amount);
 			this.vitality.currentHp -= amount;
 			if (this.vitality.currentHp <= 0 && this.isMortal) {
 				this.anim.loop = false;
 				this.anim.AnimationName = this.deathAnimation;
+			}
+			if (this.OnDamaged != null) {
+				this.OnDamaged();
 			}
 		}
 

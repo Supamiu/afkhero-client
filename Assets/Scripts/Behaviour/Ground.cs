@@ -31,7 +31,7 @@ namespace AFKHero.Behaviour
 
 		void Tick() {
 			if (scrolling.moving) {
-				EventDispatcher.Instance.Dispatch("movement.moved", new GenericGameEvent<float>(scrolling.speed.x/2));
+				EventDispatcher.Instance.Dispatch("movement.moved", new GenericGameEvent<float>(scrolling.speed.x/4));
 			}
 		}
 	}

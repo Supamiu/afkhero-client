@@ -47,7 +47,7 @@ namespace AFKHero
 
 		private static float distance = 0f;
 
-		private static float offsetDistance = 20f;
+		private static float offsetDistance = 10f;
 
 		private static float offsetDistanceDone = 0f;
 
@@ -76,6 +76,7 @@ namespace AFKHero
 		private void GameOver ()
 		{
 			EventDispatcher.Instance.Dispatch ("save");
+			offsetDistanceDone = 0f;
 			this.gameOver.Init (distance);
 			this.gameOver.gameObject.SetActive (true);
 		}

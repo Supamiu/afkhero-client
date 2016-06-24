@@ -14,6 +14,7 @@ namespace AFKHero.Core
 
 		public float spawnInterval = 2f;
 
+		[Range(0,1)]
 		public float spawnChances = 0.5f;
 
 		[Header("Juste pour récupérer l'offset")]

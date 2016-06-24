@@ -21,8 +21,9 @@ namespace AFKHero.Stat
 				this.currentHp += amount;
 				return amount;
 			} else {
+				double healed = this.Value - this.currentHp;
 				this.currentHp = this.Value;
-				return this.Value - this.currentHp;
+				return healed;
 			}
 		}
 

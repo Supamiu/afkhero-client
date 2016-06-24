@@ -20,6 +20,7 @@ namespace AFKHero.Behaviour.Hero
 			EventDispatcher.Instance.Register ("experience", new Listener<GenericGameEvent<double>> ((ref GenericGameEvent<double> e) => {
 				this.ReceiveXp (e.Data);
 			}));
+			EventDispatcher.Instance.Dispatch ("level.update", new GenericGameEvent<LevelUp> (new LevelUp (this.level, this.GetXpForLevel (this.level), this.xp)));
 		}
 
 		void ReceiveXp (double amount)
