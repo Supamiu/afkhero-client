@@ -10,11 +10,11 @@ namespace AFKHero.Behaviour.Monster
 	{
 	
 		[Header ("Ratio gold/distance")]
-		public float xpRatio = 1f;
+		public float goldRatio = 1f;
 
 		public double GetGold ()
 		{
-			return Math.Round (this.xpRatio * GetComponent<Spawnable> ().Distance);
+			return Math.Round (this.goldRatio * GetComponent<Spawnable> ().Distance);
 		}
 
 		public void OnDeath ()
