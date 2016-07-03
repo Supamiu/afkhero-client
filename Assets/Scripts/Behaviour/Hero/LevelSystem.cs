@@ -42,22 +42,19 @@ namespace AFKHero.Behaviour.Hero
 			return Math.Round (5 * (Math.Pow (level, 1.5f)));
 		}
 
-		public string GetIdentifier ()
+		public SaveData Save (SaveData save)
 		{
-			return "levelSystem";
+			save.level = this.level;
+			save.xp = this.xp;
+			save.xpForNextLevel = this.xpForNextLevel;
+			return save;
 		}
 
-		public object[] Save ()
+		public void Load (SaveData save)
 		{
-			object[] data = { this.level, this.xp, this.xpForNextLevel };
-			return data;
-		}
-
-		public void Load (object[] data)
-		{
-			this.level = (double)data [0];
-			this.xp = (double)data [1];
-			this.xpForNextLevel = (double)data [2];
+			this.level = save.level;
+			this.xp = save.xp;
+			this.xpForNextLevel = save.xpForNextLevel;
 		}
 	}
 }

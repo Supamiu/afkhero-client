@@ -4,6 +4,7 @@ using System.Collections;
 using System.Runtime.Serialization.Formatters.Binary;
 using AFKHero.Core.Event;
 using System.IO;
+using AFKHero.Core.Tools;
 
 
 namespace AFKHero.Core.Save
@@ -12,7 +13,7 @@ namespace AFKHero.Core.Save
 	{
 		List<Saveable> saveables;
 
-		Dictionary<string, object[]> save = new Dictionary<string, object[]> ();
+		SaveData save = new SaveData ();
 
 		void Awake ()
 		{
@@ -50,7 +51,7 @@ namespace AFKHero.Core.Save
 		public void Save ()
 		{
 			foreach (Saveable s in this.saveables) {
-				this.save [s.GetIdentifier ()] = s.Save ();
+				this.save = s.Save (this.save);
 			}
 		}
 
@@ -60,21 +61,15 @@ namespace AFKHero.Core.Save
 		public void Load ()
 		{
 			foreach (Saveable s in this.saveables) {
-				object[] data;
-				this.save.TryGetValue (s.GetIdentifier (), out data);
-				if (data != null) {
-					s.Load (data);
-				}
+				s.Load (this.save);
 			}
 		}
 
 		public void Persist ()
 		{
-			SaveData save = new SaveData ();
-			save.data = this.save;
 			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Create (Application.persistentDataPath + "/AFKHero.gd");
-			bf.Serialize (file, save);
+			FileStream file = File.Create (Application.persistentDataPath + "/AFKHero.save");
+			bf.Serialize (file, CryptoService.Instance.Xor (JsonUtility.ToJson (this.save)));
 			file.Close ();
 		}
 	}

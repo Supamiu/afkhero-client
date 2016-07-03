@@ -4,6 +4,7 @@ using AFKHero.Core.Event;
 using AFKHero.EventData;
 using AFKHero.Behaviour;
 using AFKHero.Tools;
+using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
@@ -44,6 +45,13 @@ namespace AFKHero.Stat
 		public override string GetName ()
 		{
 			return "dodge";
+		}
+
+		public override SaveData Save(SaveData data){
+			return data;
+		}
+
+		public override void DoLoad (SaveData data){
 		}
 	}
 }

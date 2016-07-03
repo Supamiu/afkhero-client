@@ -2,6 +2,7 @@
 using System.Collections;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
+using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
@@ -10,15 +11,18 @@ namespace AFKHero.Stat
 	/// </summary>
 	public class Agility : AbstractStat
 	{
-		// Use this for initialization
-		void Start ()
-		{
-			
-		}
-
 		public override void Add (int amount)
 		{
 			this.amount += amount;
+		}
+
+		public override SaveData Save(SaveData data){
+			data.agility = this.amount;
+			return data;
+		}
+
+		public override void DoLoad (SaveData data){
+			this.amount = data.agility;
 		}
 
 		public override string GetName ()

@@ -24,19 +24,12 @@ namespace AFKHero.Stat
 
 		public abstract string GetName ();
 
-		public string GetIdentifier ()
-		{
-			return "stat." + this.GetName ();
-		}
+		public abstract SaveData Save (SaveData save);
 
-		public object[] Save(){
-			object[] data = new object[1];
-			data [0] = this.amount;
-			return data;
-		}
+		public abstract void DoLoad (SaveData data);
 
-		public void Load(object[] data){
-			this.amount = (double)data[0];
+		public void Load(SaveData data){
+			this.DoLoad (data);
 			EventDispatcher.Instance.Dispatch ("ui.stat.updated", new GenericGameEvent<AbstractStat> (this));
 		}
 

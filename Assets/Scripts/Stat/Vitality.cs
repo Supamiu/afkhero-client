@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using AFKHero.Common;
+using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
@@ -40,6 +41,15 @@ namespace AFKHero.Stat
 		public override string GetName ()
 		{
 			return "vitality";
+		}
+
+		public override SaveData Save(SaveData data){
+			data.vitality = this.amount;
+			return data;
+		}
+
+		public override void DoLoad (SaveData data){
+			this.amount = data.vitality;
 		}
 	}
 }

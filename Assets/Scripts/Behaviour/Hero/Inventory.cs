@@ -9,26 +9,24 @@ namespace AFKHero.Behaviour
 	{
 		private double gold = 0;
 
-		void Start(){
+		void Start ()
+		{
 			EventDispatcher.Instance.Register ("gold", new Listener<GenericGameEvent<double>> ((ref GenericGameEvent<double> e) => {
 				this.gold += e.Data;
 				EventDispatcher.Instance.Dispatch ("ui.gold", new GenericGameEvent<double> (this.gold));
 			}));
 		}
 
-		public string GetIdentifier(){
-			return "inventory";
-		}
-
-		public object[] Save ()
+		public SaveData Save (SaveData data)
 		{
-			object[] data = { this.gold };
+			data.gold = this.gold;
 			return data;
 		}
 
-		public void Load (object[] data)
+		public void Load (SaveData data)
 		{
-			this.gold = (double)data [0];
+			this.gold = data.gold;
+			EventDispatcher.Instance.Dispatch ("ui.gold", new GenericGameEvent<double> (this.gold));
 		}
 	}
 }

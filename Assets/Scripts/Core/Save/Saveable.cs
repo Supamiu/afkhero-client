@@ -5,10 +5,8 @@ namespace AFKHero.Core.Save
 {
 	public interface Saveable
 	{
-		string GetIdentifier();
+		SaveData Save(SaveData save);
 
-		object[] Save();
-
-		void Load(object[] data);
+		void Load(SaveData data);
 	}
 }
