@@ -35,5 +35,11 @@ namespace AFKHero.Tools
 			//Ne devrait jamais arriver, mais je dois le mettre pour le compilateur.
 			return default(T);
 		}
+
+		public T GetRandomItem<T> (T[] items)
+		{
+			int position = Random.Range (0, items.Length - 1);
+			return items [position];
+		}
 	}
 }
