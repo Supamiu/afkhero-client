@@ -34,7 +34,7 @@ namespace AFKHero.Stat
 		}
 
 		public double Value { 
-			get { 
+			get {
 				return ((GenericGameEvent<double>)EventDispatcher.Instance.Dispatch ("stat.compute." + this.GetName (), new GenericGameEvent<double> (Math.Round (this.amount * this.ratio)))).Data;
 			} 
 		}

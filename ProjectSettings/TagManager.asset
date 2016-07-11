@@ -3,7 +3,21 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Canvas
+  - MainInventory
+  - Panel
+  - Slots
+  - DraggingItem
+  - EventSystem
+  - Slot
+  - Item
+  - ItemIcon
+  - CraftSystem
+  - ResultSlot
+  - EquipmentSystem
+  - Hotbar
+  - Tooltip
   layers:
   - Default
   - TransparentFX
@@ -14,7 +28,7 @@ TagManager:
   - 
   - 
   - Hero
-  - 
+  - TopLayer
   - 
   - 
   - 

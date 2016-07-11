@@ -41,7 +41,11 @@ public class MonologSystem : MonoBehaviour
 			if (this.elapsed < this.cooldown) {
 				this.elapsed += Time.fixedDeltaTime;
 			} else {
-				this.displayText.text = PercentageUtils.Instance.GetRandomItem<string> (this.entries);
+				string newText = PercentageUtils.Instance.GetRandomItem<string> (this.entries);
+				while (newText == this.displayText.text) {
+					newText = PercentageUtils.Instance.GetRandomItem<string> (this.entries);
+				}
+				this.displayText.text = newText;
 				this.displayImage.gameObject.SetActive (true);
 				this.displayText.gameObject.SetActive (true);
 				this.elapsed = 0f;

@@ -13,7 +13,7 @@ namespace AFKHero.Core.Save
 	{
 		List<Saveable> saveables;
 
-		SaveData save = new SaveData ();
+		static SaveData save;
 
 		void Awake ()
 		{
@@ -50,8 +50,9 @@ namespace AFKHero.Core.Save
 		/// </summary>
 		public void Save ()
 		{
+			SaveEngine.save = new SaveData ();
 			foreach (Saveable s in this.saveables) {
-				this.save = s.Save (this.save);
+				SaveEngine.save = s.Save (SaveEngine.save);
 			}
 		}
 
@@ -61,7 +62,7 @@ namespace AFKHero.Core.Save
 		public void Load ()
 		{
 			foreach (Saveable s in this.saveables) {
-				s.Load (this.save);
+				s.Load (SaveEngine.save);
 			}
 		}
 
@@ -69,7 +70,7 @@ namespace AFKHero.Core.Save
 		{
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Create (Application.persistentDataPath + "/AFKHero.save");
-			bf.Serialize (file, CryptoService.Instance.Xor (JsonUtility.ToJson (this.save)));
+			bf.Serialize (file, CryptoService.Instance.Xor (JsonUtility.ToJson (SaveEngine.save)));
 			file.Close ();
 		}
 	}

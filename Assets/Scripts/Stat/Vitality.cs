@@ -2,6 +2,7 @@
 using System.Collections;
 using AFKHero.Common;
 using AFKHero.Core.Save;
+using AFKHero.Core.Event;
 
 namespace AFKHero.Stat
 {
@@ -15,18 +16,29 @@ namespace AFKHero.Stat
 			float ratio = (float)this.currentHp / (float)this.Value;
 			this.amount += points;
 			this.currentHp = ratio * this.Value;
-		}
-
-		public double heal(double amount){
-			if (this.currentHp + amount <= this.Value) {
-				this.currentHp += amount;
-				return amount;
-			} else {
-				double healed = this.Value - this.currentHp;
-				this.currentHp = this.Value;
-				return healed;
+			if (this.OnVitalityUpdated != null) {
+				this.OnVitalityUpdated ();
 			}
 		}
+
+		public double heal (double amount)
+		{
+			double healed = amount;
+			if (this.currentHp + amount <= this.Value) {
+				this.currentHp += amount;
+			} else {
+				healed = this.Value - this.currentHp;
+				this.currentHp = this.Value;
+			}
+			if (this.OnVitalityUpdated != null) {
+				this.OnVitalityUpdated ();
+			}
+			return healed;
+		}
+
+		public delegate void UpdateEvent ();
+
+		public event UpdateEvent OnVitalityUpdated;
 
 		void Start ()
 		{
@@ -43,13 +55,18 @@ namespace AFKHero.Stat
 			return "vitality";
 		}
 
-		public override SaveData Save(SaveData data){
+		public override SaveData Save (SaveData data)
+		{
 			data.vitality = this.amount;
 			return data;
 		}
 
-		public override void DoLoad (SaveData data){
+		public override void DoLoad (SaveData data)
+		{
 			this.amount = data.vitality;
+			if (this.OnVitalityUpdated != null) {
+				this.OnVitalityUpdated ();
+			}
 		}
 	}
 }

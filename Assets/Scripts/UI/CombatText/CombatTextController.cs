@@ -6,9 +6,11 @@ using AFKHero.EventData;
 
 namespace AFKHero.UI.CombatText
 {
-	public class CombatTextController : MonoBehaviour {
+	public class CombatTextController : MonoBehaviour
+	{
 		public CombatText prefab;
-		public Canvas canvas;
+
+		public GameObject parent;
 
 		private IListener damageListener;
 
@@ -17,30 +19,30 @@ namespace AFKHero.UI.CombatText
 		void Start ()
 		{
 			this.damageListener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
-				if(gameEvent.Data.hits){
-					if(gameEvent.Data.critical){
-						this.CreateCombatText(Formatter.Format(gameEvent.Data.damage)+"!!", gameEvent.Data.target.transform, CombatTextType.DAMAGE);
-					}else{
-						this.CreateCombatText(Formatter.Format(gameEvent.Data.damage), gameEvent.Data.target.transform, CombatTextType.DAMAGE);
+				if (gameEvent.Data.hits) {
+					if (gameEvent.Data.critical) {
+						this.CreateCombatText (Formatter.Format (gameEvent.Data.damage) + "!!", gameEvent.Data.target.transform, CombatTextType.DAMAGE);
+					} else {
+						this.CreateCombatText (Formatter.Format (gameEvent.Data.damage), gameEvent.Data.target.transform, CombatTextType.DAMAGE);
 					}
-				}else{
-					this.CreateCombatText("Miss !", gameEvent.Data.target.transform, CombatTextType.MISS);
+				} else {
+					this.CreateCombatText ("Miss !", gameEvent.Data.target.transform, CombatTextType.MISS);
 				}
 			}, -100);
 
-			this.healListener = new Listener<GenericGameEvent<Heal>>((ref GenericGameEvent<Heal> e) => {
-				this.CreateCombatText(Formatter.Format(e.Data.amount), e.Data.target.transform, CombatTextType.HEAL);
+			this.healListener = new Listener<GenericGameEvent<Heal>> ((ref GenericGameEvent<Heal> e) => {
+				this.CreateCombatText (Formatter.Format (e.Data.amount), e.Data.target.transform, CombatTextType.HEAL);
 			});
 
 			EventDispatcher.Instance.Register ("attack.damage", this.damageListener);
 			EventDispatcher.Instance.Register ("heal", this.healListener);
 		}
 
-		private void CreateCombatText(string text, Transform location, CombatTextType type)
+		private void CreateCombatText (string text, Transform location, CombatTextType type)
 		{
 			CombatText instance = Instantiate (prefab);
 
-			instance.transform.SetParent (canvas.transform, false);
+			instance.transform.SetParent (parent.transform, false);
 			instance.transform.position = location.position;
 			instance.SetColor (type.GetColor ());
 			instance.SetText (text);

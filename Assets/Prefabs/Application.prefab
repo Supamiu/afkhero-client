@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 11455696, guid: a6a46cbb294a5c4448713ea82373ae8d, type: 2}
-  canvas: {fileID: 0}
+  parent: {fileID: 0}
 --- !u!114 &11474308
 MonoBehaviour:
   m_ObjectHideFlags: 1
