@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using AFKHero.Core.Tools;
+using System.Collections.Generic;
 
 namespace AFKHero.Tools
 {
@@ -16,7 +17,7 @@ namespace AFKHero.Tools
 			return percentage > Random.Range (0, 1f);
 		}
 
-		public T GetItemFromPonderables<T> (T[] items) where T : Ponderable
+		public T GetItemFromPonderables<T> (IEnumerable<T> items) where T : Ponderable
 		{
 			int total = 0;
 			foreach (T item in items) {

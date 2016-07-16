@@ -4,7 +4,8 @@ using AFKHero.Behaviour.Monster;
 
 namespace AFKHero.Model
 {
-	public class World : MonoBehaviour
+    [System.Serializable]
+	public class World
 	{
 		[Header("Nom du monde")]
 		public string worldName;
@@ -20,14 +21,8 @@ namespace AFKHero.Model
 
 		[Header("3e plan du parallax")]
 		public Sprite parallaxThirdPlan;
-
-		[Header("Bestiaire du monde")]
-		public Spawnable[] bestiary;
-
-		[Header("La distance de début")]
-		public float start;
-
-		[Header("La distance de fin")]
-		public float end;
+        
+        [Header("Les paliers du monde")]
+		public Stage[] stages;
 	}
 }

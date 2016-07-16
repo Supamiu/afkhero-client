@@ -51,6 +51,8 @@ namespace AFKHero
 
 		private static float offsetDistanceDone = 0f;
 
+        public static readonly float WORLD_LENGTH = 8000f;
+
 		public static class Config
 		{
 			public static readonly int STAT_POINTS_PER_LEVEL = 5;
@@ -70,7 +72,7 @@ namespace AFKHero
 		public void StartGame ()
 		{
 			SceneManager.LoadScene (gameScene);
-			distance = this.worldManager.GetCurrentWorld ().start - 20f;
+			distance = this.worldManager.GetCheckpoint();
 		}
 
 		private void GameOver ()
@@ -83,7 +85,7 @@ namespace AFKHero
 
 		public void Restart ()
 		{
-			distance = this.worldManager.GetCurrentWorld ().start;
+			distance = this.worldManager.GetCheckpoint();
 			this.spawnEngine.Clear ();
 			EventDispatcher.Instance.Clear ();
 			SceneManager.LoadScene (gameScene);
