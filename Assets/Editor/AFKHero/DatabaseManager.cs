@@ -1,14 +1,17 @@
 using UnityEngine;
 using AFKHero.Core.Database;
 using UnityEditor;
+using AFKHero.Editor.Layout;
 
 public class DatabaseManager : EditorWindow
 {
     private int selectedTab = 0;
 
-    private static string[] Tabs = { "worlds", "weapons", "items", "recipes" };
+    private static string[] Tabs = { "worlds", "wearables", "items", "recipes" };
 
     private static WorldDatabaseLayout WorldLayout = new WorldDatabaseLayout();
+
+    private static WearablesDatabaseLayout WearablesLayout = new WearablesDatabaseLayout();
 
     [MenuItem("AFKHero/DatabaseManager")]
     private static void Init()
@@ -31,7 +34,10 @@ public class DatabaseManager : EditorWindow
         switch (databaseName)
         {
             case "worlds":
-                WorldLayout.DrawWorldDatabase();
+                WorldLayout.DrawDatabase();
+                break;
+            case "wearables":
+                WearablesLayout.DrawDatabase();
                 break;
         }
     }

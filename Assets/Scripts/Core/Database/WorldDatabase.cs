@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using AFKHero.Model;
 
@@ -8,6 +8,6 @@ namespace AFKHero.Core.Database
     public class WorldDatabase : ScriptableObject
     {
         [SerializeField]
-        public List<World> worlds = new List<World>();
+        public List<World> worlds;
     }
 }

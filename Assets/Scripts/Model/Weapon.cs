@@ -7,7 +7,7 @@ using AFKHero.EventData;
 namespace AFKHero.Model
 {
 	
-	public class Weapon : MonoBehaviour
+	public class Weapon : Wearable
 	{
 
 		public Sprite sprite;
@@ -30,7 +30,7 @@ namespace AFKHero.Model
 			this.isInit = true;
 		}
 
-		public void Attach (GameObject go)
+		public override void Attach (GameObject go)
 		{
 			Agressive agressive = go.GetComponent<Agressive> ();
 			if (agressive == null) {
@@ -41,7 +41,7 @@ namespace AFKHero.Model
 			EventDispatcher.Instance.Register ("attack.compute", this.listener);
 		}
 
-		public void Detach ()
+		public override void Detach ()
 		{
 			EventDispatcher.Instance.Unregister ("attack.compute", this.listener);
 		}
