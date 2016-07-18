@@ -1,12 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
 
 namespace AFKHero.Model
 {
-    public abstract class Wearable : MonoBehaviour
+    public abstract class Wearable : Item
     {
-        public abstract void Attach(GameObject o);
+        List<Affix> affixes;
 
-        public abstract void Detach();
+        public void Attach(GameObject go)
+        {
+            foreach(Affix affix in this.affixes)
+            {
+                affix.OnAttach(go);
+            }
+            OnAttach(go);
+        }
+
+        public abstract void OnAttach(GameObject o);
+
+        public abstract void OnDetach();
     }
 }

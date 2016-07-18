@@ -3,11 +3,12 @@ using System.Collections;
 using AFKHero.Behaviour;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
+using System;
 
 namespace AFKHero.Model
 {
-	
-	public class Weapon : Wearable
+	[Obsolete("Sera bientôt supprimé pour une gestion plus générique des wearables.")]
+	public class Weapon : MonoBehaviour
 	{
 
 		public Sprite sprite;
@@ -30,7 +31,7 @@ namespace AFKHero.Model
 			this.isInit = true;
 		}
 
-		public override void Attach (GameObject go)
+		public void Attach (GameObject go)
 		{
 			Agressive agressive = go.GetComponent<Agressive> ();
 			if (agressive == null) {
@@ -41,7 +42,7 @@ namespace AFKHero.Model
 			EventDispatcher.Instance.Register ("attack.compute", this.listener);
 		}
 
-		public override void Detach ()
+		public void Detach ()
 		{
 			EventDispatcher.Instance.Unregister ("attack.compute", this.listener);
 		}
