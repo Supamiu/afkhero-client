@@ -11,15 +11,18 @@ public class DatabaseManager : EditorWindow
 
     private static WorldDatabaseLayout WorldLayout = new WorldDatabaseLayout();
 
-    private static WearablesDatabaseLayout WearablesLayout = new WearablesDatabaseLayout();
+    private static WearableDatabaseLayout WearablesLayout = new WearableDatabaseLayout();
 
     [MenuItem("AFKHero/DatabaseManager")]
     private static void Init()
     {
         GetWindow(typeof(DatabaseManager));
-        WorldDatabase resourceWorldsDatabase = Resources.Load<WorldDatabase>("Databases/WorldsDatabase");
+        WorldDatabase resourceWorldsDatabase = Resources.Load<WorldDatabase>("Databases/WorldDatabase");
         if (resourceWorldsDatabase == null)
             DatabaseCreator.CreateWorldDatabase();
+        WearableDatabase resourceWearableDatabase = Resources.Load<WearableDatabase>("Databases/WearableDatabase");
+        if (resourceWearableDatabase == null)
+            DatabaseCreator.CreateWearableDatabase();
     }
 
     private void OnGUI()

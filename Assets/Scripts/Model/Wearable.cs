@@ -1,23 +1,33 @@
+using AFKHero.Core.Gear;
+using AFKHero.Model.Affix;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace AFKHero.Model
 {
-    public abstract class Wearable : Item
+    [System.Serializable]
+    public class Wearable : Item
     {
-        List<Affix> affixes;
+        public List<ItemAffix> affixes = new List<ItemAffix>();
+
+        public Sprite sprite;
+
+        public GearSlot slot;
 
         public void Attach(GameObject go)
         {
-            foreach(Affix affix in this.affixes)
+            foreach(ItemAffix affix in affixes)
             {
                 affix.OnAttach(go);
             }
-            OnAttach(go);
         }
 
-        public abstract void OnAttach(GameObject o);
-
-        public abstract void OnDetach();
+        public void Detach()
+        {
+            foreach (ItemAffix affix in affixes)
+            {
+                affix.OnDetach();
+            }
+        }
     }
 }

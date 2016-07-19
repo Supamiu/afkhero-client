@@ -9,7 +9,6 @@ namespace AFKHero.Editor.Layout
 {
     public class WorldDatabaseLayout : AbstractDatabaseLayout
     {
-
         private int worldSelectedInnerTab = 0;
         private Vector2 worldScrollPosition;
         private List<bool> worldManageItem = new List<bool>();
@@ -21,14 +20,14 @@ namespace AFKHero.Editor.Layout
 
         public WorldDatabaseLayout()
         {
-            worldsDatabase = Resources.Load<WorldDatabase>("Databases/WorldsDatabase");
+            worldsDatabase = Resources.Load<WorldDatabase>("Databases/WorldDatabase");
         }
 
         public override void DrawDatabase()
         {
             if (worldsDatabase == null)
             {
-                worldsDatabase = Resources.Load<WorldDatabase>("Databases/WorldsDatabase");
+                worldsDatabase = Resources.Load<WorldDatabase>("Databases/WorldDatabase");
             }
             GUILayout.BeginHorizontal();
             worldSelectedInnerTab = GUILayout.Toolbar(worldSelectedInnerTab, innerTabs);

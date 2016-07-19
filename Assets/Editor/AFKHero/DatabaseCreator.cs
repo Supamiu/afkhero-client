@@ -10,8 +10,17 @@ public class DatabaseCreator {
 	{
         WorldDatabase asset = ScriptableObject.CreateInstance<WorldDatabase> ();
         asset.worlds = new List<World>();
-		AssetDatabase.CreateAsset (asset, "Assets/Resources/Databases/WorldsDatabase.asset");
+		AssetDatabase.CreateAsset (asset, "Assets/Resources/Databases/WorldDatabase.asset");
 		AssetDatabase.SaveAssets ();
 		return asset;
 	}
+
+    public static WearableDatabase CreateWearableDatabase()
+    {
+        WearableDatabase asset = ScriptableObject.CreateInstance<WearableDatabase>();
+        asset.wearables = new List<Wearable>();
+        AssetDatabase.CreateAsset(asset, "Assets/Resources/Databases/WearableDatabase.asset");
+        AssetDatabase.SaveAssets();
+        return asset;
+    }
 }

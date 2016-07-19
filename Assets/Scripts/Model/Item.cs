@@ -3,7 +3,7 @@
 namespace AFKHero.Model
 {
     [System.Serializable]
-    public class Item : MonoBehaviour
+    public class Item
     {
         /// <summary>
         /// L'icône pour le display.
@@ -14,7 +14,6 @@ namespace AFKHero.Model
         /// Le nom de l'objet.
         /// </summary>
         public string itemName;
-
 
         /// <summary>
         /// La rareté de l'objet.

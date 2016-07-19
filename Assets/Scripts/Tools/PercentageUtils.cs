@@ -17,6 +17,12 @@ namespace AFKHero.Tools
 			return percentage > Random.Range (0, 1f);
 		}
 
+        /// <summary>
+        /// Récupère un item dans une liste de ponderables.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
 		public T GetItemFromPonderables<T> (IEnumerable<T> items) where T : Ponderable
 		{
 			int total = 0;
@@ -37,10 +43,27 @@ namespace AFKHero.Tools
 			return default(T);
 		}
 
+        /// <summary>
+        /// Récupère un item aléatoire dans un tableau.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
 		public T GetRandomItem<T> (T[] items)
 		{
 			int position = Random.Range (0, items.Length - 1);
 			return items [position];
 		}
+
+        /// <summary>
+        /// Récupère un float aléatoire entre deux valeurs données.
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public float GetFloatInRange(float min, float max)
+        {
+            return Mathf.Ceil(Random.Range(min, max) * 100f) / 100f;
+        }
 	}
 }
