@@ -19,7 +19,7 @@ namespace AFKHero.Model.Affix
 
         public void Roll(float minValue, float maxValue)
         {
-            value = PercentageUtils.Instance.GetFloatInRange(minValue, maxValue);
+            value = Mathf.Ceil(PercentageUtils.Instance.GetFloatInRange(minValue, maxValue));
         }
 
         /// <summary>

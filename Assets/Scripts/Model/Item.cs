@@ -19,5 +19,10 @@ namespace AFKHero.Model
         /// La rareté de l'objet.
         /// </summary>
         public Rarity rarity;
+
+        /// <summary>
+        /// La description de l'objet.
+        /// </summary>
+        public string description;
     }
 }

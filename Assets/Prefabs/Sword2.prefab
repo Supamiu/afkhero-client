@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 498734}
   - 114: {fileID: 11492680}
-  - 114: {fileID: 11444432}
   m_Layer: 0
   m_Name: Sword2
   m_TagString: Untagged
@@ -30,20 +29,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11444432
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 131796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e183529aa81d3439a9731974b2a620, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 768c02f09d295954983afe992a1c00e6, type: 3}
-  itemName: Blood Sword
-  rarity: 0
 --- !u!114 &11492680
 MonoBehaviour:
   m_ObjectHideFlags: 1

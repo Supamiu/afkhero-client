@@ -3,12 +3,10 @@ using UnityEngine;
 
 namespace AFKHero.Model.Affix
 {
-    [System.Serializable]
-    public class ItemAffix
+    [Serializable]
+    public class ItemAffix<T> : IAffix where T : AffixModel
     {
         private AffixModel affixModel;
-
-        private Type affixType;
 
         /// <summary>
         /// Valeur minimale du roll de l'affixe.
@@ -20,12 +18,19 @@ namespace AFKHero.Model.Affix
         /// </summary>
         public float maxValue { get; private set; }
 
+        public float value
+        {
+            get
+            {
+                return affixModel.value;
+            }
+        }
 
-        public ItemAffix(Type affixType, float min, float max)
+
+        public ItemAffix(float min, float max)
         {
             minValue = min;
             maxValue = max;
-            this.affixType = affixType;
         }
 
         /// <summary>
@@ -33,7 +38,7 @@ namespace AFKHero.Model.Affix
         /// </summary>
         public void Roll()
         {
-            affixModel = (AffixModel)Activator.CreateInstance(affixType);
+            affixModel = Activator.CreateInstance<T>();
             affixModel.Roll(minValue, maxValue);
         }
 

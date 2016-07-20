@@ -8,15 +8,15 @@ namespace AFKHero.Model
     [System.Serializable]
     public class Wearable : Item
     {
-        public List<ItemAffix> affixes = new List<ItemAffix>();
+        public List<IAffix> affixes = new List<IAffix>();
 
         public Sprite sprite;
 
-        public GearSlot slot;
+        public GearType type;
 
         public void Attach(GameObject go)
         {
-            foreach(ItemAffix affix in affixes)
+            foreach(IAffix affix in affixes)
             {
                 affix.OnAttach(go);
             }
@@ -24,7 +24,7 @@ namespace AFKHero.Model
 
         public void Detach()
         {
-            foreach (ItemAffix affix in affixes)
+            foreach (IAffix affix in affixes)
             {
                 affix.OnDetach();
             }
