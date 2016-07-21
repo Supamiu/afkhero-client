@@ -2,6 +2,7 @@
 using AFKHero.Core.Gear;
 using AFKHero.Model;
 using AFKHero.Model.Affix;
+using System;
 
 public class GearTest : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class GearTest : MonoBehaviour
         mockWeapon.affixes.Add(damageAffix);
         mockWeapon.affixes.Add(critAffix);
 
-        gear.Equip(mockWeapon);
+        if (gear.IsSlotFree(GearSlot.WEAPON))
+        {
+            gear.Equip(mockWeapon);
+        }
     }
 }
