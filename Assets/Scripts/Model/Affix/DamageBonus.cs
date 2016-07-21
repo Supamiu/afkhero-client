@@ -1,19 +1,15 @@
-﻿using UnityEngine;
-using AFKHero.Core.Event;
+﻿using AFKHero.Core.Event;
 using AFKHero.EventData;
+using System;
 
 namespace AFKHero.Model.Affix
 {
-    [System.Serializable]
-    public class DamageBonus : AffixModel
+    [Serializable]
+    public class DamageBonus : ListeningAffixModel
     {
-        private Listener<GenericGameEvent<Attack>> listener;
-
-        private GameObject gameObject;
-
-        public DamageBonus()
+        public override IListener GetListener()
         {
-            listener = new Listener<GenericGameEvent<Attack>>((ref GenericGameEvent<Attack> gameEvent) =>
+            return new Listener<GenericGameEvent<Attack>>((ref GenericGameEvent<Attack> gameEvent) =>
             {
                 if (gameEvent.Data.attacker.gameObject == gameObject)
                 {
@@ -22,16 +18,9 @@ namespace AFKHero.Model.Affix
             }, 50);
         }
 
-        public override void OnAttach(GameObject go)
+        public override string GetEventName()
         {
-            gameObject = go;
-            EventDispatcher.Instance.Register("attack.compute", listener);
-        }
-
-        public override void OnDetach()
-        {
-            gameObject = null;
-            EventDispatcher.Instance.Unregister("attack.compute", listener);
+            return "attack.compute";
         }
     }
 }
