@@ -18,6 +18,11 @@ namespace AFKHero.Model.Affix
         /// </summary>
         public float maxValue { get; private set; }
 
+        /// <summary>
+        /// Le nom de l'affixe.
+        /// </summary>
+        public string affixName { get; private set; }
+
         public float value
         {
             get

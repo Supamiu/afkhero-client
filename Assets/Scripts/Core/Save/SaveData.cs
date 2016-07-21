@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using AFKHero.Model;
+using AFKHero.Core.Gear;
 
 namespace AFKHero.Core.Save
 {
@@ -23,5 +25,8 @@ namespace AFKHero.Core.Save
 
 		//Inventaire
 		public double gold = 0;
+
+        //Gear
+        public Dictionary<GearSlot, Wearable> gear;
 	}
 }

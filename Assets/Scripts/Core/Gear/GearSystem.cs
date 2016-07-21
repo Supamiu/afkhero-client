@@ -1,18 +1,20 @@
-﻿using AFKHero.Model;
+﻿using AFKHero.Core.Save;
+using AFKHero.Model;
 using Spine;
 using Spine.Unity;
 using Spine.Unity.Modules;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace AFKHero.Core.Gear
 {
     [RequireComponent(typeof(SkeletonRenderer))]
-    public class GearSystem : MonoBehaviour
+    public class GearSystem : MonoBehaviour, Saveable
     {
         private Skeleton skeleton;
 
-        private Dictionary<GearSlot, Wearable> currentGear = new Dictionary<GearSlot, Wearable>();
+        private Dictionary<GearSlot, Wearable> currentGear;
 
         //Slots Spine
         [SpineSlot]
@@ -22,14 +24,30 @@ namespace AFKHero.Core.Gear
         void Start()
         {
             skeleton = GetComponent<SkeletonRenderer>().skeleton;
-            foreach (GearSlot slot in GearSlot.Slots)
+            //TODO gérer les slots un par un pour mettre à jour leur spineSlot.
+            //Si le stuff est inexistant, on créé sa structure.
+            if (currentGear == null)
             {
-                if (slot == GearSlot.WEAPON)
+                currentGear = new Dictionary<GearSlot, Wearable>();
+                foreach (GearSlot slot in GearSlot.Slots)
                 {
-                    slot.spineSlot = weapon;
+                    if (slot == GearSlot.WEAPON)
+                    {
+                        slot.spineSlot = weapon;
+                    }
+                    currentGear.Add(slot, null);
                 }
-                currentGear.Add(slot, null);
             }
+        }
+
+        /// <summary>
+        /// Vérifie si un slot est disponible.
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns></returns>
+        public bool IsSlotFree(GearSlot slot)
+        {
+            return currentGear[slot] == null;
         }
 
         /// <summary>
@@ -38,6 +56,7 @@ namespace AFKHero.Core.Gear
         /// <param name="wearable"></param>
         public void Equip(Wearable wearable)
         {
+            Debug.Log("Equipping wearable " + wearable.itemName);
             List<GearSlot> slots = GetSlotsForType(wearable.type);
             foreach (GearSlot slot in slots)
             {
@@ -59,7 +78,6 @@ namespace AFKHero.Core.Gear
                     //Si c'est un item qui contient un sprite, on l'attach à notre squelette
                     if (slot.spineSlot != null)
                     {
-                        Debug.Log(slot.spineSlot);
                         skeleton.AttachUnitySprite(slot.spineSlot, wearable.sprite);
                     }
                     currentGear[slot] = wearable;
@@ -95,6 +113,35 @@ namespace AFKHero.Core.Gear
                 }
             }
             return slots;
+        }
+
+        public SaveData Save(SaveData save)
+        {
+            save.gear = currentGear;
+            return save;
+        }
+
+        public void Load(SaveData data)
+        {
+            skeleton = GetComponent<SkeletonRenderer>().skeleton;
+            currentGear = data.gear;
+            foreach (KeyValuePair<GearSlot, Wearable> row in currentGear)
+            {
+                GearSlot slot = row.Key;
+                Wearable wearable = row.Value;
+                if (slot == GearSlot.WEAPON)
+                {
+                    slot.spineSlot = weapon;
+                }
+                if (slot.spineSlot != null)
+                {
+                    skeleton.AttachUnitySprite(slot.spineSlot, wearable.sprite);
+                }
+                if(wearable != null)
+                {
+                    wearable.Attach(gameObject);
+                }
+            }
         }
     }
 }
