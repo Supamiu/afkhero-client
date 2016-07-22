@@ -1,4 +1,5 @@
-﻿using AFKHero.Core.Save;
+﻿using System;
+using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
@@ -26,5 +27,10 @@ namespace AFKHero.Stat
 		{
 			return "luck";
 		}
-	}
+
+        public override StatType GetStatType()
+        {
+            return StatType.PRIMARY;
+        }
+    }
 }

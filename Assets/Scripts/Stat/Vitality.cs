@@ -1,4 +1,5 @@
-﻿using AFKHero.Core.Save;
+﻿using System;
+using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
@@ -64,5 +65,10 @@ namespace AFKHero.Stat
                 OnVitalityUpdated();
 			}
 		}
-	}
+
+        public override StatType GetStatType()
+        {
+            return StatType.PRIMARY;
+        }
+    }
 }

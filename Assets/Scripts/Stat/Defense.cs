@@ -1,19 +1,29 @@
-﻿using UnityEngine;
+﻿using System;
+using AFKHero.Core.Save;
+using AFKHero.EventData;
+using UnityEngine;
 
 namespace AFKHero.Stat
 {
-    public class Defense : MonoBehaviour
+    public class Defense : AbstractStat
     {
-        public double amount = 1;
+        public override void Add(int amount){}
 
-        public float ratio = 1;
+        public override void DoLoad(SaveData data){}
 
-        public double Value
+        public override string GetName()
         {
-            get
-            {
-                return amount * ratio;
-            }
+            return "Defense";
+        }
+
+        public override StatType GetStatType()
+        {
+            return StatType.SECONDARY;
+        }
+
+        public override SaveData Save(SaveData save)
+        {
+            return save;
         }
     }
 }

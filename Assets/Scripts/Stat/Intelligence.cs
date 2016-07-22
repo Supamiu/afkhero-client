@@ -1,4 +1,5 @@
-﻿using AFKHero.Core.Save;
+﻿using System;
+using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
@@ -24,5 +25,10 @@ namespace AFKHero.Stat
 		public override string GetName() {
 			return "intelligence";
 		}
-	}
+
+        public override StatType GetStatType()
+        {
+            return StatType.PRIMARY;
+        }
+    }
 }

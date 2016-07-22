@@ -3,6 +3,7 @@ using AFKHero.EventData;
 using AFKHero.Behaviour;
 using AFKHero.Tools;
 using AFKHero.Core.Save;
+using System;
 
 namespace AFKHero.Stat
 {
@@ -51,5 +52,10 @@ namespace AFKHero.Stat
 
 		public override void DoLoad (SaveData data){
 		}
-	}
+
+        public override StatType GetStatType()
+        {
+            return StatType.PRIMARY;
+        }
+    }
 }
