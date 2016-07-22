@@ -40,7 +40,7 @@ namespace Spine.Unity.MeshGeneration {
 	public class ArraysSubmeshedMeshGenerator : ArraysMeshGenerator, ISubmeshedMeshGenerator {
 
 		readonly List<Slot> separators = new List<Slot>();
-		public List<Slot> Separators { get { return this.separators; } }
+		public List<Slot> Separators { get { return separators; } }
 
 		public float zSpacing = 0f;
 		#if SPINE_OPTIONAL_NORMALS
@@ -70,7 +70,7 @@ namespace Spine.Unity.MeshGeneration {
 			int drawOrderCount = drawOrder.Count;
 			int separatorCount = separators.Count;
 
-			var instructionList = this.currentInstructions.submeshInstructions;
+			var instructionList = currentInstructions.submeshInstructions;
 			instructionList.Clear(false);
 
 			currentInstructions.attachmentList.Clear(false);
@@ -165,8 +165,8 @@ namespace Spine.Unity.MeshGeneration {
 
 			// STEP 1: Ensure correct buffer sizes.
 			bool submeshBuffersResized = ArraysMeshGenerator.EnsureTriangleBuffersSize(submeshBuffers, submeshCount, instructionList.Items);
-			bool vertBufferResized = ArraysMeshGenerator.EnsureSize(meshInstructions.vertexCount, ref this.meshVertices, ref this.meshUVs, ref this.meshColors32);
-			Vector3[] vertices = this.meshVertices;
+			bool vertBufferResized = ArraysMeshGenerator.EnsureSize(meshInstructions.vertexCount, ref meshVertices, ref meshUVs, ref meshColors32);
+			Vector3[] vertices = meshVertices;
 
 			// STEP 2: Update buffers based on Skeleton.
 			float zSpacing = this.zSpacing;
@@ -198,7 +198,7 @@ namespace Spine.Unity.MeshGeneration {
 				int start = submeshInstruction.startSlot;
 				int end = submeshInstruction.endSlot;
 				var skeleton = submeshInstruction.skeleton;
-				ArraysMeshGenerator.FillVerts(skeleton, start, end, zSpacing, this.premultiplyVertexColors, vertices, this.meshUVs, this.meshColors32, ref vertexIndex, ref this.attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
+				ArraysMeshGenerator.FillVerts(skeleton, start, end, zSpacing, premultiplyVertexColors, vertices, meshUVs, meshColors32, ref vertexIndex, ref attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
 				if (structureDoesntMatch) {
 					var currentBuffer = submeshBuffers.Items[submeshIndex];
 					bool isLastSubmesh = (submeshIndex == submeshCount - 1);
@@ -208,11 +208,11 @@ namespace Spine.Unity.MeshGeneration {
 
 			if (structureDoesntMatch) {
 				mesh.Clear();
-				this.sharedMaterials = meshInstructions.GetUpdatedMaterialArray(this.sharedMaterials);
+                sharedMaterials = meshInstructions.GetUpdatedMaterialArray(sharedMaterials);
 			}
 
 			// STEP 3: Assign the buffers into the Mesh.
-			smartMesh.Set(this.meshVertices, this.meshUVs, this.meshColors32, meshInstructions);
+			smartMesh.Set(meshVertices, meshUVs, meshColors32, meshInstructions);
 			mesh.bounds = ArraysMeshGenerator.ToBounds(meshBoundsMin, meshBoundsMax);
 
 			if (structureDoesntMatch) {
@@ -269,19 +269,19 @@ namespace Spine.Unity.MeshGeneration {
 
 			public bool StructureDoesntMatch (SubmeshedMeshInstruction instructions) {
 				// Check count inequality.
-				if (instructions.attachmentList.Count != this.attachmentsUsed.Count) return true;
-				if (instructions.submeshInstructions.Count != this.instructionsUsed.Count) return true;
+				if (instructions.attachmentList.Count != attachmentsUsed.Count) return true;
+				if (instructions.submeshInstructions.Count != instructionsUsed.Count) return true;
 
 				// Check each attachment.
 				var attachmentsPassed = instructions.attachmentList.Items;
-				var myAttachments = this.attachmentsUsed.Items;
+				var myAttachments = attachmentsUsed.Items;
 				for (int i = 0, n = attachmentsUsed.Count; i < n; i++)
 					if (attachmentsPassed[i] != myAttachments[i]) return true;
 
 				// Check each submesh for equal arrangement.
 				var instructionListItems = instructions.submeshInstructions.Items;
-				var myInstructions = this.instructionsUsed.Items;
-				for (int i = 0, n = this.instructionsUsed.Count; i < n; i++) {
+				var myInstructions = instructionsUsed.Items;
+				for (int i = 0, n = instructionsUsed.Count; i < n; i++) {
 					var lhs = instructionListItems[i];
 					var rhs = myInstructions[i];
 					if (

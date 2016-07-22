@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using AFKHero.Tools;
 
 public class MonologSystem : MonoBehaviour
@@ -32,38 +31,38 @@ public class MonologSystem : MonoBehaviour
 
 	void Start ()
 	{
-		this.Hide ();
+        Hide();
 	}
 
 	void FixedUpdate ()
 	{
-		if (!this.displayed) {
-			if (this.elapsed < this.cooldown) {
-				this.elapsed += Time.fixedDeltaTime;
+		if (!displayed) {
+			if (elapsed < cooldown) {
+                elapsed += Time.fixedDeltaTime;
 			} else {
-				string newText = PercentageUtils.Instance.GetRandomItem<string> (this.entries);
-				while (newText == this.displayText.text) {
-					newText = PercentageUtils.Instance.GetRandomItem<string> (this.entries);
+				string newText = PercentageUtils.Instance.GetRandomItem<string> (entries);
+				while (newText == displayText.text) {
+					newText = PercentageUtils.Instance.GetRandomItem<string> (entries);
 				}
-				this.displayText.text = newText;
-				this.displayImage.gameObject.SetActive (true);
-				this.displayText.gameObject.SetActive (true);
-				this.elapsed = 0f;
-				this.displayed = true;
+                displayText.text = newText;
+                displayImage.gameObject.SetActive (true);
+                displayText.gameObject.SetActive (true);
+                elapsed = 0f;
+                displayed = true;
 			}
 		} else {
-			this.elapsed += Time.fixedDeltaTime;
-			if (this.elapsed >= this.duration) {
-				this.Hide ();
-				this.elapsed = 0f;
+            elapsed += Time.fixedDeltaTime;
+			if (elapsed >= duration) {
+                Hide();
+                elapsed = 0f;
 			}
 		}
 	}
 
 	void Hide ()
 	{
-		this.displayText.gameObject.SetActive (false);
-		this.displayImage.gameObject.SetActive (false);
-		this.displayed = false;
+        displayText.gameObject.SetActive (false);
+        displayImage.gameObject.SetActive (false);
+        displayed = false;
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.SceneManagement;
 using AFKHero.Core.Event;
 using AFKHero.Behaviour;
@@ -8,8 +7,8 @@ using AFKHero.UI;
 
 namespace AFKHero
 {
-	
-	public class AFKHero : MonoBehaviour
+
+    public class AFKHero : MonoBehaviour
 	{
 
 		[Header ("Référence vers le héro pour l'écran de GameOver")]
@@ -72,21 +71,21 @@ namespace AFKHero
 		public void StartGame ()
 		{
 			SceneManager.LoadScene (gameScene);
-			distance = this.worldManager.GetCheckpoint();
+			distance = worldManager.GetCheckpoint();
 		}
 
 		private void GameOver ()
 		{
 			EventDispatcher.Instance.Dispatch ("save");
 			offsetDistanceDone = 0f;
-			this.gameOver.Init (distance);
-			this.gameOver.gameObject.SetActive (true);
+            gameOver.Init (distance);
+            gameOver.gameObject.SetActive (true);
 		}
 
 		public void Restart ()
 		{
-			distance = this.worldManager.GetCheckpoint();
-			this.spawnEngine.Clear ();
+			distance = worldManager.GetCheckpoint();
+            spawnEngine.Clear ();
 			EventDispatcher.Instance.Clear ();
 			SceneManager.LoadScene (gameScene);
 		}

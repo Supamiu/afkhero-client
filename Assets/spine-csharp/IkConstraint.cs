@@ -30,10 +30,10 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine {
-	public class IkConstraint : IUpdatable {
+namespace Spine
+{
+    public class IkConstraint : IUpdatable {
 		internal IkConstraintData data;
 		internal ExposedList<Bone> bones = new ExposedList<Bone>();
 		internal Bone target;

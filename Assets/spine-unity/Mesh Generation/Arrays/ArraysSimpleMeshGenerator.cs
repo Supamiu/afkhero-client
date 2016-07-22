@@ -81,8 +81,8 @@ namespace Spine.Unity.MeshGeneration {
 			}
 
 			// STEP 2 : Ensure buffers are the correct size
-			ArraysMeshGenerator.EnsureSize(totalVertexCount, ref this.meshVertices, ref this.meshUVs, ref this.meshColors32);
-			this.triangles = this.triangles ?? new int[totalTriangleCount];
+			ArraysMeshGenerator.EnsureSize(totalVertexCount, ref meshVertices, ref meshUVs, ref meshColors32);
+            triangles = triangles ?? new int[totalTriangleCount];
 				
 			// STEP 3 : Update vertex buffer
 			const float zSpacing = 0;
@@ -101,12 +101,12 @@ namespace Spine.Unity.MeshGeneration {
 				meshBoundsMax.z = zFauxHalfThickness * scale;
 
 				int vertexIndex = 0;
-				ArraysMeshGenerator.FillVerts(skeleton, 0, drawOrderCount, zSpacing, this.premultiplyVertexColors, this.meshVertices, this.meshUVs, this.meshColors32, ref vertexIndex, ref this.attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
+				ArraysMeshGenerator.FillVerts(skeleton, 0, drawOrderCount, zSpacing, premultiplyVertexColors, meshVertices, meshUVs, meshColors32, ref vertexIndex, ref attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
 
 				// Apply scale to vertices
 				meshBoundsMax.x *= scale; meshBoundsMax.y *= scale;
 				meshBoundsMin.x *= scale; meshBoundsMax.y *= scale;
-				var vertices = this.meshVertices;
+				var vertices = meshVertices;
 				for (int i = 0; i < totalVertexCount; i++) {
 					Vector3 p = vertices[i];
 					p.x *= scale;
@@ -116,11 +116,11 @@ namespace Spine.Unity.MeshGeneration {
 			}
 				
 			// Step 4 : Update Triangles buffer
-			ArraysMeshGenerator.FillTriangles(skeleton, totalTriangleCount, 0, 0, drawOrderCount, ref this.triangles, true);
+			ArraysMeshGenerator.FillTriangles(skeleton, totalTriangleCount, 0, 0, drawOrderCount, ref triangles, true);
 
 			// Step 5 : Update Mesh with buffers
 			var mesh = doubleBufferedMesh.GetNextMesh();
-			mesh.vertices = this.meshVertices;
+			mesh.vertices = meshVertices;
 			mesh.colors32 = meshColors32;
 			mesh.uv = meshUVs;
 			mesh.bounds = ArraysMeshGenerator.ToBounds(meshBoundsMin, meshBoundsMax);

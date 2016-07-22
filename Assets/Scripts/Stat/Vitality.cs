@@ -1,37 +1,34 @@
-﻿using UnityEngine;
-using System.Collections;
-using AFKHero.Common;
+﻿using System;
 using AFKHero.Core.Save;
-using AFKHero.Core.Event;
 
 namespace AFKHero.Stat
 {
-	public class Vitality : AbstractStat
+    public class Vitality : AbstractStat
 	{
 
 		public double currentHp;
 
 		public override void Add (int points)
 		{
-			float ratio = (float)this.currentHp / (float)this.Value;
-			this.amount += points;
-			this.currentHp = ratio * this.Value;
-			if (this.OnVitalityUpdated != null) {
-				this.OnVitalityUpdated ();
+			float ratio = (float)currentHp / (float)Value;
+            amount += points;
+            currentHp = ratio * Value;
+			if (OnVitalityUpdated != null) {
+                OnVitalityUpdated();
 			}
 		}
 
 		public double heal (double amount)
 		{
 			double healed = amount;
-			if (this.currentHp + amount <= this.Value) {
-				this.currentHp += amount;
+			if (currentHp + amount <= Value) {
+                currentHp += amount;
 			} else {
-				healed = this.Value - this.currentHp;
-				this.currentHp = this.Value;
+				healed = Value - currentHp;
+                currentHp = Value;
 			}
-			if (this.OnVitalityUpdated != null) {
-				this.OnVitalityUpdated ();
+			if (OnVitalityUpdated != null) {
+                OnVitalityUpdated();
 			}
 			return healed;
 		}
@@ -42,12 +39,12 @@ namespace AFKHero.Stat
 
 		void Start ()
 		{
-			this.currentHp = Value;
+            currentHp = Value;
 		}
 
 		public void Init ()
 		{
-			this.Start ();
+            Start();
 		}
 
 		public override string GetName ()
@@ -57,16 +54,21 @@ namespace AFKHero.Stat
 
 		public override SaveData Save (SaveData data)
 		{
-			data.vitality = this.amount;
+			data.vitality = amount;
 			return data;
 		}
 
 		public override void DoLoad (SaveData data)
 		{
-			this.amount = data.vitality;
-			if (this.OnVitalityUpdated != null) {
-				this.OnVitalityUpdated ();
+            amount = data.vitality;
+			if (OnVitalityUpdated != null) {
+                OnVitalityUpdated();
 			}
 		}
-	}
+
+        public override StatType GetStatType()
+        {
+            return StatType.PRIMARY;
+        }
+    }
 }

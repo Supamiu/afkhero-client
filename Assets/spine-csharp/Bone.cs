@@ -30,10 +30,10 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine {
-	public class Bone : IUpdatable {
+namespace Spine
+{
+    public class Bone : IUpdatable {
 		static public bool yDown;
 
 		internal BoneData data;

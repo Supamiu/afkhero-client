@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -96,7 +95,7 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         if (transform.GetComponent<Hotbar>() == null)
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
 
         updateItemList();
 
@@ -136,9 +135,9 @@ public class Inventory : MonoBehaviour
     public void setAsMain()
     {
         if (mainInventory)
-            this.gameObject.tag = "Untagged";
+            gameObject.tag = "Untagged";
         else if (!mainInventory)
-            this.gameObject.tag = "MainInventory";
+            gameObject.tag = "MainInventory";
     }
 
     public void OnUpdateItemList()
@@ -148,13 +147,13 @@ public class Inventory : MonoBehaviour
 
     public void closeInventory()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
         checkIfAllInventoryClosed();
     }
 
     public void openInventory()
     {
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         if (InventoryOpen != null)
             InventoryOpen();
     }

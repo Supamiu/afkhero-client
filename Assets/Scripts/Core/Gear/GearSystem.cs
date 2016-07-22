@@ -3,9 +3,9 @@ using AFKHero.Model;
 using Spine;
 using Spine.Unity;
 using Spine.Unity.Modules;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 namespace AFKHero.Core.Gear
 {
@@ -15,6 +15,8 @@ namespace AFKHero.Core.Gear
         private Skeleton skeleton;
 
         private Dictionary<GearSlot, Wearable> currentGear;
+
+        public Action GearChangeEvent;
 
         //Slots Spine
         [SpineSlot]
@@ -51,12 +53,27 @@ namespace AFKHero.Core.Gear
         }
 
         /// <summary>
+        /// Récupère le wearable à un slot donné. 
+        /// Retourne null si le slot est vide ou s'il n'existe pas.
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns></returns>
+        public Wearable GetWearableAtSlot(GearSlot slot)
+        {
+            if (currentGear.ContainsKey(slot))
+            {
+                return currentGear[slot];
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Equipe un item dans son slot.
         /// </summary>
         /// <param name="wearable"></param>
         public void Equip(Wearable wearable)
         {
-            Debug.Log("Equipping wearable " + wearable.itemName);
+            Debug.Log("Equipping " + wearable.itemName);
             List<GearSlot> slots = GetSlotsForType(wearable.type);
             foreach (GearSlot slot in slots)
             {
@@ -83,6 +100,7 @@ namespace AFKHero.Core.Gear
                     currentGear[slot] = wearable;
                     wearable.Attach(gameObject);
                 }
+                NotifyGearChange();
             }
         }
 
@@ -95,6 +113,7 @@ namespace AFKHero.Core.Gear
             //TODO Créer cette méthode pour de vrai.
             currentGear[slot].Detach();
             currentGear[slot] = null;
+            NotifyGearChange();
         }
 
         /// <summary>
@@ -113,6 +132,17 @@ namespace AFKHero.Core.Gear
                 }
             }
             return slots;
+        }
+
+        /// <summary>
+        /// Notifie les listeners de l'event de changement de stuff.
+        /// </summary>
+        private void NotifyGearChange()
+        {
+            if(GearChangeEvent != null)
+            {
+                GearChangeEvent.Invoke();
+            }
         }
 
         public SaveData Save(SaveData save)

@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace AFKHero.Inventory
 {
-	[System.Serializable]
+    [System.Serializable]
 	public class Storable
 	{
 		public string itemName;
@@ -37,7 +36,7 @@ namespace AFKHero.Inventory
 
 		public Storable GetClone ()
 		{
-			return (Storable)this.MemberwiseClone ();
+			return (Storable)MemberwiseClone();
 		}
 	}
 }

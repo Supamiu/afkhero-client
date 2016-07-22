@@ -31,11 +31,11 @@
 
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace Spine.Unity.Editor {
-	
-	[CustomEditor(typeof(BoundingBoxFollower))]
+namespace Spine.Unity.Editor
+{
+
+    [CustomEditor(typeof(BoundingBoxFollower))]
 	public class BoundingBoxFollowerInspector : UnityEditor.Editor {
 		SerializedProperty skeletonRenderer, slotName;
 		BoundingBoxFollower follower;

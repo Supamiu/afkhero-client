@@ -35,7 +35,7 @@ namespace Spine.Unity.MeshGeneration {
 	public class ArraysMeshGenerator {
 		#region Settings
 		protected bool premultiplyVertexColors = true;
-		public bool PremultiplyVertexColors { get { return this.premultiplyVertexColors; } set { this.premultiplyVertexColors = value; } }
+		public bool PremultiplyVertexColors { get { return premultiplyVertexColors; } set { premultiplyVertexColors = value; } }
 		#endregion
 
 		protected float[] attachmentVertexBuffer = new float[8];
@@ -55,16 +55,16 @@ namespace Spine.Unity.MeshGeneration {
 		public void TryAddNormalsTo (Mesh mesh, int targetVertexCount) {
 			#if SPINE_OPTIONAL_NORMALS
 			if (generateNormals) {
-				bool verticesWasResized = this.meshNormals == null || targetVertexCount > meshNormals.Length;
+				bool verticesWasResized = meshNormals == null || targetVertexCount > meshNormals.Length;
 				if (verticesWasResized) {
-					this.meshNormals = new Vector3[targetVertexCount];
+                    meshNormals = new Vector3[targetVertexCount];
 					Vector3 normal = new Vector3(0, 0, -1);
-					Vector3[] normals = this.meshNormals;
+					Vector3[] normals = meshNormals;
 					for (int i = 0; i < targetVertexCount; i++)
 						normals[i] = normal;
 				}
 
-				mesh.normals = this.meshNormals;
+				mesh.normals = meshNormals;
 			}
 			#endif
 		}

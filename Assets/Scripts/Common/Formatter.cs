@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-using AFKHero.Core.Event;
-
+﻿
 using System;
 
-namespace AFKHero.Common{
-	public static class Formatter {
+namespace AFKHero.Common
+{
+    public static class Formatter {
 
 		/// <summary>
 		/// Alphabet pour les suffix

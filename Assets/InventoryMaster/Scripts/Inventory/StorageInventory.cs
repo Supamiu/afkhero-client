@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class StorageInventory : MonoBehaviour
 {
@@ -99,7 +97,7 @@ public class StorageInventory : MonoBehaviour
     void Update()
     {
 
-        float distance = Vector3.Distance(this.gameObject.transform.position, player.transform.position);
+        float distance = Vector3.Distance(gameObject.transform.position, player.transform.position);
 
         if (showTimer)
         {

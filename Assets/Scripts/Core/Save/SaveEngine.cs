@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 using System.Runtime.Serialization.Formatters.Binary;
 using AFKHero.Core.Event;
 using System.IO;
@@ -9,7 +8,7 @@ using AFKHero.Core.Tools;
 
 namespace AFKHero.Core.Save
 {
-	public class SaveEngine : MonoBehaviour
+    public class SaveEngine : MonoBehaviour
 	{
 		List<Saveable> saveables;
 
@@ -19,17 +18,17 @@ namespace AFKHero.Core.Save
 		{
 			DontDestroyOnLoad (this);
 			EventDispatcher.Instance.Register ("save", new Listener<GameEvent> ((ref GameEvent e) => {
-				this.Save ();
+                Save();
 			}));
 			EventDispatcher.Instance.Register ("load", new Listener<GameEvent> ((ref GameEvent e) => {
-				this.Load ();
+                Load();
 			}));
 		}
 
 		// Use this for initialization
 		void Start ()
 		{
-			this.saveables = new List<Saveable> ();
+            saveables = new List<Saveable> ();
 			GameObject[] allGO = FindObjectsOfType<GameObject> ();
 			foreach (GameObject go in allGO) {
 				saveables.AddRange (go.GetComponents<Saveable> ());
@@ -41,8 +40,8 @@ namespace AFKHero.Core.Save
 
 		void OnLevelWasLoaded (int level)
 		{
-			this.Start ();
-			this.Load ();
+            Start();
+            Load();
 		}
 
 		/// <summary>
@@ -51,7 +50,7 @@ namespace AFKHero.Core.Save
 		public void Save ()
 		{
 			SaveEngine.save = new SaveData ();
-			foreach (Saveable s in this.saveables) {
+			foreach (Saveable s in saveables) {
 				SaveEngine.save = s.Save (SaveEngine.save);
 			}
 		}
@@ -61,7 +60,7 @@ namespace AFKHero.Core.Save
 		/// </summary>
 		public void Load ()
 		{
-			foreach (Saveable s in this.saveables) {
+			foreach (Saveable s in saveables) {
 				s.Load (SaveEngine.save);
 			}
 		}

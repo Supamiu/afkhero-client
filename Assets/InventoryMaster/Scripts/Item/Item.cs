@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
@@ -36,7 +35,7 @@ public class Item
 
     public Item getCopy()
     {
-        return (Item)this.MemberwiseClone();        
+        return (Item)MemberwiseClone();        
     }   
     
     

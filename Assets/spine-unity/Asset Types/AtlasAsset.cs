@@ -32,11 +32,11 @@
 using System;
 using System.IO;
 using UnityEngine;
-using Spine;
 
-namespace Spine.Unity {
-	/// <summary>Loads and stores a Spine atlas and list of materials.</summary>
-	public class AtlasAsset : ScriptableObject {
+namespace Spine.Unity
+{
+    /// <summary>Loads and stores a Spine atlas and list of materials.</summary>
+    public class AtlasAsset : ScriptableObject {
 		public TextAsset atlasFile;
 		public Material[] materials;
 		private Atlas atlas;

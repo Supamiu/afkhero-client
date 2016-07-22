@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 using AFKHero.Common;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 
 namespace AFKHero.UI.CombatText
 {
-	public class CombatTextController : MonoBehaviour
+    public class CombatTextController : MonoBehaviour
 	{
 		public CombatText prefab;
 
@@ -18,24 +17,24 @@ namespace AFKHero.UI.CombatText
 
 		void Start ()
 		{
-			this.damageListener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
+            damageListener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
 				if (gameEvent.Data.hits) {
 					if (gameEvent.Data.critical) {
-						this.CreateCombatText (Formatter.Format (gameEvent.Data.damage) + "!!", gameEvent.Data.target.transform, CombatTextType.DAMAGE);
+                        CreateCombatText(Formatter.Format (gameEvent.Data.damage) + "!!", gameEvent.Data.target.transform, CombatTextType.DAMAGE);
 					} else {
-						this.CreateCombatText (Formatter.Format (gameEvent.Data.damage), gameEvent.Data.target.transform, CombatTextType.DAMAGE);
+                        CreateCombatText(Formatter.Format (gameEvent.Data.damage), gameEvent.Data.target.transform, CombatTextType.DAMAGE);
 					}
 				} else {
-					this.CreateCombatText ("Miss !", gameEvent.Data.target.transform, CombatTextType.MISS);
+                    CreateCombatText("Miss !", gameEvent.Data.target.transform, CombatTextType.MISS);
 				}
 			}, -100);
 
-			this.healListener = new Listener<GenericGameEvent<Heal>> ((ref GenericGameEvent<Heal> e) => {
-				this.CreateCombatText (Formatter.Format (e.Data.amount), e.Data.target.transform, CombatTextType.HEAL);
+            healListener = new Listener<GenericGameEvent<Heal>> ((ref GenericGameEvent<Heal> e) => {
+                CreateCombatText(Formatter.Format (e.Data.amount), e.Data.target.transform, CombatTextType.HEAL);
 			});
 
-			EventDispatcher.Instance.Register ("attack.damage", this.damageListener);
-			EventDispatcher.Instance.Register ("heal", this.healListener);
+			EventDispatcher.Instance.Register ("attack.damage", damageListener);
+			EventDispatcher.Instance.Register ("heal", healListener);
 		}
 
 		private void CreateCombatText (string text, Transform location, CombatTextType type)

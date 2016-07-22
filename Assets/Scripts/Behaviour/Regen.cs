@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using AFKHero.Stat;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
@@ -7,7 +6,7 @@ using System;
 
 namespace AFKHero.Behaviour
 {
-	[RequireComponent (typeof(Vitality))]
+    [RequireComponent (typeof(Vitality))]
 	public class Regen : MonoBehaviour
 	{
 		float time = 0f;
@@ -18,23 +17,23 @@ namespace AFKHero.Behaviour
 
 		void Start ()
 		{
-			this.health = GetComponent<Vitality> ();
+            health = GetComponent<Vitality> ();
 		}
 
 		// Update is called once per frame
 		void FixedUpdate ()
 		{
-			this.time += Time.fixedDeltaTime;
-			if (this.time >= this.tickInterval) {
-				this.Tick ();
-				this.time = 0f;
+            time += Time.fixedDeltaTime;
+			if (time >= tickInterval) {
+                Tick();
+                time = 0f;
 			}
 		}
 
 		void Tick ()
 		{
-			double regen = ((GenericGameEvent<double>)EventDispatcher.Instance.Dispatch ("regen.compute", new GenericGameEvent<double> (this.health.Value * AFKHero.Config.BASE_REGEN_RATIO))).Data;
-			double effectiveRegen = Math.Round(this.health.heal (regen));
+			double regen = ((GenericGameEvent<double>)EventDispatcher.Instance.Dispatch ("regen.compute", new GenericGameEvent<double> (health.Value * AFKHero.Config.BASE_REGEN_RATIO))).Data;
+			double effectiveRegen = Math.Round(health.heal (regen));
 			if (effectiveRegen > 0) {
 				EventDispatcher.Instance.Dispatch ("heal", new GenericGameEvent<Heal> (new Heal (effectiveRegen, this)));
 			}

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using AFKHero.Behaviour;
 using AFKHero.Stat;
 using AFKHero.Common;
@@ -8,7 +7,7 @@ using System;
 
 namespace AFKHero.UI.HeroMenu
 {
-	public class HeroLifeBar : MonoBehaviour
+    public class HeroLifeBar : MonoBehaviour
 	{
 		public Image bar;
 
@@ -26,35 +25,35 @@ namespace AFKHero.UI.HeroMenu
 
 		void Start ()
 		{
-			this.barRect = this.bar.GetComponent<RectTransform> ();
-			this.maxWidth = this.barRect.sizeDelta.x;
-			this.hp = hero.GetComponent <Vitality> ();
-			this.hero.OnDamaged += () => {
-				this.UpdateBar ();
+            barRect = bar.GetComponent<RectTransform> ();
+            maxWidth = barRect.sizeDelta.x;
+            hp = hero.GetComponent <Vitality> ();
+            hero.OnDamaged += () => {
+                UpdateBar();
 			};
-			this.hp.OnVitalityUpdated += () => {
-				this.UpdateBar ();
+            hp.OnVitalityUpdated += () => {
+                UpdateBar();
 			};
-			this.UpdateBar ();
+            UpdateBar();
 		}
 
 		void UpdateBar ()
 		{
-			this.percent = (float)(this.hp.currentHp / this.hp.Value);
+            percent = (float)(hp.currentHp / hp.Value);
 			if (percent <= 0.33f) {
-				this.bar.color = Color.red;
+                bar.color = Color.red;
 			} else if (percent <= 0.66f) {
-				this.bar.color = Color.yellow;
+                bar.color = Color.yellow;
 			} else {
-				this.bar.color = Color.green;
+                bar.color = Color.green;
 			}
-			double hpValue = this.hp.currentHp > 0 ? this.hp.currentHp : 0;
-			this.innerText.text = Formatter.Format (Math.Round (hpValue)) + "/" + Formatter.Format (Math.Round (this.hp.Value));
+			double hpValue = hp.currentHp > 0 ? hp.currentHp : 0;
+            innerText.text = Formatter.Format (Math.Round (hpValue)) + "/" + Formatter.Format (Math.Round (hp.Value));
 		}
 
 		void Update ()
 		{
-			this.barRect.sizeDelta = Vector2.Lerp (this.barRect.sizeDelta, new Vector2 (this.maxWidth * this.percent, this.barRect.sizeDelta.y), Time.deltaTime);
+            barRect.sizeDelta = Vector2.Lerp (barRect.sizeDelta, new Vector2 (maxWidth * percent, barRect.sizeDelta.y), Time.deltaTime);
 		}
 	}
 }

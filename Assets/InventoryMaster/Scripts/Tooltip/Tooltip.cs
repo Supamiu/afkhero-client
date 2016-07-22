@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -84,13 +82,13 @@ public class Tooltip : MonoBehaviour
 #endif
     public void setImportantVariables()
     {
-        tooltipRectTransform = this.GetComponent<RectTransform>();
+        tooltipRectTransform = GetComponent<RectTransform>();
 
-        tooltipTextName = this.transform.GetChild(2).gameObject;
+        tooltipTextName = transform.GetChild(2).gameObject;
         tooltipTextName.SetActive(false);
-        tooltipImageIcon = this.transform.GetChild(1).gameObject;
+        tooltipImageIcon = transform.GetChild(1).gameObject;
         tooltipImageIcon.SetActive(false);
-        tooltipTextDesc = this.transform.GetChild(3).gameObject;
+        tooltipTextDesc = transform.GetChild(3).gameObject;
         tooltipTextDesc.SetActive(false);
 
         tooltipIconSize = 50;
@@ -135,33 +133,33 @@ public class Tooltip : MonoBehaviour
             if (showTooltipName)
             {
                 tooltipTextName.gameObject.SetActive(true);
-                this.transform.GetChild(2).GetComponent<RectTransform>().localPosition = new Vector3(tooltipNamePosX, tooltipNamePosY, 0);
+                transform.GetChild(2).GetComponent<RectTransform>().localPosition = new Vector3(tooltipNamePosX, tooltipNamePosY, 0);
             }
             else
             {
-                this.transform.GetChild(2).gameObject.SetActive(false);
+                transform.GetChild(2).gameObject.SetActive(false);
             }
 
             if (showTooltipIcon)
             {
-                this.transform.GetChild(1).gameObject.SetActive(true);
-                this.transform.GetChild(1).GetComponent<RectTransform>().localPosition = new Vector3(tooltipIconPosX, tooltipIconPosY, 0);
-                this.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(tooltipIconSize, tooltipIconSize);
+                transform.GetChild(1).gameObject.SetActive(true);
+                transform.GetChild(1).GetComponent<RectTransform>().localPosition = new Vector3(tooltipIconPosX, tooltipIconPosY, 0);
+                transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(tooltipIconSize, tooltipIconSize);
             }
             else
             {
-                this.transform.GetChild(1).gameObject.SetActive(false);
+                transform.GetChild(1).gameObject.SetActive(false);
             }
 
             if (showTooltipDesc)
             {
-                this.transform.GetChild(3).gameObject.SetActive(true);
-                this.transform.GetChild(3).GetComponent<RectTransform>().localPosition = new Vector3(tooltipDescPosX, tooltipDescPosY, 0);
-                this.transform.GetChild(3).GetComponent<RectTransform>().sizeDelta = new Vector2(tooltipDescSizeX, tooltipDescSizeY);
+                transform.GetChild(3).gameObject.SetActive(true);
+                transform.GetChild(3).GetComponent<RectTransform>().localPosition = new Vector3(tooltipDescPosX, tooltipDescPosY, 0);
+                transform.GetChild(3).GetComponent<RectTransform>().sizeDelta = new Vector2(tooltipDescSizeX, tooltipDescSizeY);
             }
             else
             {
-                this.transform.GetChild(3).gameObject.SetActive(false);
+                transform.GetChild(3).gameObject.SetActive(false);
             }
         }
     }

@@ -33,7 +33,7 @@ namespace Spine.Unity {
 		protected event UpdateBonesDelegate _UpdateWorld;
 		protected event UpdateBonesDelegate _UpdateComplete;
 
-		public Skeleton Skeleton { get { return this.skeleton; } }
+		public Skeleton Skeleton { get { return skeleton; } }
 
 		readonly Dictionary<int, Spine.Animation> animationTable = new Dictionary<int, Spine.Animation>();
 		readonly Dictionary<AnimationClip, int> clipNameHashCodeTable = new Dictionary<AnimationClip, int>();

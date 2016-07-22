@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace AFKHero.UI.CombatText
 {
-	public class CombatTextType
+    public class CombatTextType
 	{
 		public static readonly CombatTextType DAMAGE = new CombatTextType (Color.red);
 		public static readonly CombatTextType HEAL = new CombatTextType (Color.green);
@@ -18,7 +17,7 @@ namespace AFKHero.UI.CombatText
 
 		public Color GetColor ()
 		{
-			return this.color;
+			return color;
 		}
 	}
 }

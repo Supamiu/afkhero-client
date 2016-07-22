@@ -1,14 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using AFKHero.Behaviour;
-using AFKHero.Core.Event;
-using AFKHero.EventData;
 using AFKHero.Stat;
 
 namespace AFKHero.UI
 {
-	public class MonsterHPBar : MonoBehaviour
+    public class MonsterHPBar : MonoBehaviour
 	{
 		public RectTransform hpBarRect;
 
@@ -22,12 +18,12 @@ namespace AFKHero.UI
 		// Use this for initialization
 		void Start ()
 		{
-			this.maxWidth = this.hpBarRect.sizeDelta.x;
-			this.vitality = GetComponentInParent<Vitality> ();
-			this.monster = GetComponentInParent<Damageable> ();
-			this.monster.OnDamaged += () => {
+            maxWidth = hpBarRect.sizeDelta.x;
+            vitality = GetComponentInParent<Vitality> ();
+            monster = GetComponentInParent<Damageable> ();
+            monster.OnDamaged += () => {
 				gameObject.SetActive(true);
-				this.hpBarRect.sizeDelta = new Vector2(this.maxWidth * (float)(this.vitality.currentHp / this.vitality.Value), this.hpBarRect.sizeDelta.y);
+                hpBarRect.sizeDelta = new Vector2(maxWidth * (float)(vitality.currentHp / vitality.Value), hpBarRect.sizeDelta.y);
 			};
 			gameObject.SetActive (false);
 		}

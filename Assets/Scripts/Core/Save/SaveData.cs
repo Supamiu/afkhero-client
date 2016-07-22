@@ -1,11 +1,10 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AFKHero.Model;
 using AFKHero.Core.Gear;
 
 namespace AFKHero.Core.Save
 {
-	[System.Serializable]
+    [System.Serializable]
 	public class SaveData
 	{
 		//Système de stats

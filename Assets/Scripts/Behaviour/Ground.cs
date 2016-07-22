@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using AFKHero.Common;
 using AFKHero.Core.Event;
 
 namespace AFKHero.Behaviour
 {
-	[RequireComponent(typeof(ScrollingScript))]
+    [RequireComponent(typeof(ScrollingScript))]
 	public class Ground : MonoBehaviour
 	{
 
@@ -18,14 +17,14 @@ namespace AFKHero.Behaviour
 		// Use this for initialization
 		void Start ()
 		{
-			this.scrolling = GetComponent<ScrollingScript> ();
+            scrolling = GetComponent<ScrollingScript> ();
 		}
 
 		void FixedUpdate(){
-			this.time += Time.fixedDeltaTime;
-			if (this.time >= this.tickInterval) {
-				this.Tick ();
-				this.time = 0f;
+            time += Time.fixedDeltaTime;
+			if (time >= tickInterval) {
+                Tick();
+                time = 0f;
 			}
 		}
 

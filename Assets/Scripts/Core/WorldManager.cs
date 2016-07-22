@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using AFKHero.Model;
 using AFKHero.Common;
 using System.Collections.Generic;
@@ -28,18 +27,18 @@ namespace AFKHero.Core
 
         void Start()
         {
-            this.worlds = Resources.Load<WorldDatabase>("Databases/WorldDatabase").worlds;
-            if (this.worlds.Count == 0)
+            worlds = Resources.Load<WorldDatabase>("Databases/WorldDatabase").worlds;
+            if (worlds.Count == 0)
             {
                 Debug.LogError("WorldManager has 0 worlds, this should never happen !");
                 return;
             }
-            this.SetWorld(this.GetCurrentWorld());
+            SetWorld(GetCurrentWorld());
         }
 
         public float GetCheckpoint()
         {
-            World w = this.GetCurrentWorld();
+            World w = GetCurrentWorld();
             float stageDistance = AFKHero.WORLD_LENGTH / w.stages.Length;
             float distance = 0f;
             foreach (Stage s in w.stages)
@@ -58,7 +57,7 @@ namespace AFKHero.Core
 
         public World GetCurrentWorld()
         {
-            foreach (World w in this.worlds)
+            foreach (World w in worlds)
             {
                 foreach (Stage s in w.stages)
                 {
@@ -108,7 +107,7 @@ namespace AFKHero.Core
         public float GetStageStart(Stage stage)
         {
             float distance = 0f;
-            foreach (World w in this.worlds)
+            foreach (World w in worlds)
             {
                 float stageDistance = AFKHero.WORLD_LENGTH / w.stages.Length;
                 foreach (Stage s in w.stages)
@@ -134,7 +133,7 @@ namespace AFKHero.Core
         public float GetStageEnd(Stage stage)
         {
             float distance = 0f;
-            foreach (World w in this.worlds)
+            foreach (World w in worlds)
             {
                 float stageDistance = AFKHero.WORLD_LENGTH / w.stages.Length;
                 foreach (Stage s in w.stages)
@@ -156,7 +155,7 @@ namespace AFKHero.Core
         public List<Stage> GetAllStages()
         {
             List<Stage> stages = new List<Stage>();
-            foreach (World w in this.worlds)
+            foreach (World w in worlds)
             {
                 foreach (Stage s in w.stages)
                 {
@@ -172,9 +171,9 @@ namespace AFKHero.Core
         /// <param name="world"></param>
         private void SetWorld(World world)
         {
-            SpriteRenderer[] firstPlanSprites = this.parallaxFirstPlan.GetComponentsInChildren<SpriteRenderer>();
-            SpriteRenderer[] secondPlanSprites = this.parallaxSecondPlan.GetComponentsInChildren<SpriteRenderer>();
-            SpriteRenderer[] thirdPlanSprites = this.parallaxThirdPlan.GetComponentsInChildren<SpriteRenderer>();
+            SpriteRenderer[] firstPlanSprites = parallaxFirstPlan.GetComponentsInChildren<SpriteRenderer>();
+            SpriteRenderer[] secondPlanSprites = parallaxSecondPlan.GetComponentsInChildren<SpriteRenderer>();
+            SpriteRenderer[] thirdPlanSprites = parallaxThirdPlan.GetComponentsInChildren<SpriteRenderer>();
             foreach (SpriteRenderer s in firstPlanSprites)
             {
                 s.sprite = world.parallaxFirstPlan;

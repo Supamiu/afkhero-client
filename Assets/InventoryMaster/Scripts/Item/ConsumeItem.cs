@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System;
 
 public class ConsumeItem : MonoBehaviour, IPointerDownHandler
 {
@@ -27,7 +24,7 @@ public class ConsumeItem : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData data)
     {
-        if (this.gameObject.transform.parent.parent.parent.GetComponent<EquipmentSystem>() == null)
+        if (gameObject.transform.parent.parent.parent.GetComponent<EquipmentSystem>() == null)
         {
             bool gearable = false;
             Inventory inventory = transform.parent.parent.parent.GetComponent<Inventory>();
@@ -67,12 +64,12 @@ public class ConsumeItem : MonoBehaviour, IPointerDownHandler
                                 if (eS.transform.GetChild(1).GetChild(i).childCount == 0)
                                 {
                                     stop = true;
-                                    if (eS.transform.GetChild(1).GetChild(i).parent.parent.GetComponent<EquipmentSystem>() != null && this.gameObject.transform.parent.parent.parent.GetComponent<EquipmentSystem>() != null) { }
+                                    if (eS.transform.GetChild(1).GetChild(i).parent.parent.GetComponent<EquipmentSystem>() != null && gameObject.transform.parent.parent.parent.GetComponent<EquipmentSystem>() != null) { }
                                     else                                    
                                         inventory.EquiptItem(item);
-                                    
-                                    this.gameObject.transform.SetParent(eS.transform.GetChild(1).GetChild(i));
-                                    this.gameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
+
+                                    gameObject.transform.SetParent(eS.transform.GetChild(1).GetChild(i));
+                                    gameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
                                     eS.gameObject.GetComponent<Inventory>().updateItemList();
                                     inventory.updateItemList();
                                     gearable = true;
@@ -115,13 +112,13 @@ public class ConsumeItem : MonoBehaviour, IPointerDownHandler
                                         }
                                         else
                                         {
-                                            otherItemFromCharacterSystem.transform.SetParent(this.transform.parent);
+                                            otherItemFromCharacterSystem.transform.SetParent(transform.parent);
                                             otherItemFromCharacterSystem.GetComponent<RectTransform>().localPosition = Vector3.zero;
-                                            if (this.gameObject.transform.parent.parent.parent.GetComponent<Hotbar>() != null)
+                                            if (gameObject.transform.parent.parent.parent.GetComponent<Hotbar>() != null)
                                                 createDuplication(otherItemFromCharacterSystem);
 
-                                            this.gameObject.transform.SetParent(eS.transform.GetChild(1).GetChild(i));
-                                            this.gameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
+                                            gameObject.transform.SetParent(eS.transform.GetChild(1).GetChild(i));
+                                            gameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
                                         }                                        
                                         
                                         gearable = true;                                        
@@ -164,7 +161,7 @@ public class ConsumeItem : MonoBehaviour, IPointerDownHandler
                         if (tooltip != null)
                             tooltip.deactivateTooltip();
                         inventory.deleteItemFromInventory(item);
-                        Destroy(this.gameObject);                        
+                        Destroy(gameObject);                        
                     }
 
                 }
@@ -202,8 +199,8 @@ public class ConsumeItem : MonoBehaviour, IPointerDownHandler
                     if (eS.transform.GetChild(1).GetChild(i).childCount == 0)
                     {
                         stop = true;
-                        this.gameObject.transform.SetParent(eS.transform.GetChild(1).GetChild(i));
-                        this.gameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
+                        gameObject.transform.SetParent(eS.transform.GetChild(1).GetChild(i));
+                        gameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
                         eS.gameObject.GetComponent<Inventory>().updateItemList();
                         inventory.updateItemList();
                         inventory.EquiptItem(item);
@@ -246,13 +243,13 @@ public class ConsumeItem : MonoBehaviour, IPointerDownHandler
                             }
                             else
                             {
-                                otherItemFromCharacterSystem.transform.SetParent(this.transform.parent);
+                                otherItemFromCharacterSystem.transform.SetParent(transform.parent);
                                 otherItemFromCharacterSystem.GetComponent<RectTransform>().localPosition = Vector3.zero;
-                                if (this.gameObject.transform.parent.parent.parent.GetComponent<Hotbar>() != null)
+                                if (gameObject.transform.parent.parent.parent.GetComponent<Hotbar>() != null)
                                     createDuplication(otherItemFromCharacterSystem);
 
-                                this.gameObject.transform.SetParent(eS.transform.GetChild(1).GetChild(i));
-                                this.gameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
+                                gameObject.transform.SetParent(eS.transform.GetChild(1).GetChild(i));
+                                gameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
                             }
 
                             gearable = true;
@@ -295,7 +292,7 @@ public class ConsumeItem : MonoBehaviour, IPointerDownHandler
                 if (tooltip != null)
                     tooltip.deactivateTooltip();
                 inventory.deleteItemFromInventory(item);
-                Destroy(this.gameObject); 
+                Destroy(gameObject); 
             }
 
         }        

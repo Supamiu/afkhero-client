@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class DragItem : MonoBehaviour, IDragHandler, IPointerDownHandler, IEndDragHandler
@@ -81,9 +79,9 @@ public class DragItem : MonoBehaviour, IDragHandler, IPointerDownHandler, IEndDr
             if (newSlot != null)
             {
                 //getting the items from the slots, GameObjects and RectTransform
-                GameObject firstItemGameObject = this.gameObject;
+                GameObject firstItemGameObject = gameObject;
                 GameObject secondItemGameObject = newSlot.parent.gameObject;
-                RectTransform firstItemRectTransform = this.gameObject.GetComponent<RectTransform>();
+                RectTransform firstItemRectTransform = gameObject.GetComponent<RectTransform>();
                 RectTransform secondItemRectTransform = newSlot.parent.GetComponent<RectTransform>();
                 Item firstItem = rectTransform.GetComponent<ItemOnObject>().item;
                 Item secondItem = new Item();
@@ -297,7 +295,7 @@ public class DragItem : MonoBehaviour, IDragHandler, IPointerDownHandler, IEndDr
                                     firstItemRectTransform.localPosition = Vector3.zero;
                                     secondItemRectTransform.localPosition = Vector3.zero;
 
-                                    createDuplication(this.gameObject);
+                                    createDuplication(gameObject);
                                     secondItemGameObject.GetComponent<ConsumeItem>().duplication.GetComponent<ItemOnObject>().item = secondItem;
                                     secondItemGameObject.GetComponent<SplitItem>().inv.stackableSettings();
 
@@ -321,7 +319,7 @@ public class DragItem : MonoBehaviour, IDragHandler, IPointerDownHandler, IEndDr
                                 secondItem.itemValue = firstItem.maxStack;
                                 firstItem.itemValue = rest;
 
-                                createDuplication(this.gameObject);
+                                createDuplication(gameObject);
 
                                 firstItemGameObject.transform.SetParent(secondItemGameObject.transform.parent);
                                 secondItemGameObject.transform.SetParent(oldSlot.transform);
@@ -606,12 +604,12 @@ public class DragItem : MonoBehaviour, IDragHandler, IPointerDownHandler, IEndDr
             {
                 GameObject dropItem = (GameObject)Instantiate(GetComponent<ItemOnObject>().item.itemModel);
                 dropItem.AddComponent<PickUpItem>();
-                dropItem.GetComponent<PickUpItem>().item = this.gameObject.GetComponent<ItemOnObject>().item;               
+                dropItem.GetComponent<PickUpItem>().item = gameObject.GetComponent<ItemOnObject>().item;               
                 dropItem.transform.localPosition = GameObject.FindGameObjectWithTag("Player").transform.localPosition;
                 inventory.OnUpdateItemList();
                 if (oldSlot.transform.parent.parent.GetComponent<EquipmentSystem>() != null)
                     inventory.GetComponent<Inventory>().UnEquipItem1(dropItem.GetComponent<PickUpItem>().item);
-                Destroy(this.gameObject);
+                Destroy(gameObject);
 
             }
         }

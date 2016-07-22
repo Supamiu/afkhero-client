@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using AFKHero.Common;
 
 namespace AFKHero.UI
 {
-	public class GameOver : MonoBehaviour
+    public class GameOver : MonoBehaviour
 	{
 
 		public Text distance;

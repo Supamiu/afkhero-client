@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using AFKHero.Core.Save;
 
-namespace AFKHero.Stat{
-	/// <summary>
-	/// Influence les damages de l'attaque par clic.
-	/// </summary>
-	public class Intelligence : AbstractStat {
+namespace AFKHero.Stat
+{
+    /// <summary>
+    /// Influence les damages de l'attaque par clic.
+    /// </summary>
+    public class Intelligence : AbstractStat {
 
 		public override void Add (int amount)
 		{
@@ -14,16 +14,21 @@ namespace AFKHero.Stat{
 		}
 
 		public override SaveData Save(SaveData data){
-			data.intelligence = this.amount;
+			data.intelligence = amount;
 			return data;
 		}
 
 		public override void DoLoad (SaveData data){
-			this.amount = data.intelligence;
+            amount = data.intelligence;
 		}
 
 		public override string GetName() {
 			return "intelligence";
 		}
-	}
+
+        public override StatType GetStatType()
+        {
+            return StatType.PRIMARY;
+        }
+    }
 }

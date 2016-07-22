@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace AFKHero.Editor.Layout
 {
     public abstract class AbstractDatabaseLayout

@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
-using System;
 using AFKHero.Core.Tools;
-using UnityEngine;
 
 namespace AFKHero.Core.Event
 {
 
-	/// <summary>
-	/// Event dispatcher.
-	/// Permet de gérer la propagation des events par référence avec une priorité
-	/// </summary>
-	public class EventDispatcher : Singleton<EventDispatcher>
+    /// <summary>
+    /// Event dispatcher.
+    /// Permet de gérer la propagation des events par référence avec une priorité
+    /// </summary>
+    public class EventDispatcher : Singleton<EventDispatcher>
 	{
 
 		//Pour éviter qu'une instance ne soit faite.
@@ -32,10 +30,10 @@ namespace AFKHero.Core.Event
 			if (listener == null) {
 				return;
 			}
-			if (!this.registrations.ContainsKey (type)) {
-				this.registrations.Add (type, new List<IListener> ());
+			if (!registrations.ContainsKey (type)) {
+                registrations.Add (type, new List<IListener> ());
 			}
-			this.registrations [type].Add (listener);
+            registrations[type].Add (listener);
 		}
 
 		/// <summary>
@@ -45,12 +43,12 @@ namespace AFKHero.Core.Event
 		/// <param name="listener">Listener.</param>
 		public void Unregister (string type, IListener listener)
 		{
-			if (!this.registrations.ContainsKey (type)) {
+			if (!registrations.ContainsKey (type)) {
 				return;
 			}
-			List<IListener> listeners = this.registrations [type];
+			List<IListener> listeners = registrations[type];
 			listeners.Remove (listener);
-			this.registrations [type] = listeners;
+            registrations[type] = listeners;
 		}
 
 		/// <summary>
@@ -63,7 +61,7 @@ namespace AFKHero.Core.Event
 				List<IListener> ls;
 				subscriber.getSubscribedEvents ().TryGetValue (key, out ls);
 				foreach (IListener l in ls) {
-					this.Register (key, l);
+                    Register(key, l);
 				}
 			}
 		}
@@ -80,7 +78,7 @@ namespace AFKHero.Core.Event
 		{
 			List<IListener> ls;
 			object e = (object)eventData;
-			this.registrations.TryGetValue (type, out ls);
+            registrations.TryGetValue (type, out ls);
 			if (ls != null) {
 				List<IListener> tmp = new List<IListener> (ls);
 				ls.Sort ((x, y) => y.getPriority () - x.getPriority ());
@@ -105,7 +103,7 @@ namespace AFKHero.Core.Event
 			GameEvent eventData = new GameEvent ();
 			List<IListener> ls;
 			object e = (object)eventData;
-			this.registrations.TryGetValue (type, out ls);
+            registrations.TryGetValue (type, out ls);
 			if (ls != null) {
 				List<IListener> tmp = new List<IListener> (ls);
 				ls.Sort ((x, y) => y.getPriority () - x.getPriority ());
@@ -126,7 +124,7 @@ namespace AFKHero.Core.Event
 		/// Reset entièrement l'EventManager.
 		/// </summary>
 		public void Clear(){
-			this.registrations = new Dictionary<string, List<IListener>> ();
+            registrations = new Dictionary<string, List<IListener>> ();
 		}
 	}
 }

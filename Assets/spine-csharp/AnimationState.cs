@@ -30,11 +30,11 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 
-namespace Spine {
-	public class AnimationState {
+namespace Spine
+{
+    public class AnimationState {
 		private AnimationStateData data;
 		private ExposedList<TrackEntry> tracks = new ExposedList<TrackEntry>();
 		private ExposedList<Event> events = new ExposedList<Event>();

@@ -30,10 +30,10 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine {
-	public class TransformConstraintData {
+namespace Spine
+{
+    public class TransformConstraintData {
 		internal String name;
 		internal BoneData bone, target;
 		internal float rotateMix, translateMix, scaleMix, shearMix;

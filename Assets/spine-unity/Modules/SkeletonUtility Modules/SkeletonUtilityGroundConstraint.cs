@@ -30,10 +30,10 @@
  *****************************************************************************/
 
 using UnityEngine;
-using System.Collections;
 
-namespace Spine.Unity.Modules {
-	[RequireComponent(typeof(SkeletonUtilityBone)), ExecuteInEditMode]
+namespace Spine.Unity.Modules
+{
+    [RequireComponent(typeof(SkeletonUtilityBone)), ExecuteInEditMode]
 	public class SkeletonUtilityGroundConstraint : SkeletonUtilityConstraint {
 
 		#if UNITY_4_3

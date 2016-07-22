@@ -1,6 +1,4 @@
-﻿using System.IO;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
 using System.Linq;

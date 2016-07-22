@@ -30,11 +30,11 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine {
-	/// <summary>Attachment that displays a texture region using a mesh which can be deformed by bones.</summary>
-	public class WeightedMeshAttachment : Attachment, IFfdAttachment {
+namespace Spine
+{
+    /// <summary>Attachment that displays a texture region using a mesh which can be deformed by bones.</summary>
+    public class WeightedMeshAttachment : Attachment, IFfdAttachment {
 		internal int[] bones;
 		internal float[] weights, uvs, regionUVs;
 		internal int[] triangles;

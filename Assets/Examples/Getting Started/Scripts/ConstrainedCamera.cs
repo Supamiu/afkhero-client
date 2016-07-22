@@ -6,7 +6,6 @@
 *****************************************************************************/
 
 using UnityEngine;
-using System.Collections;
 
 public class ConstrainedCamera : MonoBehaviour {
 	public Transform target;

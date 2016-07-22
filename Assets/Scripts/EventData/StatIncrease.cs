@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using AFKHero.Stat;
+﻿using AFKHero.Stat;
 
 namespace AFKHero.EventData
 {
-	public class StatIncrease
+    public class StatIncrease
 	{
 		public AbstractStat stat;
 
@@ -13,7 +11,7 @@ namespace AFKHero.EventData
 		public StatIncrease (AbstractStat stat, int amount)
 		{
 			this.stat = stat;
-			this.value = amount;
+            value = amount;
 		}
 	}
 }

@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 namespace AFKHero.UI.CombatText
 {
-	public class CombatText : MonoBehaviour {
+    public class CombatText : MonoBehaviour {
 		public Animator animator;
 		private Text damageText;
 

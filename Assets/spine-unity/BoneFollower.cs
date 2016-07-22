@@ -114,7 +114,7 @@ namespace Spine.Unity {
 
 			Skeleton skeleton = skeletonRenderer.skeleton;
 			float flipRotation = (skeleton.flipX ^ skeleton.flipY) ? -1f : 1f;
-			Transform thisTransform = this.transform;
+			Transform thisTransform = transform;
 
 			// Recommended setup: Use local transform properties if Spine GameObject is parent
 			if (thisTransform.parent == skeletonTransform) {

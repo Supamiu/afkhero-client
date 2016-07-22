@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using AFKHero.Inventory;
 
 namespace AFKHero.UI.Inventory
 {
-	public class Item : MonoBehaviour
+    public class Item : MonoBehaviour
 	{
 		public Storable storable;
 
@@ -16,7 +15,7 @@ namespace AFKHero.UI.Inventory
 		// Use this for initialization
 		void Start ()
 		{
-			this.icon.sprite = this.storable.itemIcon;
+            icon.sprite = storable.itemIcon;
 		}
 	}
 }

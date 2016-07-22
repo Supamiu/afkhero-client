@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using AFKHero.Behaviour.Monster;
 using AFKHero.Core.Event;
@@ -34,43 +33,43 @@ namespace AFKHero.Core
         // Use this for initialization
         void Start()
         {
-            this.spawnPosition = this.transform.position;
-            this.offset = Vector2.Distance(hero.position, this.transform.position);
+            spawnPosition = transform.position;
+            offset = Vector2.Distance(hero.position, transform.position);
             EventDispatcher.Instance.Register("movement.moved", new Listener<GenericGameEvent<float>>((ref GenericGameEvent<float> e) =>
             {
-                this.moved += e.Data;
-                if (this.moved >= this.spawnInterval && PercentageUtils.Instance.GetResult(this.spawnChances))
+                moved += e.Data;
+                if (moved >= spawnInterval && PercentageUtils.Instance.GetResult(spawnChances))
                 {
-                    this.Spawn(PercentageUtils.Instance.GetItemFromPonderables<Spawnable>(this.worldManager.GetSpawnList(AFKHero.GetDistance() + offset)));
-                    this.moved = 0f;
+                    Spawn(PercentageUtils.Instance.GetItemFromPonderables<Spawnable>(worldManager.GetSpawnList(AFKHero.GetDistance() + offset)));
+                    moved = 0f;
                 }
-                else if (this.moved >= this.spawnInterval)
+                else if (moved >= spawnInterval)
                 {
-                    this.moved = 0f;
+                    moved = 0f;
                 }
             }));
         }
 
         void Spawn(Spawnable s)
         {
-            GameObject spawned = GameObject.Instantiate(s.gameObject, this.spawnPosition, Quaternion.identity) as GameObject;
-            Spawnable spawn = spawned.GetComponent<Spawnable>().Init(AFKHero.GetDistance() + this.offset);
+            GameObject spawned = GameObject.Instantiate(s.gameObject, spawnPosition, Quaternion.identity) as GameObject;
+            Spawnable spawn = spawned.GetComponent<Spawnable>().Init(AFKHero.GetDistance() + offset);
             Damageable damageable = spawned.GetComponent<Damageable>();
             if (damageable != null)
             {
                 damageable.onDeath += () =>
                 {
-                    this.spawneds.Remove(spawn);
+                    spawneds.Remove(spawn);
                 };
             }
-            this.spawneds.Add(spawn);
+            spawneds.Add(spawn);
         }
         /// <summary>
         /// Reset entièrement le SpawnEngine.
         /// </summary>
         public void Clear()
         {
-            this.spawneds.ForEach((s) =>
+            spawneds.ForEach((s) =>
             {
                 Destroy(s.gameObject);
             });

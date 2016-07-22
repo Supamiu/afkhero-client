@@ -31,10 +31,10 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using Spine;
 
-namespace Spine.Unity.Modules {
-	public class SpriteAttacher : MonoBehaviour {
+namespace Spine.Unity.Modules
+{
+    public class SpriteAttacher : MonoBehaviour {
 		public bool attachOnStart = true;
 		public bool keepLoaderInMemory = true;
 

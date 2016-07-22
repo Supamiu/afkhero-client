@@ -1,10 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Security.Cryptography;
-
-namespace AFKHero.Core.Tools
+﻿namespace AFKHero.Core.Tools
 {
-	public class CryptoService : Singleton<CryptoService>
+    public class CryptoService : Singleton<CryptoService>
 	{
 		private const string key = "zAlUuA5FjOQifdp0Q2kBnlxeaRyFo8il";
 

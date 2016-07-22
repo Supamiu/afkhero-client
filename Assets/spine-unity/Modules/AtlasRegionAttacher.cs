@@ -29,11 +29,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 using UnityEngine;
-using System.Collections;
-using Spine;
 
-namespace Spine.Unity.Modules {
-	public class AtlasRegionAttacher : MonoBehaviour {
+namespace Spine.Unity.Modules
+{
+    public class AtlasRegionAttacher : MonoBehaviour {
 
 		[System.Serializable]
 		public class SlotRegionPair {

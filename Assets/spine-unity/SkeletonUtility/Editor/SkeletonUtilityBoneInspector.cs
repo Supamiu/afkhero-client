@@ -6,12 +6,11 @@
 *****************************************************************************/
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 using System.Collections.Generic;
-using Spine;
 
-namespace Spine.Unity.Editor {
-	[CustomEditor(typeof(SkeletonUtilityBone)), CanEditMultipleObjects]
+namespace Spine.Unity.Editor
+{
+    [CustomEditor(typeof(SkeletonUtilityBone)), CanEditMultipleObjects]
 	public class SkeletonUtilityBoneInspector : UnityEditor.Editor {
 		SerializedProperty mode, boneName, zPosition, position, rotation, scale, overrideAlpha, parentReference;
 		// MITCH

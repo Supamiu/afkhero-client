@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using AFKHero.Core.Event;
 
 
 namespace AFKHero.Behaviour
 {
-	[RequireComponent (typeof(BoxCollider2D))]
+    [RequireComponent (typeof(BoxCollider2D))]
 	public class StopScrollOnEncounter : MonoBehaviour
 	{
 		void OnCollisionEnter2D (Collision2D coll)

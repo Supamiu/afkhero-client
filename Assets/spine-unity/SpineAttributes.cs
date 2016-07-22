@@ -5,10 +5,10 @@
  * Full irrevocable rights and permissions granted to Esoteric Software
 *****************************************************************************/
 using UnityEngine;
-using System.Collections;
 
-namespace Spine.Unity {
-	public abstract class SpineAttributeBase : PropertyAttribute {
+namespace Spine.Unity
+{
+    public abstract class SpineAttributeBase : PropertyAttribute {
 		public string dataField = "";
 		public string startsWith = "";
 	}

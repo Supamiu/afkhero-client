@@ -30,10 +30,10 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine {
-	public class SkeletonData {
+namespace Spine
+{
+    public class SkeletonData {
 		internal String name;
 		internal ExposedList<BoneData> bones = new ExposedList<BoneData>();
 		internal ExposedList<SlotData> slots = new ExposedList<SlotData>();

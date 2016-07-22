@@ -12,15 +12,14 @@ using UnityEditor;
 #else
 using UnityEditor.AnimatedValues;
 #endif
-using System.Collections;
 using System.Collections.Generic;
-using Spine;
 
 using System.Reflection;
 
 
-namespace Spine.Unity.Editor {
-	[CustomEditor(typeof(SkeletonUtility))]
+namespace Spine.Unity.Editor
+{
+    [CustomEditor(typeof(SkeletonUtility))]
 	public class SkeletonUtilityInspector : UnityEditor.Editor {
 
 		public static void AttachIcon (SkeletonUtilityBone utilityBone) {
