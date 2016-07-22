@@ -34,7 +34,7 @@ namespace AFKHero.Stat
 
 		public double Value {
 			get {
-                StatCompute data =  ((GenericGameEvent<StatCompute>)EventDispatcher.Instance.Dispatch ("stat.compute." + GetName(), new GenericGameEvent<StatCompute> (new StatCompute(this, amount, ratio)))).Data;
+                StatCompute data =  ((GenericGameEvent<StatCompute>)EventDispatcher.Instance.Dispatch ("stat.compute." + GetName(), new GenericGameEvent<StatCompute> (new StatCompute(gameObject, this, amount, ratio)))).Data;
                 return data.amount * data.ratio;
 			} 
 		}

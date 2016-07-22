@@ -14,7 +14,10 @@ namespace AFKHero.Model.Affix
         {
             return new Listener<GenericGameEvent<StatCompute>>((ref GenericGameEvent<StatCompute> gameEvent) =>
             {
-                gameEvent.Data.ratio += gameEvent.Data.stat.ratio * value / 100f;
+                if (gameEvent.Data.statOwner == gameObject)
+                {
+                    gameEvent.Data.ratio += gameEvent.Data.stat.ratio * value / 100f;
+                }
             });
         }
     }

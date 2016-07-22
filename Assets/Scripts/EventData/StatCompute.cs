@@ -1,4 +1,5 @@
 ﻿using AFKHero.Stat;
+using UnityEngine;
 
 namespace AFKHero.EventData
 {
@@ -10,11 +11,14 @@ namespace AFKHero.EventData
 
         public AbstractStat stat { get; private set; }
 
-        public StatCompute(AbstractStat stat, double amount, float ratio)
+        public GameObject statOwner { get; private set; }
+
+        public StatCompute(GameObject statOwner, AbstractStat stat, double amount, float ratio)
         {
             this.amount = amount;
             this.ratio = ratio;
             this.stat = stat;
+            this.statOwner = statOwner;
         }
     }
 }

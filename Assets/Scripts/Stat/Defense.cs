@@ -8,6 +8,12 @@ namespace AFKHero.Stat
 
         public float ratio = 1;
 
-
+        public double Value
+        {
+            get
+            {
+                return amount * ratio;
+            }
+        }
     }
 }
