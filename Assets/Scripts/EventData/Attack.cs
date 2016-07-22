@@ -1,19 +1,16 @@
-﻿using UnityEngine;
-using System.Collections;
-using AFKHero.Behaviour;
-using AFKHero.Stat;
+﻿using AFKHero.Behaviour;
 
 namespace AFKHero.EventData
 {
-	
-	public class Attack
+
+    public class Attack
 	{
 
 		public Attack (Agressive attacker, Damageable target)
 		{
 			this.target = target;
 			this.attacker = attacker;
-			this.baseDamage = attacker.Strength.Value;
+            baseDamage = attacker.Strength.Value;
 		}
 
 		/// <summary>
@@ -57,8 +54,8 @@ namespace AFKHero.EventData
 		/// <returns>The damage.</returns>
 		public Damage getDamage ()
 		{
-			double finalDamage = this.critical ? this.baseDamage * this.criticalRatio : this.baseDamage;
-			return new Damage (this.attacker, this.target, finalDamage, this.critical, this.hits);
+			double finalDamage = critical ? baseDamage * criticalRatio : baseDamage;
+			return new Damage (attacker, target, finalDamage, critical, hits);
 		}
 	}
 }

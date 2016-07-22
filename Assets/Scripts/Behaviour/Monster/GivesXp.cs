@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using AFKHero.Core.Event;
 using System;
 
 namespace AFKHero.Behaviour.Monster
 {
-	[RequireComponent(typeof(Spawnable))]
+    [RequireComponent(typeof(Spawnable))]
 	public class GivesXp : MonoBehaviour, IOnDeath
 	{
 		[Header ("Ratio xp/distance")]
@@ -13,11 +12,11 @@ namespace AFKHero.Behaviour.Monster
 
 		public double GetXp ()
 		{
-			return Math.Round(this.xpRatio * GetComponent<Spawnable>().Distance);
+			return Math.Round(xpRatio * GetComponent<Spawnable>().Distance);
 		}
 
 		public void OnDeath(){
-			EventDispatcher.Instance.Dispatch ("experience", new GenericGameEvent<double> (this.GetXp ()));
+			EventDispatcher.Instance.Dispatch ("experience", new GenericGameEvent<double> (GetXp()));
 		}
 	}
 }

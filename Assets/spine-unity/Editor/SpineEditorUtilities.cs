@@ -38,17 +38,16 @@
 #define SPINE_SKELETONANIMATOR
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
 using System.Reflection;
-using Spine;
 
-namespace Spine.Unity.Editor {
-	
-	[InitializeOnLoad]
+namespace Spine.Unity.Editor
+{
+
+    [InitializeOnLoad]
 	public class SpineEditorUtilities : AssetPostprocessor {
 
 		public static class Icons {

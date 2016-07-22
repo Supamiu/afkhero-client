@@ -32,15 +32,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 #if WINDOWS_STOREAPP
 using System.Threading.Tasks;
 using Windows.Storage;
 #endif
 
-namespace Spine {
-	public class Atlas {
+namespace Spine
+{
+    public class Atlas {
 		List<AtlasPage> pages = new List<AtlasPage>();
 		List<AtlasRegion> regions = new List<AtlasRegion>();
 		TextureLoader textureLoader;
@@ -92,7 +92,7 @@ namespace Spine {
 		public Atlas (List<AtlasPage> pages, List<AtlasRegion> regions) {
 			this.pages = pages;
 			this.regions = regions;
-			this.textureLoader = null;
+            textureLoader = null;
 		}
 
 		private void Load (TextReader reader, String imagesDir, TextureLoader textureLoader) {

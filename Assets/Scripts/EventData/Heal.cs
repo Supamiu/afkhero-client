@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using AFKHero.Behaviour;
+﻿using AFKHero.Behaviour;
 
 namespace AFKHero.EventData
 {
-	public class Heal
+    public class Heal
 	{
 		public double amount;
 

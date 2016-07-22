@@ -32,10 +32,10 @@
 using System;
 using System.IO;
 using UnityEngine;
-using Spine;
 
-namespace Spine.Unity {
-	public class SkeletonDataAsset : ScriptableObject {
+namespace Spine.Unity
+{
+    public class SkeletonDataAsset : ScriptableObject {
 		public AtlasAsset[] atlasAssets;
 		#if SPINE_TK2D
 		public tk2dSpriteCollectionData spriteCollection;

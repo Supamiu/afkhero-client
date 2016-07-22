@@ -30,13 +30,12 @@
  *****************************************************************************/
 using UnityEngine;
 using UnityEditor;
-
-using Spine.Unity;
 using Spine.Unity.Editor;
 
-namespace Spine.Unity.Modules {
-	
-	[CustomEditor(typeof(SkeletonRenderSeparator))]
+namespace Spine.Unity.Modules
+{
+
+    [CustomEditor(typeof(SkeletonRenderSeparator))]
 	public class SkeletonRenderSeparatorInspector : UnityEditor.Editor {
 		SkeletonRenderSeparator component;
 

@@ -34,11 +34,11 @@
 
 using UnityEngine;
 using UnityEditor;
-using Spine;
 
-namespace Spine.Unity.Editor {
-	
-	[CustomEditor(typeof(SkeletonGraphic))]
+namespace Spine.Unity.Editor
+{
+
+    [CustomEditor(typeof(SkeletonGraphic))]
 	public class SkeletonGraphicInspector : UnityEditor.Editor {
 		SerializedProperty material_, color_;
 		SerializedProperty skeletonDataAsset_, initialSkinName_;

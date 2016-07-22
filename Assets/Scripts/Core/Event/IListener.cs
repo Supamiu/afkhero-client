@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 
-namespace AFKHero.Core.Event{
-	/// <summary>
-	/// Interface listener.
-	/// </summary>
-	public interface IListener {
+namespace AFKHero.Core.Event
+{
+    /// <summary>
+    /// Interface listener.
+    /// </summary>
+    public interface IListener {
 
 		Type getType ();
 

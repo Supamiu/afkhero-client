@@ -28,10 +28,10 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-using UnityEngine;
 
-namespace Spine.Unity {
-	public delegate void UpdateBonesDelegate (ISkeletonAnimation skeletonRenderer);
+namespace Spine.Unity
+{
+    public delegate void UpdateBonesDelegate (ISkeletonAnimation skeletonRenderer);
 	public interface ISkeletonAnimation {
 		event UpdateBonesDelegate UpdateLocal;
 		event UpdateBonesDelegate UpdateWorld;

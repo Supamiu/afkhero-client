@@ -29,11 +29,11 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-using System;
 
-namespace Spine {
-	/// <summary>Attachment that has a polygon for bounds checking.</summary>
-	public class BoundingBoxAttachment : Attachment {
+namespace Spine
+{
+    /// <summary>Attachment that has a polygon for bounds checking.</summary>
+    public class BoundingBoxAttachment : Attachment {
 		internal float[] vertices;
 
 		public float[] Vertices { get { return vertices; } set { vertices = value; } }

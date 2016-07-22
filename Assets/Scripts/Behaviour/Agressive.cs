@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Spine.Unity;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 using AFKHero.Stat;
-using Spine;
 
 namespace AFKHero.Behaviour
 {
-	
-	[RequireComponent (typeof(Strength))]
+
+    [RequireComponent (typeof(Strength))]
 	public class Agressive : MonoBehaviour
 	{
 
@@ -36,23 +34,24 @@ namespace AFKHero.Behaviour
 
 		void Start ()
 		{
-			this.Strength = GetComponent<Strength> ();
-			this.anim = GetComponent<SkeletonAnimation> ();
-			this.anim.state.Event += (Spine.AnimationState state, int trackIndex, Spine.Event e) => {
-				if (this.target != null && e.Data.Name == this.hitEvent && state.GetCurrent (trackIndex).Animation.Name == attackName) {
-					EventDispatcher.Instance.Dispatch ("attack.damage", new GenericGameEvent<Damage> (this.nextDamage));
+            Strength = GetComponent<Strength> ();
+            anim = GetComponent<SkeletonAnimation> ();
+            anim.state.Event += (Spine.AnimationState state, int trackIndex, Spine.Event e) => {
+				if (target != null && e.Data.Name == hitEvent && state.GetCurrent (trackIndex).Animation.Name == attackName) {
+					EventDispatcher.Instance.Dispatch ("attack.damage", new GenericGameEvent<Damage> (nextDamage));
 				}
 			};
-			//Avant le premier coup, on compute.
-			this.anim.state.Start += (Spine.AnimationState state, int trackIndex) => {				
-				if(state.GetCurrent(trackIndex).Animation.Name == this.attackName){
-					this.ComputeDamage();
+            //Avant le premier coup, on compute.
+            anim.state.Start += (Spine.AnimationState state, int trackIndex) => {				
+				if(state.GetCurrent(trackIndex).Animation.Name == attackName)
+                {
+                    ComputeDamage();
 				}
 			};
-			//Après chaque coup, on compute le coup suivant.
-			this.anim.state.Complete += (Spine.AnimationState state, int trackIndex, int loopCount) => {
-				if (state.GetCurrent (trackIndex).Animation.Name == this.attackName) {
-					this.ComputeDamage ();
+            //Après chaque coup, on compute le coup suivant.
+            anim.state.Complete += (Spine.AnimationState state, int trackIndex, int loopCount) => {
+				if (state.GetCurrent (trackIndex).Animation.Name == attackName) {
+                    ComputeDamage();
 				}
 			};
 		}
@@ -61,20 +60,20 @@ namespace AFKHero.Behaviour
 		{
 			Damageable collider = coll.gameObject.GetComponent<Damageable> ();
 			if (collider != null) {
-				this.target = collider;
-				this.target.onDeath += OnTargetDeath;
-				this.anim.AnimationName = attackName;
+                target = collider;
+                target.onDeath += OnTargetDeath;
+                anim.AnimationName = attackName;
 			}
 		}
 
 		void OnTargetDeath ()
 		{
-			this.target = null;
-			this.anim.AnimationName = this.afterKillName;
+            target = null;
+            anim.AnimationName = afterKillName;
 		}
 
 		void ComputeDamage(){
-			this.nextDamage = ((GenericGameEvent<Attack>)EventDispatcher.Instance.Dispatch ("attack.compute", new GenericGameEvent<Attack>(new Attack(this, this.target)))).Data.getDamage();
+            nextDamage = ((GenericGameEvent<Attack>)EventDispatcher.Instance.Dispatch ("attack.compute", new GenericGameEvent<Attack>(new Attack(this, target)))).Data.getDamage();
 		}
 	}
 }

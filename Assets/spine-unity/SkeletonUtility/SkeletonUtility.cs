@@ -6,12 +6,11 @@
 *****************************************************************************/
 
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using Spine;
 
-namespace Spine.Unity {
-	[RequireComponent(typeof(ISkeletonAnimation))]
+namespace Spine.Unity
+{
+    [RequireComponent(typeof(ISkeletonAnimation))]
 	[ExecuteInEditMode]
 	public class SkeletonUtility : MonoBehaviour {
 
@@ -320,7 +319,7 @@ namespace Spine.Unity {
 
 		public GameObject SpawnRoot (SkeletonUtilityBone.Mode mode, bool pos, bool rot, bool sca) {
 			GetBoneRoot();
-			Skeleton skeleton = this.skeletonRenderer.skeleton;
+			Skeleton skeleton = skeletonRenderer.skeleton;
 
 			GameObject go = SpawnBone(skeleton.RootBone, boneRoot, mode, pos, rot, sca);
 
@@ -332,7 +331,7 @@ namespace Spine.Unity {
 		public GameObject SpawnHierarchy (SkeletonUtilityBone.Mode mode, bool pos, bool rot, bool sca) {
 			GetBoneRoot();
 
-			Skeleton skeleton = this.skeletonRenderer.skeleton;
+			Skeleton skeleton = skeletonRenderer.skeleton;
 
 			GameObject go = SpawnBoneRecursively(skeleton.RootBone, boneRoot, mode, pos, rot, sca);
 

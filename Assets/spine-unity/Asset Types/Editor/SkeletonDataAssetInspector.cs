@@ -10,13 +10,12 @@ using System.Collections.Generic;
 using UnityEditor;
 
 #if !UNITY_4_3
-using UnityEditor.AnimatedValues;
 #endif
 using UnityEngine;
-using Spine;
 
-namespace Spine.Unity.Editor {
-	[CustomEditor(typeof(SkeletonDataAsset))]
+namespace Spine.Unity.Editor
+{
+    [CustomEditor(typeof(SkeletonDataAsset))]
 	public class SkeletonDataAssetInspector : UnityEditor.Editor {
 		static bool showAnimationStateData = true;
 		static bool showAnimationList = true;

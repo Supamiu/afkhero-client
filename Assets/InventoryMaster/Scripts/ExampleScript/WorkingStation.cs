@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class WorkingStation : MonoBehaviour
 {
@@ -26,7 +25,7 @@ public class WorkingStation : MonoBehaviour
     void Update()
     {
 
-        float distance = Vector3.Distance(this.gameObject.transform.position, GameObject.FindGameObjectWithTag("Player").transform.position);
+        float distance = Vector3.Distance(gameObject.transform.position, GameObject.FindGameObjectWithTag("Player").transform.position);
 
         if (Input.GetKeyDown(openInventory) && distance <= distanceToOpenWorkingStation)
         {

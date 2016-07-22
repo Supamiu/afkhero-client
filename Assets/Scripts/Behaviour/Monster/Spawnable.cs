@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using AFKHero.Tools;
 using AFKHero.Stat;
 
 namespace AFKHero.Behaviour.Monster
 {
-	[RequireComponent (typeof(Strength))]
+    [RequireComponent (typeof(Strength))]
 	[RequireComponent (typeof(Vitality))]
 	public class Spawnable : MonoBehaviour, Ponderable
 	{
@@ -26,15 +25,15 @@ namespace AFKHero.Behaviour.Monster
 
 		public int GetWeight ()
 		{
-			return this.weight;
+			return weight;
 		}
 
 		public Spawnable Init (float distance)
 		{
-			this.Distance = distance;
-			this.GetComponent<Strength> ().amount = RatioEngine.Instance.GetEnemyDamage (this.strengthRatio, distance);
-			this.GetComponent<Vitality> ().amount = RatioEngine.Instance.GetEnemyHealth (this.vitalityRatio, distance);
-			this.GetComponent<Dodge> ().amount = RatioEngine.Instance.GetEnemyDodge (this.dodgeRatio, distance);
+            Distance = distance;
+            GetComponent<Strength>().amount = RatioEngine.Instance.GetEnemyDamage (strengthRatio, distance);
+            GetComponent<Vitality>().amount = RatioEngine.Instance.GetEnemyHealth (vitalityRatio, distance);
+            GetComponent<Dodge>().amount = RatioEngine.Instance.GetEnemyDodge (dodgeRatio, distance);
 			return this;
 		}
 	}

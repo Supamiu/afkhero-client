@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class CraftResultSlot : MonoBehaviour
 {
@@ -19,7 +17,7 @@ public class CraftResultSlot : MonoBehaviour
         craftSystem = transform.parent.GetComponent<CraftSystem>();
 
         itemGameObject = (GameObject)Instantiate(Resources.Load("Prefabs/Item") as GameObject);
-        itemGameObject.transform.SetParent(this.gameObject.transform);
+        itemGameObject.transform.SetParent(gameObject.transform);
         itemGameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
         itemGameObject.GetComponent<DragItem>().enabled = false;
         itemGameObject.SetActive(false);

@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using AFKHero.Core.Tools;
 using System.Collections.Generic;
 
 namespace AFKHero.Tools
 {
-	public class PercentageUtils : Singleton<PercentageUtils>
+    public class PercentageUtils : Singleton<PercentageUtils>
 	{
 		//Pour éviter qu'une instance ne soit faite.
 		protected PercentageUtils ()

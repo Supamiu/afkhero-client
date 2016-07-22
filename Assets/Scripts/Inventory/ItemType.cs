@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace AFKHero.Inventory
+﻿namespace AFKHero.Inventory
 {
-	public enum ItemType
+    public enum ItemType
 	{
 		WEAPON,
 		MATERIAL,

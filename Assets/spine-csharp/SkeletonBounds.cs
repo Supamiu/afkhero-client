@@ -30,10 +30,10 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine {
-	public class SkeletonBounds {
+namespace Spine
+{
+    public class SkeletonBounds {
 		private ExposedList<Polygon> polygonPool = new ExposedList<Polygon>();
 		private float minX, minY, maxX, maxY;
 

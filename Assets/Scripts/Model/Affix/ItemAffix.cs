@@ -32,10 +32,11 @@ namespace AFKHero.Model.Affix
         }
 
 
-        public ItemAffix(float min, float max)
+        public ItemAffix(string name, float min, float max)
         {
             minValue = min;
             maxValue = max;
+            affixName = name;
         }
 
         /// <summary>

@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEditor;
-using System.Collections.Generic;
-using System.Linq;
 
 [CustomEditor(typeof(Hotbar))]
 public class HotbarEditor : Editor

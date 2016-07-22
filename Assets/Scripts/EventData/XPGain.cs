@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace AFKHero.EventData
+﻿namespace AFKHero.EventData
 {
-	public class XPGain
+    public class XPGain
 	{
 		public double xp;
 
@@ -11,7 +8,7 @@ namespace AFKHero.EventData
 
 		public XPGain(double xp,double forNext){
 			this.xp = xp;
-			this.xpForNextLevel = forNext;
+            xpForNextLevel = forNext;
 		}
 	}
 }

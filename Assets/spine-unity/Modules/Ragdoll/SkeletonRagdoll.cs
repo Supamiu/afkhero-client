@@ -49,9 +49,9 @@ namespace Spine.Unity.Modules {
 		public Rigidbody RootRigidbody { get; private set; }
 		public Bone StartingBone { get; private set; }
 		Vector3 rootOffset;
-		public Vector3 RootOffset { get { return this.rootOffset; } }
+		public Vector3 RootOffset { get { return rootOffset; } }
 		bool isActive;
-		public bool IsActive { get { return this.isActive; } }
+		public bool IsActive { get { return isActive; } }
 
 		IEnumerator Start () {
 			if (parentSpaceHelper == null) {

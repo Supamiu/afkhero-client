@@ -4,10 +4,10 @@
 *****************************************************************************/
 
 using UnityEngine;
-using Spine;
 
-namespace Spine.Unity {
-	public static class SkeletonExtensions {
+namespace Spine.Unity
+{
+    public static class SkeletonExtensions {
 
 		const float ByteToFloat = 1f / 255f;
 

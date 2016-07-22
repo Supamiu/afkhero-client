@@ -30,10 +30,10 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine {
-	public class TransformConstraint : IUpdatable {
+namespace Spine
+{
+    public class TransformConstraint : IUpdatable {
 		internal TransformConstraintData data;
 		internal Bone bone, target;
 		internal float rotateMix, translateMix, scaleMix, shearMix;

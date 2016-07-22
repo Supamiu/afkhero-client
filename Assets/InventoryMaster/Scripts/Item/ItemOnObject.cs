@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class ItemOnObject : MonoBehaviour                   //Saves the Item in the slot
 {

@@ -1,13 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using AFKHero.Core.Save;
+﻿using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
-	/// <summary>
-	/// Affacte les taux de loot.
-	/// </summary>
-	public class Luck : AbstractStat
+    /// <summary>
+    /// Affacte les taux de loot.
+    /// </summary>
+    public class Luck : AbstractStat
 	{
 
 		public override void Add (int amount)
@@ -16,12 +14,12 @@ namespace AFKHero.Stat
 		}
 
 		public override SaveData Save(SaveData data){
-			data.luck = this.amount;
+			data.luck = amount;
 			return data;
 		}
 
 		public override void DoLoad (SaveData data){
-			this.amount = data.luck;
+            amount = data.luck;
 		}
 
 		public override string GetName ()

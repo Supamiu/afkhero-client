@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using AFKHero.Core.Event;
+﻿using AFKHero.Core.Event;
 using AFKHero.EventData;
 using AFKHero.Behaviour;
 using AFKHero.Tools;
@@ -8,23 +6,23 @@ using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
-	/// <summary>
-	/// Affecte les chances d'esquiver.
-	/// </summary>
-	public class Dodge : AbstractStat
+    /// <summary>
+    /// Affecte les chances d'esquiver.
+    /// </summary>
+    public class Dodge : AbstractStat
 	{
 		private Damageable damageable;
 
 		void Start ()
 		{
-			this.damageable = GetComponent<Damageable> ();
+            damageable = GetComponent<Damageable> ();
 			EventDispatcher.Instance.Register ("attack.compute", new Listener<GenericGameEvent<Attack>> ((ref GenericGameEvent<Attack> e) => {
-				if (e.Data.target == this.damageable) {
+				if (e.Data.target == damageable) {
 					double precision = e.Data.attacker.GetComponent<Agility> ().Value;
-					bool hits = this.GetHits (precision);
+					bool hits = GetHits(precision);
 					e.Data.hits = hits;
-					if (precision > this.Value) {
-						float bonus = RatioEngine.Instance.GetCritBonus (precision, this.Value);
+					if (precision > Value) {
+						float bonus = RatioEngine.Instance.GetCritBonus (precision, Value);
 						e.Data.critChances += bonus;
 					}
 				}
@@ -39,7 +37,7 @@ namespace AFKHero.Stat
 
 		private bool GetHits (double precision)
 		{
-			return PercentageUtils.Instance.GetResult ((float)precision / (float)this.Value);
+			return PercentageUtils.Instance.GetResult ((float)precision / (float)Value);
 		}
 
 		public override string GetName ()

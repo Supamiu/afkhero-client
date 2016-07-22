@@ -66,8 +66,8 @@ namespace Spine.Unity {
 		/// <summary>Gets the skeleton.</summary>
 		public Skeleton Skeleton {
 			get {
-				this.Initialize(false);
-				return this.skeleton;
+                Initialize(false);
+				return skeleton;
 			}
 		}
 

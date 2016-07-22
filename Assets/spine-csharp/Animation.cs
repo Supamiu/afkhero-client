@@ -30,10 +30,10 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine {
-	public class Animation {
+namespace Spine
+{
+    public class Animation {
 		internal ExposedList<Timeline> timelines;
 		internal float duration;
 		internal String name;

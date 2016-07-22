@@ -8,13 +8,9 @@
 
 using UnityEngine;
 using UnityEditor;
-using UnityEditorInternal;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.IO;
-using Spine;
 
 
 /// <summary>
@@ -45,8 +41,9 @@ using Spine;
 /// Draw Order Keyframes
 /// </summary>
 /// 
-namespace Spine.Unity.Editor {
-	public static class SkeletonBaker {
+namespace Spine.Unity.Editor
+{
+    public static class SkeletonBaker {
 
 		#region SkeletonAnimator's Mecanim Clips
 		#if SPINE_SKELETON_ANIMATOR

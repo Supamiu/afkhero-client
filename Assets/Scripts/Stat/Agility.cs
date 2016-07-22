@@ -1,15 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using AFKHero.Core.Event;
-using AFKHero.EventData;
-using AFKHero.Core.Save;
+﻿using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
-	/// <summary>
-	/// Influence la précision et le taux de critiques.
-	/// </summary>
-	public class Agility : AbstractStat
+    /// <summary>
+    /// Influence la précision et le taux de critiques.
+    /// </summary>
+    public class Agility : AbstractStat
 	{
 		public override void Add (int amount)
 		{
@@ -17,12 +13,12 @@ namespace AFKHero.Stat
 		}
 
 		public override SaveData Save(SaveData data){
-			data.agility = this.amount;
+			data.agility = amount;
 			return data;
 		}
 
 		public override void DoLoad (SaveData data){
-			this.amount = data.agility;
+            amount = data.agility;
 		}
 
 		public override string GetName ()

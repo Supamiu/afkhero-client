@@ -8,10 +8,10 @@ using UnityEditor;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Spine;
 
-namespace Spine.Unity.Editor {
-	public struct SpineDrawerValuePair {
+namespace Spine.Unity.Editor
+{
+    public struct SpineDrawerValuePair {
 		public string str;
 		public SerializedProperty property;
 

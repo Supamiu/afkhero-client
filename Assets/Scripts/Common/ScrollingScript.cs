@@ -41,7 +41,7 @@ namespace AFKHero.Common
 		void Start ()
 		{
 			EventDispatcher.Instance.Register ("movement.enabled", new Listener<GenericGameEvent<bool>> ((ref GenericGameEvent<bool> e) => {
-				this.moving = e.Data;
+                moving = e.Data;
 			}));
 
 			// For infinite background only

@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace AFKHero.EventData
+﻿namespace AFKHero.EventData
 {
-	public class LevelUp
+    public class LevelUp
 	{
 		public double level;
 
@@ -13,8 +10,8 @@ namespace AFKHero.EventData
 
 		public LevelUp(double level, double xpForNext, double xp){
 			this.level = level;
-			this.xpForNextLevel = xpForNext;
-			this.xpRemaining = xp;
+            xpForNextLevel = xpForNext;
+            xpRemaining = xp;
 		}
 	}
 }

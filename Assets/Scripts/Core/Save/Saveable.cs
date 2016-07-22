@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace AFKHero.Core.Save
+﻿namespace AFKHero.Core.Save
 {
-	public interface Saveable
+    public interface Saveable
 	{
 		SaveData Save(SaveData save);
 

@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 
 using AFKHero.Stat;
 
 namespace AFKHero.UI.HeroMenu
 {
-	public class PopulateStatList : MonoBehaviour {
+    public class PopulateStatList : MonoBehaviour {
 
 		public GameObject hero;
 		public StatElement prefab;

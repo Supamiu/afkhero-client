@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using AFKHero.Core.Tools;
 
 namespace AFKHero.Tools
 {
-	public class RatioEngine : Singleton<RatioEngine>
+    public class RatioEngine : Singleton<RatioEngine>
 	{
 
 		public double GetEnemyDamage (float damageRatio, float distance)

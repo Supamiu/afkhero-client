@@ -31,8 +31,8 @@ namespace AFKHero.Core.Event
 		/// <param name="callback">Callback.</param>
 		public Listener (GameEventAction callback)
 		{
-			this.Callback = callback;
-			this.Priority = 0;
+            Callback = callback;
+            Priority = 0;
 		}
 
 		/// <summary>
@@ -42,8 +42,8 @@ namespace AFKHero.Core.Event
 		/// <param name="priority">Priority.</param>
 		public Listener (GameEventAction callback, int priority)
 		{
-			this.Callback = callback;
-			this.Priority = priority;
+            Callback = callback;
+            Priority = priority;
 		}
 
 		public Type getType ()
@@ -55,7 +55,7 @@ namespace AFKHero.Core.Event
 		{
 			try {
 				T eventData = (T)e;
-				this.Callback (ref eventData);
+                Callback(ref eventData);
 			} catch (InvalidCastException ex) {
 				Debug.LogError (ex.ToString () + " -> " + e.ToString () + " could not be casted to destination type.");
 			}
@@ -63,7 +63,7 @@ namespace AFKHero.Core.Event
 
 		public int getPriority ()
 		{
-			return this.Priority;
+			return Priority;
 		}
 	}
 }

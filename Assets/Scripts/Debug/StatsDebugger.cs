@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
@@ -8,7 +7,7 @@ using AFKHero.Stat;
 
 namespace AFKHero.Debugger
 {
-	public class StatsDebugger : MonoBehaviour
+    public class StatsDebugger : MonoBehaviour
 	{
 		public Text level;
 
@@ -27,31 +26,31 @@ namespace AFKHero.Debugger
 		void Start ()
 		{
 			EventDispatcher.Instance.Register ("level.up", new Listener<GenericGameEvent<LevelUp>> ((ref GenericGameEvent<LevelUp> e) => {
-				this.level.text = "Level : " + e.Data.level;
-				this.xp.text = "XP : " + e.Data.xpRemaining + " / " + e.Data.xpForNextLevel;
+                level.text = "Level : " + e.Data.level;
+                xp.text = "XP : " + e.Data.xpRemaining + " / " + e.Data.xpForNextLevel;
 			}, -5000));
 
 			EventDispatcher.Instance.Register ("experience.ui", new Listener<GenericGameEvent<XPGain>> ((ref GenericGameEvent<XPGain> e) => {
-				this.xp.text = "XP : " + e.Data.xp + " / " + e.Data.xpForNextLevel;
+                xp.text = "XP : " + e.Data.xp + " / " + e.Data.xpForNextLevel;
 			}, -1));
 
 			EventDispatcher.Instance.Register ("gold", new Listener<GenericGameEvent<double>> ((ref GenericGameEvent<double> e) => {
-				this.goldAmount += e.Data;
-				this.gold.text = "Gold : " + this.goldAmount;
+                goldAmount += e.Data;
+                gold.text = "Gold : " + goldAmount;
 			}, -1));
 
 			EventDispatcher.Instance.Register ("attack.damage", new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> e) => {
 				if (e.Data.target.gameObject.name == "Hero") {
-					this.hpActual -= e.Data.damage;
-					this.hp.text = "HP : " + this.hpActual + "/" + this.hpMax;
+                    hpActual -= e.Data.damage;
+                    hp.text = "HP : " + hpActual + "/" + hpMax;
 				}
 			}, -1));
 
 			EventDispatcher.Instance.Register ("ui.stat.updated", new Listener<GenericGameEvent<AbstractStat>> ((ref GenericGameEvent<AbstractStat> e) => {
 				if (e.Data.GetName () == "vitality") {
-					this.hpActual = ((Vitality)e.Data).currentHp;
-					this.hpMax = e.Data.Value;
-					this.hp.text = "HP : " + ((Vitality)e.Data).currentHp + "/" + e.Data.Value;
+                    hpActual = ((Vitality)e.Data).currentHp;
+                    hpMax = e.Data.Value;
+                    hp.text = "HP : " + ((Vitality)e.Data).currentHp + "/" + e.Data.Value;
 				}
 			}, -1));
 		}

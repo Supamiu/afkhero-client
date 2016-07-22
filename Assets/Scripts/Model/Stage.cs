@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using AFKHero.Behaviour.Monster;
 
@@ -18,7 +17,7 @@ namespace AFKHero.Model
 
         public bool Equals(Stage o)
         {
-            return this.bestiary.Equals(o.bestiary) && this.boss == o.boss;
+            return bestiary.Equals(o.bestiary) && boss == o.boss;
         }
     }
 }

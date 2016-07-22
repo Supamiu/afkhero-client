@@ -30,11 +30,11 @@
  *****************************************************************************/
 using UnityEditor;
 using UnityEngine;
-using Spine;
 
-namespace Spine.Unity.Editor {
-	
-	[CustomEditor(typeof(SkeletonAnimation))]
+namespace Spine.Unity.Editor
+{
+
+    [CustomEditor(typeof(SkeletonAnimation))]
 	public class SkeletonAnimationInspector : SkeletonRendererInspector {
 		protected SerializedProperty animationName, loop, timeScale, autoReset;
 		protected bool wasAnimationNameChanged;

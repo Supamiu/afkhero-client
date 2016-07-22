@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using AFKHero.Behaviour;
+﻿using AFKHero.Behaviour;
 using System;
 
 namespace AFKHero.EventData
 {
-	public class Damage
+    public class Damage
 	{
 
 		public double damage{ get; private set; }
@@ -20,7 +19,7 @@ namespace AFKHero.EventData
 		public Damage (Agressive attacker, Damageable target, double damage, bool crit, bool hits)
 		{
 			this.damage = Math.Round (damage);
-			this.critical = crit;
+            critical = crit;
 			this.target = target;
 			this.attacker = attacker;
 			this.hits = hits;

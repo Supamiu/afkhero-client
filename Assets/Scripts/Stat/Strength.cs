@@ -1,13 +1,11 @@
-﻿using UnityEngine;
-using AFKHero.Core.Event;
-using AFKHero.Core.Save;
+﻿using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
-	/// <summary>
-	/// Affecte les damages d'attaque;
-	/// </summary>
-	public class Strength : AbstractStat
+    /// <summary>
+    /// Affecte les damages d'attaque;
+    /// </summary>
+    public class Strength : AbstractStat
 	{
 		public override void Add (int amount)
 		{
@@ -15,12 +13,12 @@ namespace AFKHero.Stat
 		}
 
 		public override SaveData Save(SaveData data){
-			data.strength = this.amount;
+			data.strength = amount;
 			return data;
 		}
 
 		public override void DoLoad (SaveData data){
-			this.amount = data.strength;
+            amount = data.strength;
 		}
 
 		public override string GetName ()

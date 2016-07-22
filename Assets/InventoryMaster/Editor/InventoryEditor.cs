@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEditor;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 [CustomEditor(typeof(Inventory))]
 public class InventoryEditor : Editor

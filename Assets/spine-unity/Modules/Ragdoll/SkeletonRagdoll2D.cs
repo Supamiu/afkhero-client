@@ -7,11 +7,10 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Spine.Unity;
-using UnityEngine.Assertions;
 
-namespace Spine.Unity.Modules {
-	[RequireComponent(typeof(SkeletonRenderer))]
+namespace Spine.Unity.Modules
+{
+    [RequireComponent(typeof(SkeletonRenderer))]
 	public class SkeletonRagdoll2D : MonoBehaviour {
 		static Transform parentSpaceHelper;
 
@@ -59,9 +58,9 @@ namespace Spine.Unity.Modules {
 		public Rigidbody2D RootRigidbody { get; private set; }
 		public Bone StartingBone { get; private set; }
 		Vector2 rootOffset;
-		public Vector3 RootOffset { get { return this.rootOffset; } }
+		public Vector3 RootOffset { get { return rootOffset; } }
 		bool isActive;
-		public bool IsActive { get { return this.isActive; } }
+		public bool IsActive { get { return isActive; } }
 //		public Transform skeletonSpaceTransform;
 
 		IEnumerator Start () {
@@ -105,7 +104,7 @@ namespace Spine.Unity.Modules {
 		}
 
 		public Vector3 EstimatedSkeletonPosition {
-			get { return this.RootRigidbody.position - rootOffset; }
+			get { return RootRigidbody.position - rootOffset; }
 		}
 
 		/// <summary>Instantiates the ragdoll simulation and applies its transforms to the skeleton.</summary>
@@ -113,7 +112,7 @@ namespace Spine.Unity.Modules {
 			isActive = true;
 			mix = 1;
 
-			Bone startingBone = this.StartingBone = skeleton.FindBone(startingBoneName);
+			Bone startingBone = StartingBone = skeleton.FindBone(startingBoneName);
 			RecursivelyCreateBoneProxies(startingBone);
 
 			RootRigidbody = boneTable[startingBone].GetComponent<Rigidbody2D>();
@@ -255,7 +254,7 @@ namespace Spine.Unity.Modules {
 				return;
 
 			var boneGameObject = new GameObject(boneName);
-			boneGameObject.layer = this.colliderLayer;
+			boneGameObject.layer = colliderLayer;
 			Transform t = boneGameObject.transform;
 			boneTable.Add(b, t);
 
@@ -278,7 +277,7 @@ namespace Spine.Unity.Modules {
 				}
 			}
 			var rb = boneGameObject.AddComponent<Rigidbody2D>();
-			rb.gravityScale = this.gravityScale;
+			rb.gravityScale = gravityScale;
 
 			#if FLIPDEBUG
 			rb.isKinematic = spawnKinematic;
@@ -299,7 +298,7 @@ namespace Spine.Unity.Modules {
 			bool flipY = skeleton.flipY;
 			bool flipXOR = flipX ^ flipY;
 			bool flipOR = flipX || flipY;
-			var startingBone = this.StartingBone;
+			var startingBone = StartingBone;
 
 			foreach (var pair in boneTable) {
 				var b = pair.Key;

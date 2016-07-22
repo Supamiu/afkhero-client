@@ -91,7 +91,7 @@ namespace Spine {
 		public SkeletonData ReadSkeletonData (TextReader reader) {
 			if (reader == null) throw new ArgumentNullException("reader cannot be null.");
 
-			var scale = this.Scale;
+			var scale = Scale;
 			var skeletonData = new SkeletonData();
 
 			var root = Json.Deserialize(reader) as Dictionary<String, Object>;
@@ -276,7 +276,7 @@ namespace Spine {
 			if (map.ContainsKey("name"))
 				name = (String)map["name"];
 
-			var scale = this.Scale;
+			var scale = Scale;
 
 			var type = AttachmentType.region;
 			if (map.ContainsKey("type")) {
@@ -457,7 +457,7 @@ namespace Spine {
 		private void ReadAnimation (String name, Dictionary<String, Object> map, SkeletonData skeletonData) {
 			var timelines = new ExposedList<Timeline>();
 			float duration = 0;
-			var scale = this.Scale;
+			var scale = Scale;
 
 			if (map.ContainsKey("slots")) {
 				foreach (KeyValuePair<String, Object> entry in (Dictionary<String, Object>)map["slots"]) {

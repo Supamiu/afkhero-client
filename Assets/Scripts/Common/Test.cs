@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 
-namespace AFKHero.Common{
-	
-	public class Test : MonoBehaviour
+namespace AFKHero.Common
+{
+
+    public class Test : MonoBehaviour
 	{
 		/// <summary>
 		/// Fonction de test bateau

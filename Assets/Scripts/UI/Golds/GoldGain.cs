@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using AFKHero.Common;
 
 namespace AFKHero.UI.Golds
 {
-	public class GoldGain : MonoBehaviour
+    public class GoldGain : MonoBehaviour
 	{
 		public Animator animator;
 
@@ -14,7 +13,7 @@ namespace AFKHero.UI.Golds
 		// Use this for initialization
 		void Start ()
 		{
-			AnimatorClipInfo[] clipInfo = this.animator.GetCurrentAnimatorClipInfo (0);
+			AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo (0);
 			Destroy (gameObject, clipInfo [0].clip.length);
 		}
 
@@ -24,7 +23,7 @@ namespace AFKHero.UI.Golds
 		/// <param name="amount">Amount.</param>
 		public void SetAmount (double amount)
 		{
-			this.text.text = "+" + Formatter.Format (amount);
+            text.text = "+" + Formatter.Format (amount);
 		}
 	}
 }

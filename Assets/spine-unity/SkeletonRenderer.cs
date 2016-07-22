@@ -37,11 +37,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Spine.Unity.MeshGeneration;
 
-namespace Spine.Unity {
-	/// <summary>Renders a skeleton.</summary>
-	[ExecuteInEditMode, RequireComponent(typeof(MeshFilter), typeof(MeshRenderer)), DisallowMultipleComponent]
+namespace Spine.Unity
+{
+    /// <summary>Renders a skeleton.</summary>
+    [ExecuteInEditMode, RequireComponent(typeof(MeshFilter), typeof(MeshRenderer)), DisallowMultipleComponent]
 	[HelpURL("http://esotericsoftware.com/spine-unity-documentation#Rendering")]
 	public class SkeletonRenderer : MonoBehaviour {
 
@@ -216,7 +216,7 @@ namespace Spine.Unity {
 
 				)
 				#if SPINE_OPTIONAL_RENDEROVERRIDE
-				&& this.generateMeshOverride == null
+				&& generateMeshOverride == null
 				#endif
 
 				#if SPINE_OPTIONAL_SUBMESHRENDERER
@@ -239,7 +239,7 @@ namespace Spine.Unity {
 			bool renderMeshes = this.renderMeshes;
 
 			// Clear last state of attachments and submeshes
-			var workingInstruction = this.currentInstructions;
+			var workingInstruction = currentInstructions;
 			var workingAttachments = workingInstruction.attachments;
 			workingAttachments.Clear(false);
 			workingAttachments.GrowIfNeeded(drawOrderCount);
@@ -321,7 +321,7 @@ namespace Spine.Unity {
 				if ((vertexCount > 0 && lastMaterial.GetInstanceID() != material.GetInstanceID()) || forceSeparate) {
 					workingSubmeshInstructions.Add(
 						new Spine.Unity.MeshGeneration.SubmeshInstruction {
-							skeleton = this.skeleton,
+							skeleton = skeleton,
 							material = lastMaterial,
 							startSlot = submeshStartSlotIndex,
 							endSlot = i,
@@ -347,7 +347,7 @@ namespace Spine.Unity {
 			if (submeshVertexCount != 0) {
 				workingSubmeshInstructions.Add(
 					new Spine.Unity.MeshGeneration.SubmeshInstruction {
-						skeleton = this.skeleton,
+						skeleton = skeleton,
 						material = lastMaterial,
 						startSlot = submeshStartSlotIndex,
 						endSlot = drawOrderCount,
@@ -360,9 +360,9 @@ namespace Spine.Unity {
 			}
 
 			workingInstruction.vertexCount = vertexCount;
-			workingInstruction.immutableTriangles = this.immutableTriangles;
+			workingInstruction.immutableTriangles = immutableTriangles;
 			#if SPINE_OPTIONAL_FRONTFACING
-			workingInstruction.frontFacing = this.frontFacing;
+			workingInstruction.frontFacing = frontFacing;
 			#endif
 
 			// STEP 1.9. Post-process workingInstructions.
@@ -384,8 +384,8 @@ namespace Spine.Unity {
 			#endif
 
 			#if SPINE_OPTIONAL_RENDEROVERRIDE
-			if (this.generateMeshOverride != null) {
-				this.generateMeshOverride(workingInstruction);
+			if (generateMeshOverride != null) {
+                generateMeshOverride(workingInstruction);
 
 				if (disableRenderingOnOverride) {
 					return;
@@ -405,7 +405,7 @@ namespace Spine.Unity {
 
 				#if SPINE_OPTIONAL_NORMALS
 				if (calculateNormals) {
-					Vector3[] localNormals = this.normals = new Vector3[vertexCount];
+					Vector3[] localNormals = normals = new Vector3[vertexCount];
 					Vector3 normal = new Vector3(0, 0, -1);
 					for (int i = 0; i < vertexCount; i++)
 						localNormals[i] = normal;
@@ -413,7 +413,7 @@ namespace Spine.Unity {
 
 				// For dynamic tangent calculation, you can remove the tangent-filling logic and add tangent calculation logic below.
 				if (calculateTangents) {
-					Vector4[] localTangents = this.tangents = new Vector4[vertexCount];
+					Vector4[] localTangents = tangents = new Vector4[vertexCount];
 					Vector4 tangent = new Vector4(1, 0, 0, -1);
 					for (int i = 0; i < vertexCount; i++)
 						localTangents[i] = tangent;
@@ -652,7 +652,7 @@ namespace Spine.Unity {
 
 				// For dynamic calculated tangents, this needs to be moved out of the vertexCount check block when replacing the logic, also ensuring the size.
 				if (calculateTangents)
-					currentMesh.tangents = this.tangents;
+					currentMesh.tangents = tangents;
 			}
 			#endif
 
@@ -660,7 +660,7 @@ namespace Spine.Unity {
 			// This thorough structure check is cheaper than updating triangles every frame.
 			bool mustUpdateMeshStructure = CheckIfMustUpdateMeshStructure(workingInstruction, currentSmartMeshInstructionUsed);
 			if (mustUpdateMeshStructure) {
-				var thisSubmeshMaterials = this.submeshMaterials;
+				var thisSubmeshMaterials = submeshMaterials;
 				thisSubmeshMaterials.Clear(false);
 
 				int submeshCount = workingSubmeshInstructions.Count;
@@ -691,7 +691,7 @@ namespace Spine.Unity {
 			// CheckIfMustUpdateMaterialArray (last pushed materials vs currently parsed materials)
 			// Needs to check against the Working Submesh Instructions Materials instead of the cached submeshMaterials.
 			{
-				var lastPushedMaterials = this.sharedMaterials;
+				var lastPushedMaterials = sharedMaterials;
 				bool mustUpdateRendererMaterials = mustUpdateMeshStructure ||
 					(lastPushedMaterials.Length != workingSubmeshInstructions.Count);
 
@@ -825,7 +825,7 @@ namespace Spine.Unity {
 			}
 
 			#if SPINE_OPTIONAL_FRONTFACING
-			if (!this.renderMeshes && !this.frontFacing) {
+			if (!renderMeshes && !frontFacing) {
 			#else
 			if (!this.renderMeshes) {
 			#endif
@@ -969,36 +969,36 @@ namespace Spine.Unity {
 				#endif
 
 				public void Clear () {
-					this.attachments.Clear(false);
-					this.submeshInstructions.Clear(false);
+                    attachments.Clear(false);
+                    submeshInstructions.Clear(false);
 
-					#if SPINE_OPTIONAL_FRONTFACING
-					this.attachmentFlips.Clear(false);
+#if SPINE_OPTIONAL_FRONTFACING
+                    attachmentFlips.Clear(false);
 					#endif
 				}
 
 				public void Set (Instruction other) {
-					this.immutableTriangles = other.immutableTriangles;
-					this.vertexCount = other.vertexCount;
+                    immutableTriangles = other.immutableTriangles;
+                    vertexCount = other.vertexCount;
 
-					this.attachments.Clear(false);
-					this.attachments.GrowIfNeeded(other.attachments.Capacity);
-					this.attachments.Count = other.attachments.Count;
-					other.attachments.CopyTo(this.attachments.Items);
+                    attachments.Clear(false);
+                    attachments.GrowIfNeeded(other.attachments.Capacity);
+                    attachments.Count = other.attachments.Count;
+					other.attachments.CopyTo(attachments.Items);
 
-					#if SPINE_OPTIONAL_FRONTFACING
-					this.frontFacing = other.frontFacing;
-					this.attachmentFlips.Clear(false);
-					this.attachmentFlips.GrowIfNeeded(other.attachmentFlips.Capacity);
-					this.attachmentFlips.Count = other.attachmentFlips.Count;
-					if (this.frontFacing)
-						other.attachmentFlips.CopyTo(this.attachmentFlips.Items);
-					#endif
+#if SPINE_OPTIONAL_FRONTFACING
+                    frontFacing = other.frontFacing;
+                    attachmentFlips.Clear(false);
+                    attachmentFlips.GrowIfNeeded(other.attachmentFlips.Capacity);
+                    attachmentFlips.Count = other.attachmentFlips.Count;
+					if (frontFacing)
+						other.attachmentFlips.CopyTo(attachmentFlips.Items);
+#endif
 
-					this.submeshInstructions.Clear(false);
-					this.submeshInstructions.GrowIfNeeded(other.submeshInstructions.Capacity);
-					this.submeshInstructions.Count = other.submeshInstructions.Count;
-					other.submeshInstructions.CopyTo(this.submeshInstructions.Items);
+                    submeshInstructions.Clear(false);
+                    submeshInstructions.GrowIfNeeded(other.submeshInstructions.Capacity);
+                    submeshInstructions.Count = other.submeshInstructions.Count;
+					other.submeshInstructions.CopyTo(submeshInstructions.Items);
 				}
 			}
 		}

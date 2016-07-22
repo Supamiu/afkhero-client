@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace AFKHero.UI
 {
-	public class PopupMenu : MonoBehaviour
+    public class PopupMenu : MonoBehaviour
 	{
 		private Menu[] menus;
 
@@ -12,11 +11,11 @@ namespace AFKHero.UI
 		// Use this for initialization
 		void Start ()
 		{
-			this.menus = layout.GetComponentsInChildren<Menu> ();
-			foreach (Menu m in this.menus) {
+            menus = layout.GetComponentsInChildren<Menu> ();
+			foreach (Menu m in menus) {
 				m.Hide ();
 			}
-			this.Close ();
+            Close();
 		}
 
 		/// <summary>
@@ -25,8 +24,8 @@ namespace AFKHero.UI
 		/// <param name="menuName">Menu name.</param>
 		public void Show (string menuName)
 		{
-			this.layout.SetActive (true);
-			foreach (Menu m in this.menus) {
+            layout.SetActive (true);
+			foreach (Menu m in menus) {
 				if (m.id == menuName) {
 					m.Show ();
 				} else {
@@ -41,13 +40,13 @@ namespace AFKHero.UI
 		/// <param name="menuName">Menu name.</param>
 		public void Toggle (string menuName)
 		{
-			foreach (Menu m in this.menus) {
+			foreach (Menu m in menus) {
 				if (m.id == menuName) {
 					if (m.IsShown ()) {
 						m.Hide ();
-						this.Close ();
+                        Close();
 					} else {
-						this.layout.SetActive (true);
+                        layout.SetActive (true);
 						m.Show ();
 					}
 				} else {
@@ -60,7 +59,7 @@ namespace AFKHero.UI
 		/// Close the menu.
 		/// </summary>
 		public void Close(){
-			this.layout.SetActive (false);
+            layout.SetActive (false);
 		}
 	}
 }

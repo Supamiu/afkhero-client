@@ -1,22 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace AFKHero.UI
 {
-	public class Menu : MonoBehaviour
+    public class Menu : MonoBehaviour
 	{
 		public string id;
 
 		public void Show(){
-			this.gameObject.SetActive (true);
+            gameObject.SetActive (true);
 		}
 
 		public void Hide(){
-			this.gameObject.SetActive (false);
+            gameObject.SetActive (false);
 		}
 
 		public bool IsShown(){
-			return this.gameObject.activeSelf;
+			return gameObject.activeSelf;
 		}
 	}
 }

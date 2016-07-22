@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 public class InventoryDesign : MonoBehaviour
 {
 

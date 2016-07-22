@@ -69,7 +69,7 @@ namespace Spine.Unity.Modules {
 				if (e.Float > 0)
 					spawnRate = e.Float;
 				if (e.String != null) {
-					this.color = HexToColor(e.String);
+                    color = HexToColor(e.String);
 				}
 			}
 		}
