@@ -38,6 +38,11 @@ namespace AFKHero.EventData
 		/// </summary>
 		public bool hits = true;
 
+        /// <summary>
+        /// La réduction de damage causée par la défense de la cible.
+        /// </summary>
+        public double damageReduction = 0f;
+
 		/// <summary>
 		/// The target.
 		/// </summary>
@@ -54,7 +59,7 @@ namespace AFKHero.EventData
 		/// <returns>The damage.</returns>
 		public Damage getDamage ()
 		{
-			double finalDamage = critical ? baseDamage * criticalRatio : baseDamage;
+			double finalDamage = critical ? (baseDamage * criticalRatio) - damageReduction : baseDamage - damageReduction;
 			return new Damage (attacker, target, finalDamage, critical, hits);
 		}
 	}
