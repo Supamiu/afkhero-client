@@ -11,7 +11,7 @@ namespace AFKHero.UI.GameStart
 		public Text worldText;
 
 		void Start(){
-            worldText.text = "Monde " + (manager.currentWorld + 1) + " : " + manager.GetCurrentWorld ().worldName;
+            worldText.text = "Monde " + (manager.GetCurrentWorldIndex() + 1) + " : " + manager.GetCurrentWorld ().worldName;
 		}
 	}
 }

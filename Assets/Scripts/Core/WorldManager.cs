@@ -20,14 +20,11 @@ namespace AFKHero.Core
         public ScrollingScript parallaxThirdPlan;
 
         [Header("Mondes existants")]
-        public List<World> worlds;
-
-        [Header("Monde en cours")]
-        public int currentWorld = 0;
+        private List<World> worlds;
 
         void Start()
         {
-            worlds = Resources.Load<WorldDatabase>("Databases/WorldDatabase").worlds;
+            worlds = ResourceLoader.LoadWorldDatabase().worlds;
             if (worlds.Count == 0)
             {
                 Debug.LogError("WorldManager has 0 worlds, this should never happen !");
@@ -53,6 +50,11 @@ namespace AFKHero.Core
                 }
             }
             return distance;
+        }
+
+        public int GetCurrentWorldIndex()
+        {
+            return worlds.IndexOf(GetCurrentWorld());
         }
 
         public World GetCurrentWorld()
