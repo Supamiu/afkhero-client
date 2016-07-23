@@ -11,4 +11,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a234f379e4eb40840810088068ff500c, type: 3}
   m_Name: WearableDatabase
   m_EditorClassIdentifier: 
-  wearables: []
+  wearables:
+  - icon: {fileID: 21300000, guid: 4771a8e8ab080834395005843d0d09ac, type: 3}
+    itemName: Epee de test laule
+    rarity: 0
+    description: "Une \xE9p\xE9e de test"
+    sprite: {fileID: 21300000, guid: 768c02f09d295954983afe992a1c00e6, type: 3}
+    type: 8
+  - icon: {fileID: 0}
+    itemName: "Anneau de critique l\xE9gendaire"
+    rarity: 3
+    description: Un anneau.
+    sprite: {fileID: 0}
+    type: 4

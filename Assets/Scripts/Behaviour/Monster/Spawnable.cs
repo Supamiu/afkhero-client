@@ -1,6 +1,8 @@
 using UnityEngine;
 using AFKHero.Tools;
 using AFKHero.Stat;
+using System.Collections.Generic;
+using AFKHero.Model;
 
 namespace AFKHero.Behaviour.Monster
 {
@@ -25,6 +27,9 @@ namespace AFKHero.Behaviour.Monster
 
         [Header("Valeur de base de la défense")]
         public double baseDefenseValue = 1f;
+
+        [HideInInspector]
+        public List<Drop> dropList = new List<Drop>();
 
 		public float Distance{ get; private set; }
 

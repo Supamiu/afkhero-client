@@ -1,7 +1,7 @@
 using UnityEngine;
 using AFKHero.Core.Database;
 using UnityEditor;
-using AFKHero.Editor.Layout;
+using AFKHero.EditorExtension.Layout;
 using AFKHero.Core;
 
 public class DatabaseManager : EditorWindow

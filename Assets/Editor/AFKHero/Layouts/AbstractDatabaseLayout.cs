@@ -1,4 +1,4 @@
-namespace AFKHero.Editor.Layout
+namespace AFKHero.EditorExtension.Layout
 {
     public abstract class AbstractDatabaseLayout
     {

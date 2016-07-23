@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using AFKHero.Core;
 
-namespace AFKHero.Editor.Layout
+namespace AFKHero.EditorExtension.Layout
 {
     public class WorldDatabaseLayout : AbstractDatabaseLayout
     {
@@ -18,9 +18,17 @@ namespace AFKHero.Editor.Layout
         private string[] innerTabs = { "View database", "Add World" };
 
         private WorldDatabase worldsDatabase;
+        private WearableDatabase wdb;
+
+        //Drops
+        private Dictionary<GUIContent, Item> items = new Dictionary<GUIContent, Item>();
+        private int selectedItemIndex;
+        private GUIContent[] itemNames;
 
         public WorldDatabaseLayout()
         {
+            wdb = ResourceLoader.LoadWearableDatabase();
+
             worldsDatabase = ResourceLoader.LoadWorldDatabase();
         }
 
@@ -30,6 +38,16 @@ namespace AFKHero.Editor.Layout
             {
                 worldsDatabase = ResourceLoader.LoadWorldDatabase();
             }
+            if (wdb == null)
+            {
+                wdb = ResourceLoader.LoadWearableDatabase();
+            }
+            foreach (Wearable w in wdb.wearables)
+            {
+                items.Add(new GUIContent(w.itemName), w);
+            }
+            itemNames = new GUIContent[items.Keys.Count];
+            items.Keys.CopyTo(itemNames, 0);
             GUILayout.BeginHorizontal();
             worldSelectedInnerTab = GUILayout.Toolbar(worldSelectedInnerTab, innerTabs);
             GUILayout.EndHorizontal();
@@ -101,6 +119,10 @@ namespace AFKHero.Editor.Layout
 
         public void DrawWorldEdit(ref World w, bool edit)
         {
+            if (!edit)
+            {
+                worldScrollPosition = GUILayout.BeginScrollView(worldScrollPosition);
+            }
             GUILayout.BeginVertical("Box");
             GUILayout.Space(20);
             w.worldName = EditorGUILayout.TextField("World name", w.worldName);
@@ -126,7 +148,8 @@ namespace AFKHero.Editor.Layout
                 {
                     list = new List<Spawnable>();
                 }
-                EditorGUILayout.LabelField("Bestiary");
+
+                EditorGUILayout.LabelField("Bestiary", EditorStyles.boldLabel);
                 int newCount = Mathf.Max(0, EditorGUILayout.IntField("size", list.Count));
                 while (newCount < list.Count)
                     list.RemoveAt(list.Count - 1);
@@ -137,6 +160,41 @@ namespace AFKHero.Editor.Layout
                     list[j] = (Spawnable)EditorGUILayout.ObjectField(list[j], typeof(Spawnable), true);
                 }
                 w.stages[i].boss = (Spawnable)EditorGUILayout.ObjectField("Final Boss", w.stages[i].boss, typeof(Spawnable), true);
+
+                EditorGUILayout.LabelField("DropList", EditorStyles.boldLabel);
+                if(w.stages[i].dropList == null)
+                {
+                    w.stages[i].dropList = new List<Drop>();
+                }
+                if (w.stages[i].dropList.Count == 0)
+                {
+                    EditorGUILayout.HelpBox("Empty droplist", MessageType.Info);
+                }
+
+                for (int j = 0; i < w.stages[i].dropList.Count; i++)
+                {
+                    Drop d = w.stages[j].dropList[i];
+
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField(d.item.itemName + (d.amount > 1 ? " x " + d.amount : "") + " : " + (d.rate * 100f) + "%");
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button("X"))
+                    {
+                        w.stages[j].dropList.RemoveAt(i);
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+                GUILayout.Space(5);
+                EditorGUILayout.BeginVertical("Box");
+                selectedItemIndex = EditorGUILayout.Popup(selectedItemIndex, itemNames);
+                Drop drop = new Drop(items[itemNames[selectedItemIndex]]);
+                drop.rate = EditorGUILayout.Slider("rate", drop.rate, 0f, 1f);
+                drop.amount = EditorGUILayout.IntField("amount", drop.amount);
+                if (GUILayout.Button("Add item"))
+                {
+                    w.stages[i].dropList.Add(drop);
+                }
+                EditorGUILayout.EndVertical();
                 GUILayout.EndVertical();
             }
             GUILayout.EndVertical();
@@ -150,6 +208,8 @@ namespace AFKHero.Editor.Layout
                     createdWorld = new World();
                     EditorUtility.SetDirty(worldsDatabase);
                 }
+
+                GUILayout.EndScrollView();
             }
         }
     }

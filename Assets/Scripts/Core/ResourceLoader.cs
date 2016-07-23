@@ -17,6 +17,5 @@ namespace AFKHero.Core
         {
             return Resources.Load<WearableDatabase>("Databases/WearableDatabase");
         }
-
     }
 }

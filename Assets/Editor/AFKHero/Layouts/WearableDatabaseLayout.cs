@@ -8,7 +8,7 @@ using AFKHero.Core.Gear;
 using AFKHero.Model.Affix;
 using System;
 
-namespace AFKHero.Editor.Layout
+namespace AFKHero.EditorExtension.Layout
 {
     public class WearableDatabaseLayout : AbstractDatabaseLayout
     {
@@ -74,7 +74,7 @@ namespace AFKHero.Editor.Layout
                         managedItem.Add(false);
                         GUILayout.BeginVertical("Box");
                         GUILayout.BeginHorizontal();
-                        managedItem[i] = EditorGUILayout.Foldout(managedItem[i], wearableDatabase.wearables[i].itemName);
+                        managedItem[i] = EditorGUILayout.Foldout(managedItem[i], wearableDatabase.wearables[i].id + " ---- " + wearableDatabase.wearables[i].itemName);
                         GUILayout.FlexibleSpace();
                         if (i > 0)
                         {
@@ -148,7 +148,8 @@ namespace AFKHero.Editor.Layout
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(list[j].affixName + "(" + list[j].minValue + " - " + list[j].maxValue + ")");
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button("X")) {
+                if (GUILayout.Button("X"))
+                {
                     list.RemoveAt(j);
                 }
                 GUILayout.EndHorizontal();

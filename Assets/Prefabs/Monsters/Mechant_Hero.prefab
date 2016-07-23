@@ -48,12 +48,12 @@ GameObject:
   - 114: {fileID: 11440378}
   - 50: {fileID: 5042590}
   - 61: {fileID: 6113354}
+  - 114: {fileID: 11455734}
   - 114: {fileID: 11459002}
   - 114: {fileID: 11480618}
   - 114: {fileID: 11467310}
   - 114: {fileID: 11466050}
   - 114: {fileID: 11484610}
-  - 114: {fileID: 11455734}
   - 114: {fileID: 11434700}
   - 114: {fileID: 11491922}
   - 114: {fileID: 11403824}
@@ -280,6 +280,7 @@ MonoBehaviour:
   strengthRatio: 1
   dodgeRatio: 1
   baseDefenseValue: 1
+  dropList: []
 --- !u!114 &11459002
 MonoBehaviour:
   m_ObjectHideFlags: 1

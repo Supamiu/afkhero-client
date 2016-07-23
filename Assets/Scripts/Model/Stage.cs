@@ -13,6 +13,8 @@ namespace AFKHero.Model
         [Header("Le boss du palier")]
         public Spawnable boss;
 
+        public List<Drop> dropList;
+
         public bool done = false;
 
         public bool Equals(Stage o)
