@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using AFKHero.Core.Tools;
 
 namespace AFKHero.Tools
@@ -28,5 +28,10 @@ namespace AFKHero.Tools
 		{
 			return ((float)precision - (float)dodge) / 100f;
 		}
+
+        public double GetEnemyDefense(double baseValue, float distance)
+        {
+            return baseValue * 1 + (distance * AFKHero.Config.DEFENSE_BONUS_PER_METER);
+        }
 	}
 }

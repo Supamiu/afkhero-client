@@ -2,6 +2,7 @@ using UnityEngine;
 using AFKHero.Core.Database;
 using UnityEditor;
 using AFKHero.Editor.Layout;
+using AFKHero.Core;
 
 public class DatabaseManager : EditorWindow
 {
@@ -17,10 +18,10 @@ public class DatabaseManager : EditorWindow
     private static void Init()
     {
         GetWindow(typeof(DatabaseManager));
-        WorldDatabase resourceWorldsDatabase = Resources.Load<WorldDatabase>("Databases/WorldDatabase");
+        WorldDatabase resourceWorldsDatabase = ResourceLoader.LoadWorldDatabase();
         if (resourceWorldsDatabase == null)
             DatabaseCreator.CreateWorldDatabase();
-        WearableDatabase resourceWearableDatabase = Resources.Load<WearableDatabase>("Databases/WearableDatabase");
+        WearableDatabase resourceWearableDatabase = ResourceLoader.LoadWearableDatabase();
         if (resourceWearableDatabase == null)
             DatabaseCreator.CreateWearableDatabase();
     }

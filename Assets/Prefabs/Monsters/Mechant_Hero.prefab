@@ -61,6 +61,7 @@ GameObject:
   - 114: {fileID: 11481744}
   - 114: {fileID: 11401054}
   - 223: {fileID: 22346664}
+  - 114: {fileID: 11473936}
   m_Layer: 0
   m_Name: Mechant_Hero
   m_TagString: Untagged
@@ -278,6 +279,7 @@ MonoBehaviour:
   vitalityRatio: 1
   strengthRatio: 1
   dodgeRatio: 1
+  baseDefenseValue: 1
 --- !u!114 &11459002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -320,6 +322,19 @@ MonoBehaviour:
   isMortal: 1
   deathAnimation: DeathBackward
   destroyOnDeath: 1
+--- !u!114 &11473936
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb37c0f4e3713c142be01f5c2097b62d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount: 1
+  ratio: 1
 --- !u!114 &11480618
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,7 +1,8 @@
-﻿using AFKHero.Behaviour;
+using AFKHero.Behaviour;
 using AFKHero.Core.Event;
 using AFKHero.Core.Save;
 using AFKHero.EventData;
+using UnityEngine;
 
 namespace AFKHero.Stat
 {
@@ -15,9 +16,8 @@ namespace AFKHero.Stat
             EventDispatcher.Instance.Register("attack.compute", new Listener<GenericGameEvent<Attack>>((ref GenericGameEvent<Attack> e) => {
                 if (e.Data.target == damageable)
                 {
-                    e.Data.damageReduction = Value / 10;
+                    e.Data.damageReduction = Value / 5000 + Value;
                 }
-
             }, 1000));
         }
 

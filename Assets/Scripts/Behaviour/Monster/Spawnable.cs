@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using AFKHero.Tools;
 using AFKHero.Stat;
 
@@ -6,7 +6,9 @@ namespace AFKHero.Behaviour.Monster
 {
     [RequireComponent (typeof(Strength))]
 	[RequireComponent (typeof(Vitality))]
-	public class Spawnable : MonoBehaviour, Ponderable
+	[RequireComponent (typeof(Dodge))]
+	[RequireComponent (typeof(Defense))]
+    public class Spawnable : MonoBehaviour, Ponderable
 	{
 
 		[Header ("Spawn ponderation")]
@@ -21,6 +23,9 @@ namespace AFKHero.Behaviour.Monster
 		[Header ("Ratio dodge/m")]
 		public float dodgeRatio = 1f;
 
+        [Header("Valeur de base de la défense")]
+        public double baseDefenseValue = 1f;
+
 		public float Distance{ get; private set; }
 
 		public int GetWeight ()
@@ -34,7 +39,8 @@ namespace AFKHero.Behaviour.Monster
             GetComponent<Strength>().amount = RatioEngine.Instance.GetEnemyDamage (strengthRatio, distance);
             GetComponent<Vitality>().amount = RatioEngine.Instance.GetEnemyHealth (vitalityRatio, distance);
             GetComponent<Dodge>().amount = RatioEngine.Instance.GetEnemyDodge (dodgeRatio, distance);
-			return this;
+            GetComponent<Defense>().amount = RatioEngine.Instance.GetEnemyDefense (baseDefenseValue, distance);
+            return this;
 		}
 	}
 }

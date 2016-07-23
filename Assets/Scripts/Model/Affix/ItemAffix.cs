@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace AFKHero.Model.Affix
@@ -11,17 +11,17 @@ namespace AFKHero.Model.Affix
         /// <summary>
         /// Valeur minimale du roll de l'affixe.
         /// </summary>
-        public float minValue { get; private set; }
+        public float minValue { get; set; }
 
         /// <summary>
         /// Valeur maximale du roll de l'affixe.
         /// </summary>
-        public float maxValue { get; private set; }
+        public float maxValue { get; set; }
 
         /// <summary>
         /// Le nom de l'affixe.
         /// </summary>
-        public string affixName { get; private set; }
+        public string affixName { get; set; }
 
         public float value
         {
@@ -31,6 +31,7 @@ namespace AFKHero.Model.Affix
             }
         }
 
+        public ItemAffix() { }
 
         public ItemAffix(string name, float min, float max)
         {

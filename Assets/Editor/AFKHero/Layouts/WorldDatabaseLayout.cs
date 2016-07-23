@@ -4,6 +4,7 @@ using AFKHero.Model;
 using AFKHero.Core.Database;
 using UnityEditor;
 using UnityEngine;
+using AFKHero.Core;
 
 namespace AFKHero.Editor.Layout
 {
@@ -20,14 +21,14 @@ namespace AFKHero.Editor.Layout
 
         public WorldDatabaseLayout()
         {
-            worldsDatabase = Resources.Load<WorldDatabase>("Databases/WorldDatabase");
+            worldsDatabase = ResourceLoader.LoadWorldDatabase();
         }
 
         public override void DrawDatabase()
         {
             if (worldsDatabase == null)
             {
-                worldsDatabase = Resources.Load<WorldDatabase>("Databases/WorldDatabase");
+                worldsDatabase = ResourceLoader.LoadWorldDatabase();
             }
             GUILayout.BeginHorizontal();
             worldSelectedInnerTab = GUILayout.Toolbar(worldSelectedInnerTab, innerTabs);

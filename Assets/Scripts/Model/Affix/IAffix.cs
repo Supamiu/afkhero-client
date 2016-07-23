@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace AFKHero.Model.Affix
 {
@@ -9,5 +9,11 @@ namespace AFKHero.Model.Affix
         void OnDetach();
 
         void Roll();
+
+        string affixName { get; set; }
+
+        float maxValue { get; set; }
+
+        float minValue { get; set; }
     }
 }

@@ -56,6 +56,7 @@ namespace AFKHero
 		{
 			public static readonly int STAT_POINTS_PER_LEVEL = 5;
 			public static readonly float BASE_REGEN_RATIO = 0.1f;
+            public static readonly float DEFENSE_BONUS_PER_METER = 0.01f;
 		}
 
 		public static class Colors
