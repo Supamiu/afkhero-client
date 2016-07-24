@@ -17,5 +17,10 @@ namespace AFKHero.Core
         {
             return Resources.Load<WearableDatabase>("Databases/WearableDatabase");
         }
+
+        public static ConsumableDatabase LoadConsumableDatabase()
+        {
+            return Resources.Load<ConsumableDatabase>("Databases/ConsumableDatabase");
+        }
     }
 }

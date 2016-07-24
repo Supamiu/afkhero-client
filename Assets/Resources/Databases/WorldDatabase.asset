@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: WorldDatabase
   m_EditorClassIdentifier: 
   worlds:
-  - worldName: Premier monde
+  - worldName: Premier Monde
     groundSprite: {fileID: 0}
     parallaxFirstPlan: {fileID: 21300000, guid: 235518877d58a584a87d83ca51301374,
       type: 3}
@@ -24,16 +24,28 @@ MonoBehaviour:
     - bestiary:
       - {fileID: 11455734, guid: a4f7396b34908dc48a0edb1bdc7fd443, type: 2}
       boss: {fileID: 0}
+      wearableDropList:
+      - item:
+          id: 348563641
+          icon: {fileID: 21300000, guid: 5fd50594014b70e48bd6993443d46b32, type: 3}
+          itemName: Epee de base
+          rarity: 0
+          description: 
+          sprite: {fileID: 21300000, guid: ffd77414b932ced4699a62a0b0005e29, type: 3}
+          type: 8
+          mainStat: 10
+        amount: 1
+        rate: 0.533
       done: 0
-    - bestiary:
-      - {fileID: 11455734, guid: a4f7396b34908dc48a0edb1bdc7fd443, type: 2}
+    - bestiary: []
       boss: {fileID: 0}
+      wearableDropList: []
       done: 0
-    - bestiary:
-      - {fileID: 11455734, guid: a4f7396b34908dc48a0edb1bdc7fd443, type: 2}
+    - bestiary: []
       boss: {fileID: 0}
+      wearableDropList: []
       done: 0
-    - bestiary:
-      - {fileID: 11455734, guid: a4f7396b34908dc48a0edb1bdc7fd443, type: 2}
+    - bestiary: []
       boss: {fileID: 0}
+      wearableDropList: []
       done: 0

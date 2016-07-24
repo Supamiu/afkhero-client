@@ -1,4 +1,4 @@
-﻿using AFKHero.Core.Event;
+using AFKHero.Core.Event;
 using AFKHero.EventData;
 using System;
 
@@ -13,7 +13,7 @@ namespace AFKHero.Model.Affix
             {
                 if (gameEvent.Data.attacker.gameObject == gameObject)
                 {
-                    gameEvent.Data.baseDamage *= (1 + value / 100f);
+                    gameEvent.Data.damageBonusFactor += value/100f;
                 }
             }, 50);
         }

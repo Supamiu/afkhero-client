@@ -23,4 +23,13 @@ public class DatabaseCreator {
         AssetDatabase.SaveAssets();
         return asset;
     }
+
+    public static ConsumableDatabase CreateConsumableDatabase()
+    {
+        ConsumableDatabase asset = ScriptableObject.CreateInstance<ConsumableDatabase>();
+        asset.consumables = new List<Consumable>();
+        AssetDatabase.CreateAsset(asset, "Assets/Resources/Databases/ConsumableDatabase.asset");
+        AssetDatabase.SaveAssets();
+        return asset;
+    }
 }

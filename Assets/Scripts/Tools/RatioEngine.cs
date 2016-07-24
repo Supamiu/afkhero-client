@@ -15,7 +15,7 @@ namespace AFKHero.Tools
 		{
 			return (int)(healthRatio * (Mathf.Pow (distance - 10, 1.5f) / 20) - 2);
 		}
-
+        
 		public double GetEnemyDodge (float dodgeRatio, float distance)
 		{
 			if (distance < 50f) {

@@ -1,5 +1,4 @@
-﻿using System;
-using AFKHero.Core.Save;
+﻿using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {

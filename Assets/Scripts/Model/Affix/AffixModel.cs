@@ -14,9 +14,38 @@ namespace AFKHero.Model.Affix
         /// <summary>
         /// La valeur actuelle du roll de l'affixe.
         /// </summary>
+        [SerializeField]
         public float value { get; protected set; }
 
-        public void Roll(float minValue, float maxValue)
+        /// <summary>
+        /// Valeur minimale du roll de l'affixe.
+        /// </summary>
+        [SerializeField]
+        public float minValue { get; set; }
+
+        /// <summary>
+        /// Valeur maximale du roll de l'affixe.
+        /// </summary>
+        [SerializeField]
+        public float maxValue { get; set; }
+
+        /// <summary>
+        /// Le nom de l'affixe.
+        /// </summary>
+        [SerializeField]
+        public string affixName { get; set; }
+
+        public AffixModel(string name, float min, float max)
+        {
+            minValue = min;
+            maxValue = max;
+            affixName = name;
+        }
+
+        /// <summary>
+        /// Permet de mettre en place la valeur actuelle de notre affixe effective.
+        /// </summary>
+        public void Roll()
         {
             value = Mathf.Ceil(PercentageUtils.Instance.GetFloatInRange(minValue, maxValue));
         }

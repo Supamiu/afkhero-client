@@ -8,11 +8,13 @@ public class DatabaseManager : EditorWindow
 {
     private int selectedTab = 0;
 
-    private static string[] Tabs = { "worlds", "wearables", "items", "recipes" };
+    private static string[] Tabs = { "worlds", "wearables", "consumables", "items", "recipes" };
 
     private static WorldDatabaseLayout WorldLayout = new WorldDatabaseLayout();
 
     private static WearableDatabaseLayout WearablesLayout = new WearableDatabaseLayout();
+
+    private static ConsumableDatabaseLayout ConsumableLayout = new ConsumableDatabaseLayout();
 
     [MenuItem("AFKHero/DatabaseManager")]
     private static void Init()
@@ -21,9 +23,14 @@ public class DatabaseManager : EditorWindow
         WorldDatabase resourceWorldsDatabase = ResourceLoader.LoadWorldDatabase();
         if (resourceWorldsDatabase == null)
             DatabaseCreator.CreateWorldDatabase();
+
         WearableDatabase resourceWearableDatabase = ResourceLoader.LoadWearableDatabase();
         if (resourceWearableDatabase == null)
             DatabaseCreator.CreateWearableDatabase();
+
+        ConsumableDatabase resourceItemDatabase = ResourceLoader.LoadConsumableDatabase();
+        if (resourceItemDatabase == null)
+            DatabaseCreator.CreateConsumableDatabase();
     }
 
     private void OnGUI()
@@ -42,6 +49,9 @@ public class DatabaseManager : EditorWindow
                 break;
             case "wearables":
                 WearablesLayout.DrawDatabase();
+                break;
+            case "consumables":
+                ConsumableLayout.DrawDatabase();
                 break;
         }
     }

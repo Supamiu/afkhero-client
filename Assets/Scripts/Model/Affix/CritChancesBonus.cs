@@ -1,22 +1,26 @@
-﻿using AFKHero.Model.Affix;
+using AFKHero.Model.Affix;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 
-public class CritChancesBonus : ListeningAffixModel
+namespace AFKHero.Model.Affix
 {
-    public override string GetEventName()
+    [System.Serializable]
+    public class CritChancesBonus : ListeningAffixModel
     {
-        return "attack.compute";
-    }
-
-    public override IListener GetListener()
-    {
-        return new Listener<GenericGameEvent<Attack>>((ref GenericGameEvent<Attack> gameEvent) =>
+        public override string GetEventName()
         {
-            if (gameEvent.Data.attacker.gameObject == gameObject)
+            return "attack.compute";
+        }
+
+        public override IListener GetListener()
+        {
+            return new Listener<GenericGameEvent<Attack>>((ref GenericGameEvent<Attack> gameEvent) =>
             {
-                gameEvent.Data.critChances += (1 + value / 100f);
-            }
-        }, 2100);
+                if (gameEvent.Data.attacker.gameObject == gameObject)
+                {
+                    gameEvent.Data.critChances += (1 + value / 100f);
+                }
+            }, 2100);
+        }
     }
 }

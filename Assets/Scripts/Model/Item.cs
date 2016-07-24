@@ -1,15 +1,15 @@
 using UnityEngine;
-using System;
 
 namespace AFKHero.Model
 {
-    [Serializable]
+    [System.Serializable]
     public class Item
     {
         /// <summary>
         /// L'id unique de l'item.
         /// </summary>
-        public double id { get; private set; }
+        [SerializeField]
+        private int id;
 
         /// <summary>
         /// L'icône pour le display.
@@ -31,12 +31,18 @@ namespace AFKHero.Model
         /// </summary>
         public string description;
 
-        public Item()
+        public Item GenerateId()
         {
-            System.Random random = new System.Random();
-            uint thirtyBits = (uint)random.Next(1 << 30);
-            uint twoBits = (uint)random.Next(1 << 2);
-            id = (thirtyBits << 2) | twoBits;
+            if (id == 0)
+            {
+                id = Random.Range(0, int.MaxValue);
+            }
+            return this;
+        }
+
+        public int GetId()
+        {
+            return id;
         }
     }
 }

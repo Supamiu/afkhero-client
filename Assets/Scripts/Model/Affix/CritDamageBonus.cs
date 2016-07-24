@@ -3,6 +3,7 @@ using AFKHero.EventData;
 
 namespace AFKHero.Model.Affix
 {
+    [System.Serializable]
     public class CritDamageBonus : ListeningAffixModel
     {
         public override string GetEventName()

@@ -7,13 +7,11 @@ public class GearTest : MonoBehaviour
 {
     public GearSystem gear;
 
-    public Sprite weaponSprite;
-
-    public Sprite weaponIcon;
+    public uint weaponId;
 
     void Start()
     {
-        Wearable mockWeapon = ResourceLoader.LoadWearableDatabase().GetItem(1804102268);
+        Wearable mockWeapon = ResourceLoader.LoadWearableDatabase().GetItem(weaponId);
 
         if (gear.IsSlotFree(GearSlot.WEAPON))
         {

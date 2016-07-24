@@ -15,7 +15,7 @@ namespace AFKHero.Core.Database
         {
             foreach(Wearable w in wearables)
             {
-                if(w.id == id)
+                if(w.GetId() == id)
                 {
                     return w;
                 }

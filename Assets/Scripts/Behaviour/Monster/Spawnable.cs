@@ -3,6 +3,8 @@ using AFKHero.Tools;
 using AFKHero.Stat;
 using System.Collections.Generic;
 using AFKHero.Model;
+using System;
+using AFKHero.Core;
 
 namespace AFKHero.Behaviour.Monster
 {
@@ -10,7 +12,8 @@ namespace AFKHero.Behaviour.Monster
 	[RequireComponent (typeof(Vitality))]
 	[RequireComponent (typeof(Dodge))]
 	[RequireComponent (typeof(Defense))]
-    public class Spawnable : MonoBehaviour, Ponderable
+    [Serializable]
+    public class Spawnable : MonoBehaviour, Ponderable, IOnDeath
 	{
 
 		[Header ("Spawn ponderation")]
@@ -27,9 +30,8 @@ namespace AFKHero.Behaviour.Monster
 
         [Header("Valeur de base de la défense")]
         public double baseDefenseValue = 1f;
-
-        [HideInInspector]
-        public List<Drop> dropList = new List<Drop>();
+        
+        public List<WearableDrop> dropList = new List<WearableDrop>();
 
 		public float Distance{ get; private set; }
 
@@ -47,5 +49,10 @@ namespace AFKHero.Behaviour.Monster
             GetComponent<Defense>().amount = RatioEngine.Instance.GetEnemyDefense (baseDefenseValue, distance);
             return this;
 		}
-	}
+
+        public void OnDeath()
+        {
+            DropEngine.Instance.Drop();
+        }
+    }
 }

@@ -15,28 +15,21 @@ namespace AFKHero.EditorExtension.Layout
         private int selectedInnerTab = 0;
         private Vector2 scrollPosition;
         private List<bool> managedItem = new List<bool>();
-        private static Wearable createdWearable = new Wearable();
+        private static Wearable createdWearable = (Wearable)new Wearable().GenerateId();
 
-        private static readonly Dictionary<string, Type> affixTypes = new Dictionary<string, Type>()
+        private static readonly Dictionary<GUIContent, Type> affixTypes = new Dictionary<GUIContent, Type>()
         {
-            {"Damage",  typeof(ItemAffix<DamageBonus>) },
-            {"Crit Damage", typeof(ItemAffix<CritDamageBonus>) },
-            {"Crit chances",  typeof(ItemAffix<HPBonus>) }
-        };
-
-        private static readonly GUIContent[] affixes =
-        {
-            new GUIContent("Damage"),
-            new GUIContent("Crit Damage"),
-            new GUIContent("Crit chances")
+            {new GUIContent("Damage"),  typeof(DamageBonus) },
+            {new GUIContent("Crit. Damage"), typeof(CritDamageBonus) },
+            {new GUIContent("Crit. Chances"),  typeof(CritChancesBonus) },
+            {new GUIContent("HP"),  typeof(HPBonus) }
         };
 
         //Création d'affixe
         private int selectedAffixTypeForCreation = 0;
         private float minValueForAffix = 0f;
         private float maxValueForAffix = 0f;
-        private string affixName = "";
-        private IAffix createdAffix;
+        private AffixModel createdAffix;
         //Fin
 
         private string[] innerTabs = { "View database", "Add Wearable" };
@@ -74,7 +67,7 @@ namespace AFKHero.EditorExtension.Layout
                         managedItem.Add(false);
                         GUILayout.BeginVertical("Box");
                         GUILayout.BeginHorizontal();
-                        managedItem[i] = EditorGUILayout.Foldout(managedItem[i], wearableDatabase.wearables[i].id + " ---- " + wearableDatabase.wearables[i].itemName);
+                        managedItem[i] = EditorGUILayout.Foldout(managedItem[i], wearableDatabase.wearables[i].itemName);
                         GUILayout.FlexibleSpace();
                         if (i > 0)
                         {
@@ -127,6 +120,8 @@ namespace AFKHero.EditorExtension.Layout
         {
             GUILayout.BeginVertical("Box");
             GUILayout.Space(20);
+            EditorGUILayout.LabelField("ID : " + subject.GetId().ToString());
+            GUILayout.Space(10);
             subject.itemName = EditorGUILayout.TextField("Wearable name", subject.itemName);
             subject.description = EditorGUILayout.TextField("Wearable description", subject.description);
             GUILayout.BeginHorizontal();
@@ -136,31 +131,42 @@ namespace AFKHero.EditorExtension.Layout
             subject.rarity = (Rarity)EditorGUILayout.EnumPopup("Rarity", subject.rarity);
             subject.type = (GearType)EditorGUILayout.EnumPopup("Slot", subject.type);
 
+            string mainStatName;
+            if (subject.type == GearType.WEAPON)
+            {
+                mainStatName = "Attack";
+            }
+            else
+            {
+                mainStatName = "Defense";
+            }
+            subject.mainStat = EditorGUILayout.IntField(mainStatName, subject.mainStat);
+
             GUILayout.BeginVertical("Box");
             GUILayout.Label("Affixes");
-            List<IAffix> list = subject.affixes;
-            if (list == null)
+            if (subject.affixes == null)
             {
-                list = new List<IAffix>();
+                subject.affixes = new List<AffixModel>();
             }
-            for (int j = 0; j < list.Count; j++)
+            for (int j = 0; j < subject.affixes.Count; j++)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(list[j].affixName + "(" + list[j].minValue + " - " + list[j].maxValue + ")");
+                GUILayout.Label(subject.affixes[j].affixName + "(" + subject.affixes[j].minValue + " - " + subject.affixes[j].maxValue + ")");
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button("X"))
                 {
-                    list.RemoveAt(j);
+                    subject.affixes.RemoveAt(j);
                 }
                 GUILayout.EndHorizontal();
             }
 
             GUILayout.BeginVertical("Box");
             GUILayout.Space(10);
-            affixName = EditorGUILayout.TextField("name", affixName);
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Space(10);
+            GUIContent[] affixes = new GUIContent[affixTypes.Keys.Count];
+            affixTypes.Keys.CopyTo(affixes, 0);
             selectedAffixTypeForCreation = EditorGUILayout.Popup(selectedAffixTypeForCreation, affixes);
             minValueForAffix = EditorGUILayout.FloatField("Min value", minValueForAffix);
             maxValueForAffix = EditorGUILayout.FloatField("Max value", maxValueForAffix);
@@ -169,13 +175,16 @@ namespace AFKHero.EditorExtension.Layout
             GUILayout.Space(20);
             if (GUILayout.Button("Add affix"))
             {
-                Type affixType = affixTypes[affixes[selectedAffixTypeForCreation].text];
-                createdAffix = (IAffix)Activator.CreateInstance(affixType);
-                createdAffix.affixName = affixName;
+                if(createdWearable.affixes == null)
+                {
+                    createdWearable.affixes = new List<AffixModel>();
+                }
+                Type affixType = affixTypes[affixes[selectedAffixTypeForCreation]];
+                createdAffix = (AffixModel)Activator.CreateInstance(affixType);
+                createdAffix.affixName = affixes[selectedAffixTypeForCreation].text;
                 createdAffix.minValue = minValueForAffix;
                 createdAffix.maxValue = maxValueForAffix;
-                createdWearable.affixes.Add(createdAffix);
-                affixName = "";
+                subject.affixes.Add(createdAffix);
                 minValueForAffix = 0f;
                 maxValueForAffix = 0f;
                 createdAffix = null;
@@ -190,7 +199,7 @@ namespace AFKHero.EditorExtension.Layout
                 {
                     EditorUtility.SetDirty(wearableDatabase);
                     wearableDatabase.wearables.Add(subject);
-                    createdWearable = new Wearable();
+                    createdWearable = (Wearable)new Wearable().GenerateId();
                     EditorUtility.SetDirty(wearableDatabase);
                 }
             }

@@ -1,19 +1,23 @@
+using System;
+using UnityEngine;
+
 namespace AFKHero.Model
 {
-    [System.Serializable]
-    public class Drop
+    [Serializable]
+    public class Drop<T> where T : Item
     {
-        public Item item { get; private set; }   
-        
-        public int amount { get; set; }
-        
-        public float rate { get; set; }
-        
-        public Drop(Item item)
+        [SerializeField]
+        public T item;
+
+        [SerializeField]
+        public int amount;
+
+        [SerializeField]
+        public float rate;
+
+        public Drop(T item)
         {
             this.item = item;
-            amount = 1;
-            rate = Drop.RateForRarity(item.rarity);
         }
 
         public static float RateForRarity(Rarity rarity)

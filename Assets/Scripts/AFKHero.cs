@@ -46,7 +46,7 @@ namespace AFKHero
 
 		private static float distance = 0f;
 
-		private static float offsetDistance = 10f;
+		private static float offsetDistance = 10.5f;
 
 		private static float offsetDistanceDone = 0f;
 

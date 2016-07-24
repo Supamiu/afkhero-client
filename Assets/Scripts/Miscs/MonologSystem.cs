@@ -12,7 +12,8 @@ public class MonologSystem : MonoBehaviour
 		"On arrive bientôt?",
 		"Elle est où la poulette?",
 		"Viens m'le dire de profil si t'es un homme.",
-		"Le lion ne s'associe pas avec le cafard."
+		"Le lion ne s'associe pas avec le cafard.",
+        "Je tue des trucs, j'suis un tueur"
 	};
 
 	[Header ("Temps d'affichage de chaque bulle")]

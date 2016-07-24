@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Name: WearableDatabase
   m_EditorClassIdentifier: 
   wearables:
-  - icon: {fileID: 21300000, guid: 4771a8e8ab080834395005843d0d09ac, type: 3}
-    itemName: Epee de test laule
+  - id: 348563641
+    icon: {fileID: 21300000, guid: 5fd50594014b70e48bd6993443d46b32, type: 3}
+    itemName: Epee de base
     rarity: 0
-    description: "Une \xE9p\xE9e de test"
-    sprite: {fileID: 21300000, guid: 768c02f09d295954983afe992a1c00e6, type: 3}
+    description: 
+    sprite: {fileID: 21300000, guid: ffd77414b932ced4699a62a0b0005e29, type: 3}
     type: 8
-  - icon: {fileID: 0}
-    itemName: "Anneau de critique l\xE9gendaire"
+    mainStat: 10
+  - id: 1390663619
+    icon: {fileID: 21300000, guid: 970324311431c794ca338446ea889948, type: 3}
+    itemName: Anneau du botteur de culs
     rarity: 3
-    description: Un anneau.
+    description: Un anneau pour botter des culs.
     sprite: {fileID: 0}
     type: 4
+    mainStat: 5

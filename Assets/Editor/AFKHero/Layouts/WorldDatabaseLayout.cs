@@ -21,9 +21,13 @@ namespace AFKHero.EditorExtension.Layout
         private WearableDatabase wdb;
 
         //Drops
-        private Dictionary<GUIContent, Item> items = new Dictionary<GUIContent, Item>();
+        private Dictionary<GUIContent, Wearable> wearables = new Dictionary<GUIContent, Wearable>();
         private int selectedItemIndex;
         private GUIContent[] itemNames;
+        private float dropRate;
+        private int dropAmount = 1;
+        private static WearableDrop wearableDrop;
+        private bool customRate = false;
 
         public WorldDatabaseLayout()
         {
@@ -44,10 +48,10 @@ namespace AFKHero.EditorExtension.Layout
             }
             foreach (Wearable w in wdb.wearables)
             {
-                items.Add(new GUIContent(w.itemName), w);
+                wearables.Add(new GUIContent(w.itemName), w);
             }
-            itemNames = new GUIContent[items.Keys.Count];
-            items.Keys.CopyTo(itemNames, 0);
+            itemNames = new GUIContent[wearables.Keys.Count];
+            wearables.Keys.CopyTo(itemNames, 0);
             GUILayout.BeginHorizontal();
             worldSelectedInnerTab = GUILayout.Toolbar(worldSelectedInnerTab, innerTabs);
             GUILayout.EndHorizontal();
@@ -143,56 +147,72 @@ namespace AFKHero.EditorExtension.Layout
                 GUIStyle label = GUI.skin.GetStyle("Label");
                 label.alignment = TextAnchor.UpperCenter;
                 EditorGUILayout.LabelField("Stage " + (i + 1), label);
-                List<Spawnable> list = w.stages[i].bestiary;
-                if (list == null)
+                if (w.stages[i].bestiary == null)
                 {
-                    list = new List<Spawnable>();
+                    w.stages[i].bestiary = new List<Spawnable>();
                 }
-
                 EditorGUILayout.LabelField("Bestiary", EditorStyles.boldLabel);
-                int newCount = Mathf.Max(0, EditorGUILayout.IntField("size", list.Count));
-                while (newCount < list.Count)
-                    list.RemoveAt(list.Count - 1);
-                while (newCount > list.Count)
-                    list.Add(null);
-                for (int j = 0; j < list.Count; j++)
+                int newCount = Mathf.Max(0, EditorGUILayout.IntField("size", w.stages[i].bestiary.Count));
+                while (newCount < w.stages[i].bestiary.Count)
+                    w.stages[i].bestiary.RemoveAt(w.stages[i].bestiary.Count - 1);
+                while (newCount > w.stages[i].bestiary.Count)
                 {
-                    list[j] = (Spawnable)EditorGUILayout.ObjectField(list[j], typeof(Spawnable), true);
+                    w.stages[i].bestiary.Add(null);
+                }
+                for (int j = 0; j < w.stages[i].bestiary.Count; j++)
+                {
+                    w.stages[i].bestiary[j] = (Spawnable)EditorGUILayout.ObjectField(w.stages[i].bestiary[j], typeof(Spawnable), true);
                 }
                 w.stages[i].boss = (Spawnable)EditorGUILayout.ObjectField("Final Boss", w.stages[i].boss, typeof(Spawnable), true);
 
-                EditorGUILayout.LabelField("DropList", EditorStyles.boldLabel);
-                if(w.stages[i].dropList == null)
+                EditorGUILayout.LabelField("DropLists", EditorStyles.boldLabel);
+                GUILayout.Space(10);
+                EditorGUILayout.LabelField("Wearables", EditorStyles.wordWrappedLabel);
+                if (w.stages[i].wearableDropList == null)
                 {
-                    w.stages[i].dropList = new List<Drop>();
+                    w.stages[i].wearableDropList = new List<WearableDrop>();
                 }
-                if (w.stages[i].dropList.Count == 0)
+                if (w.stages[i].wearableDropList.Count == 0)
                 {
                     EditorGUILayout.HelpBox("Empty droplist", MessageType.Info);
                 }
 
-                for (int j = 0; i < w.stages[i].dropList.Count; i++)
+                if(w.stages[i].wearableDropList == null)
                 {
-                    Drop d = w.stages[j].dropList[i];
+                    w.stages[i].wearableDropList = new List<WearableDrop>();
+                }
+                for (int j = 0; j < w.stages[i].wearableDropList.Count; j++)
+                {
+                    WearableDrop d = w.stages[i].wearableDropList[j];
 
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(d.item.itemName + (d.amount > 1 ? " x " + d.amount : "") + " : " + (d.rate * 100f) + "%");
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("X"))
                     {
-                        w.stages[j].dropList.RemoveAt(i);
+                        w.stages[j].wearableDropList.RemoveAt(i);
                     }
                     EditorGUILayout.EndHorizontal();
                 }
                 GUILayout.Space(5);
                 EditorGUILayout.BeginVertical("Box");
                 selectedItemIndex = EditorGUILayout.Popup(selectedItemIndex, itemNames);
-                Drop drop = new Drop(items[itemNames[selectedItemIndex]]);
-                drop.rate = EditorGUILayout.Slider("rate", drop.rate, 0f, 1f);
-                drop.amount = EditorGUILayout.IntField("amount", drop.amount);
+                Wearable item = wearables[itemNames[selectedItemIndex]];
+                customRate = EditorGUILayout.BeginToggleGroup("Custom drop rate", customRate);
+                if (!customRate)
+                {
+                    dropRate = WearableDrop.RateForRarity(item.rarity);
+                }
+                dropRate = EditorGUILayout.Slider("rate", dropRate, 0f, 1f);
+                EditorGUILayout.EndToggleGroup();
+                dropAmount = EditorGUILayout.IntField("amount", dropAmount);
+                wearableDrop = new WearableDrop(item);
+                wearableDrop.rate = dropRate;
+                wearableDrop.amount = dropAmount;
                 if (GUILayout.Button("Add item"))
                 {
-                    w.stages[i].dropList.Add(drop);
+                    w.stages[i].wearableDropList.Add(wearableDrop);
+                    Debug.Log(w.stages[i].wearableDropList.Count);
                 }
                 EditorGUILayout.EndVertical();
                 GUILayout.EndVertical();
