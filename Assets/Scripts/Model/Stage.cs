@@ -14,7 +14,7 @@ namespace AFKHero.Model
         public Spawnable boss;
 
         [Header("Les items équipables en loot dans le palier")]
-        public List<WearableDrop> wearableDropList;
+        public List<Drop> dropList;
 
         public bool done = false;
 

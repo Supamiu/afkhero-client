@@ -2,6 +2,7 @@ using AFKHero.Model;
 
 namespace AFKHero.Inventory
 {
+    [System.Serializable]
     public class Slot
     {
         public int stack { get; private set; }
@@ -11,6 +12,16 @@ namespace AFKHero.Inventory
         public bool IsFree()
         {
             return item == null;
+        }
+
+        public void Empty()
+        {
+            item = null;
+        }
+
+        public void RemoveOne()
+        {
+            stack--;
         }
 
         public bool Store(Item item)

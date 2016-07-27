@@ -11,7 +11,7 @@ namespace AFKHero.Core.Database
         [SerializeField]
         public List<Wearable> wearables;
 
-        public Wearable GetItem(uint id)
+        public Wearable GetItem(int id)
         {
             foreach(Wearable w in wearables)
             {
@@ -21,6 +21,18 @@ namespace AFKHero.Core.Database
                 }
             }
             return null;
+        }
+
+        public bool HasItem(int id)
+        {
+            foreach (Wearable w in wearables)
+            {
+                if (w.GetId() == id)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public List<Wearable> GetAllItemsOfType(GearType type)

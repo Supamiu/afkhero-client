@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using AFKHero.Model;
 using AFKHero.Core.Gear;
+using AFKHero.Inventory;
 
 namespace AFKHero.Core.Save
 {
@@ -24,8 +25,10 @@ namespace AFKHero.Core.Save
 
 		//Inventaire
 		public double gold = 0;
+        public int capacity = 24;
+        public Slot[] inventory = new Slot[0];
 
         //Gear
-        public Dictionary<GearSlot, Wearable> gear;
+        public Wearable[] gear;
 	}
 }

@@ -10,7 +10,19 @@ namespace AFKHero.Core.Database
         [SerializeField]
         public List<Consumable> consumables;
 
-        public Consumable GetItem(uint id)
+        public bool HasItem(int id)
+        {
+            foreach (Consumable c in consumables)
+            {
+                if (c.GetId() == id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public Consumable GetItem(int id)
         {
             foreach (Consumable w in consumables)
             {

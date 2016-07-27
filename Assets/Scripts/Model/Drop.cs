@@ -4,10 +4,10 @@ using UnityEngine;
 namespace AFKHero.Model
 {
     [Serializable]
-    public class Drop<T> where T : Item
+    public class Drop
     {
         [SerializeField]
-        public T item;
+        public int itemID;
 
         [SerializeField]
         public int amount;
@@ -15,9 +15,9 @@ namespace AFKHero.Model
         [SerializeField]
         public float rate;
 
-        public Drop(T item)
+        public Drop(int itemID)
         {
-            this.item = item;
+            this.itemID = itemID;
         }
 
         public static float RateForRarity(Rarity rarity)

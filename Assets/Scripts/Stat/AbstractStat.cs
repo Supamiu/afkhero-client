@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using AFKHero.Core.Event;
 using AFKHero.Core.Save;
@@ -28,7 +28,7 @@ namespace AFKHero.Stat
         public abstract void DoLoad(SaveData data);
 
         public abstract StatType GetStatType();
-        
+
         public void Load(SaveData data)
         {
             DoLoad(data);

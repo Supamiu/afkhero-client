@@ -1,4 +1,5 @@
-﻿using AFKHero.Core.Save;
+using AFKHero.Core.Save;
+using AFKHero.Inventory;
 using AFKHero.Model;
 using Spine;
 using Spine.Unity;
@@ -10,6 +11,7 @@ using UnityEngine;
 namespace AFKHero.Core.Gear
 {
     [RequireComponent(typeof(SkeletonRenderer))]
+    [RequireComponent(typeof(InventorySystem))]
     public class GearSystem : MonoBehaviour, Saveable
     {
         private Skeleton skeleton;
@@ -18,6 +20,8 @@ namespace AFKHero.Core.Gear
 
         public Action GearChangeEvent;
 
+        private InventorySystem inventory;
+
         //Slots Spine
         [SpineSlot]
         public string weapon;
@@ -25,20 +29,24 @@ namespace AFKHero.Core.Gear
 
         void Start()
         {
-            skeleton = GetComponent<SkeletonRenderer>().skeleton;
             //TODO gérer les slots un par un pour mettre à jour leur spineSlot.
             //Si le stuff est inexistant, on créé sa structure.
-            if (currentGear == null)
+
+            InitGear();
+        }
+
+        void InitGear()
+        {
+            inventory = GetComponent<InventorySystem>();
+            skeleton = GetComponent<SkeletonRenderer>().skeleton;
+            currentGear = new Dictionary<GearSlot, Wearable>();
+            foreach (GearSlot slot in GearSlot.Slots)
             {
-                currentGear = new Dictionary<GearSlot, Wearable>();
-                foreach (GearSlot slot in GearSlot.Slots)
+                if (slot == GearSlot.WEAPON)
                 {
-                    if (slot == GearSlot.WEAPON)
-                    {
-                        slot.spineSlot = weapon;
-                    }
-                    currentGear.Add(slot, null);
+                    slot.spineSlot = weapon;
                 }
+                currentGear.Add(slot, null);
             }
         }
 
@@ -73,7 +81,6 @@ namespace AFKHero.Core.Gear
         /// <param name="wearable"></param>
         public void Equip(Wearable wearable)
         {
-            Debug.Log("Equipping " + wearable.itemName);
             List<GearSlot> slots = GetSlotsForType(wearable.type);
             foreach (GearSlot slot in slots)
             {
@@ -82,7 +89,10 @@ namespace AFKHero.Core.Gear
                     //Si le slot est occupé et que c'est le dernier disponible
                     if (slots.IndexOf(slot) == slots.Count - 1)
                     {
-                        UnEquip(slot);
+                        if (UnEquip(slot))
+                        {
+                            Equip(wearable);
+                        }
                     }
                     //Si le slot est occupé mais qu'un autre slot est dispo, on passe au prochain slot
                     else
@@ -99,6 +109,7 @@ namespace AFKHero.Core.Gear
                     }
                     currentGear[slot] = wearable;
                     wearable.Attach(gameObject);
+                    break;
                 }
                 NotifyGearChange();
             }
@@ -108,12 +119,17 @@ namespace AFKHero.Core.Gear
         /// Déséquipe un item contenu dans un slot donné.
         /// </summary>
         /// <param name="slot"></param>
-        public void UnEquip(GearSlot slot)
+        public bool UnEquip(GearSlot slot)
         {
-            //TODO Créer cette méthode pour de vrai.
-            currentGear[slot].Detach();
-            currentGear[slot] = null;
-            NotifyGearChange();
+            if (inventory.HasFreeSlot())
+            {
+                currentGear[slot].Detach();
+                inventory.AddItem(currentGear[slot]);
+                currentGear[slot] = null;
+                NotifyGearChange();
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -139,7 +155,7 @@ namespace AFKHero.Core.Gear
         /// </summary>
         private void NotifyGearChange()
         {
-            if(GearChangeEvent != null)
+            if (GearChangeEvent != null)
             {
                 GearChangeEvent.Invoke();
             }
@@ -147,29 +163,20 @@ namespace AFKHero.Core.Gear
 
         public SaveData Save(SaveData save)
         {
-            save.gear = currentGear;
+            Wearable[] gear = new Wearable[currentGear.Values.Count];
+            currentGear.Values.CopyTo(gear, 0);
+            save.gear = gear;
             return save;
         }
 
         public void Load(SaveData data)
         {
-            skeleton = GetComponent<SkeletonRenderer>().skeleton;
-            currentGear = data.gear;
-            foreach (KeyValuePair<GearSlot, Wearable> row in currentGear)
+            InitGear();
+            foreach (Wearable item in data.gear)
             {
-                GearSlot slot = row.Key;
-                Wearable wearable = row.Value;
-                if (slot == GearSlot.WEAPON)
+                if (item != null)
                 {
-                    slot.spineSlot = weapon;
-                }
-                if (slot.spineSlot != null)
-                {
-                    skeleton.AttachUnitySprite(slot.spineSlot, wearable.sprite);
-                }
-                if(wearable != null)
-                {
-                    wearable.Attach(gameObject);
+                    Equip(item);
                 }
             }
         }

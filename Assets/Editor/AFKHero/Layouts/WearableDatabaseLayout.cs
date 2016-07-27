@@ -7,6 +7,8 @@ using AFKHero.Core;
 using AFKHero.Core.Gear;
 using AFKHero.Model.Affix;
 using System;
+using AFKHEro.Model.Affix;
+using AFKHero.UI.Tools;
 
 namespace AFKHero.EditorExtension.Layout
 {
@@ -17,20 +19,9 @@ namespace AFKHero.EditorExtension.Layout
         private List<bool> managedItem = new List<bool>();
         private static Wearable createdWearable = (Wearable)new Wearable().GenerateId();
 
-        private static readonly Dictionary<GUIContent, Type> affixTypes = new Dictionary<GUIContent, Type>()
-        {
-            {new GUIContent("Damage"),  typeof(DamageBonus) },
-            {new GUIContent("Crit. Damage"), typeof(CritDamageBonus) },
-            {new GUIContent("Crit. Chances"),  typeof(CritChancesBonus) },
-            {new GUIContent("HP"),  typeof(HPBonus) }
-        };
-
         //Création d'affixe
-        private int selectedAffixTypeForCreation = 0;
-        private float minValueForAffix = 0f;
-        private float maxValueForAffix = 0f;
-        private AffixModel createdAffix;
-        //Fin
+        private AffixModel createdAffix = new AffixModel();
+        private LegendaryAffixModel createdLegendaryAffix = new LegendaryAffixModel();
 
         private string[] innerTabs = { "View database", "Add Wearable" };
 
@@ -143,19 +134,19 @@ namespace AFKHero.EditorExtension.Layout
             subject.mainStat = EditorGUILayout.IntField(mainStatName, subject.mainStat);
 
             GUILayout.BeginVertical("Box");
-            GUILayout.Label("Affixes");
-            if (subject.affixes == null)
+            GUILayout.Label("Affixes possibles", EditorStyles.boldLabel);
+            if (subject.affixPool == null)
             {
-                subject.affixes = new List<AffixModel>();
+                subject.affixPool = new List<AffixModel>();
             }
-            for (int j = 0; j < subject.affixes.Count; j++)
+            for (int j = 0; j < subject.affixPool.Count; j++)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(subject.affixes[j].affixName + "(" + subject.affixes[j].minValue + " - " + subject.affixes[j].maxValue + ")");
+                GUILayout.Label(subject.affixPool[j].type.ToString() + "(" + subject.affixPool[j].minValue + " - " + subject.affixPool[j].maxValue + ")");
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button("X"))
                 {
-                    subject.affixes.RemoveAt(j);
+                    subject.affixPool.RemoveAt(j);
                 }
                 GUILayout.EndHorizontal();
             }
@@ -165,32 +156,49 @@ namespace AFKHero.EditorExtension.Layout
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Space(10);
-            GUIContent[] affixes = new GUIContent[affixTypes.Keys.Count];
-            affixTypes.Keys.CopyTo(affixes, 0);
-            selectedAffixTypeForCreation = EditorGUILayout.Popup(selectedAffixTypeForCreation, affixes);
-            minValueForAffix = EditorGUILayout.FloatField("Min value", minValueForAffix);
-            maxValueForAffix = EditorGUILayout.FloatField("Max value", maxValueForAffix);
+
+            createdAffix.type = (AffixType)EditorGUILayout.EnumPopup("type", createdAffix.type);
+            createdAffix.minValue = EditorGUILayout.FloatField("Min value", createdAffix.minValue);
+            createdAffix.maxValue = EditorGUILayout.FloatField("Max value", createdAffix.maxValue);
+
             GUILayout.Space(10);
             GUILayout.EndHorizontal();
             GUILayout.Space(20);
             if (GUILayout.Button("Add affix"))
             {
-                if(createdWearable.affixes == null)
+                if (subject.affixPool == null)
                 {
-                    createdWearable.affixes = new List<AffixModel>();
+                    subject.affixPool = new List<AffixModel>();
                 }
-                Type affixType = affixTypes[affixes[selectedAffixTypeForCreation]];
-                createdAffix = (AffixModel)Activator.CreateInstance(affixType);
-                createdAffix.affixName = affixes[selectedAffixTypeForCreation].text;
-                createdAffix.minValue = minValueForAffix;
-                createdAffix.maxValue = maxValueForAffix;
-                subject.affixes.Add(createdAffix);
-                minValueForAffix = 0f;
-                maxValueForAffix = 0f;
-                createdAffix = null;
+                subject.affixPool.Add(createdAffix);
+                createdAffix = new AffixModel();
             }
             GUILayout.EndVertical();
             GUILayout.Space(10);
+
+            if (subject.rarity == Rarity.LEGENDARY)
+            {
+                GUILayout.Label("Affixe Légendaire", EditorStyles.boldLabel);
+                if (subject.legendaryAffix != null)
+                {
+                    GUILayout.Label(subject.legendaryAffix.type.ToString() + "(" + subject.legendaryAffix.minValue + " - " + subject.legendaryAffix.maxValue + ")" + " : " + subject.legendaryAffix.description );
+                }
+                else
+                {
+                    GUILayout.Label("Pas encore définie");
+                }
+                GUILayout.BeginVertical("Box");
+                createdLegendaryAffix.type = (AffixType)EditorGUILayout.EnumPopup("type", createdLegendaryAffix.type);
+                createdLegendaryAffix.minValue = EditorGUILayout.FloatField("Min value", createdLegendaryAffix.minValue);
+                createdLegendaryAffix.maxValue = EditorGUILayout.FloatField("Max value", createdLegendaryAffix.maxValue);
+                createdLegendaryAffix.description = EditorGUILayout.TextField("description", createdLegendaryAffix.description);
+                if (GUILayout.Button("Appliquer"))
+                {
+                    subject.legendaryAffix = createdLegendaryAffix;
+                    createdLegendaryAffix = new LegendaryAffixModel();
+                }
+                GUILayout.EndVertical();
+            }
             GUILayout.EndVertical();
             GUILayout.EndVertical();
             if (!edit)

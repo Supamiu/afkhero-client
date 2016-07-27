@@ -7,6 +7,8 @@ namespace AFKHero.Core.Event
     /// </summary>
     public interface IListener {
 
+        string GetId();
+
 		Type getType ();
 
 		void Call (ref object e);

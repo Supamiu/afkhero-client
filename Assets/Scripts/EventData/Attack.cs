@@ -5,7 +5,7 @@ namespace AFKHero.EventData
 
     public class Attack
     {
-
+        
         public Attack(Agressive attacker, Damageable target)
         {
             this.target = target;
@@ -65,6 +65,10 @@ namespace AFKHero.EventData
         public Damage getDamage()
         {
             double finalDamage = critical ? (baseDamage * criticalRatio) - damageReduction : baseDamage - damageReduction;
+            if(finalDamage < 0)
+            {
+                finalDamage = 0;
+            }
             return new Damage(attacker, target, finalDamage * (1 + damageBonusFactor), critical, hits);
         }
     }

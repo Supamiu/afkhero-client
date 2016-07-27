@@ -1,4 +1,7 @@
+using AFKHero.Core.Database;
 using AFKHero.Core.Event;
+using AFKHero.Core.Gear;
+using AFKHero.Core.Save;
 using AFKHero.Error;
 using AFKHero.Model;
 using System;
@@ -6,22 +9,79 @@ using UnityEngine;
 
 namespace AFKHero.Inventory
 {
-    public class InventorySystem : MonoBehaviour
+    public class InventorySystem : MonoBehaviour, Saveable
     {
+        public GearSystem gear;
+
         public Slot[] slots = new Slot[0];
 
-        public int capacity = 0;
+        public int capacity = 24;
 
         public event Action OnContentChanged;
 
         void Start()
         {
             SetCapacity(capacity);
-            EventDispatcher.Instance.Register("drop.wearable", new Listener<GenericGameEvent<WearableDrop>>((ref GenericGameEvent<WearableDrop> drop) => {
-                Wearable i = drop.Data.item;
-                i.Roll();
+            EventDispatcher.Instance.Register("drop", new Listener<GenericGameEvent<Drop>>((ref GenericGameEvent<Drop> drop) =>
+            {
+                Item i = ItemDatabaseConnector.Instance.GetItem(drop.Data.itemID);
+                if (i.GetType() == typeof(Wearable))
+                {
+                    ((Wearable)i).Roll();
+                }
                 AddItem(i);
             }));
+        }
+
+        /// <summary>
+        /// Retire un objet de l'inventaire.
+        /// </summary>
+        /// <param name="item"></param>
+        public void Remove(Item item)
+        {
+            foreach (Slot slot in slots)
+            {
+                if (slot.item == item)
+                {
+                    if (slot.stack > 1)
+                    {
+                        slot.RemoveOne();
+                    }
+                    else
+                    {
+                        slot.Empty();
+                    }
+                    NotifyContentChanged();
+                }
+            }
+        }
+
+        public void RemoveAll(Item item)
+        {
+            foreach (Slot slot in slots)
+            {
+                if (slot.item == item)
+                {
+                    slot.Empty();
+                    NotifyContentChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Détermine si une place de stockage est disponible.
+        /// </summary>
+        /// <returns></returns>
+        public bool HasFreeSlot()
+        {
+            foreach (Slot slot in slots)
+            {
+                if (slot.IsFree())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -40,6 +100,7 @@ namespace AFKHero.Inventory
                     return;
                 }
             }
+            Debug.Log(slots[slots.Length - 1].item.itemName);
             throw new InventoryFullException();
         }
 
@@ -48,7 +109,7 @@ namespace AFKHero.Inventory
         /// </summary>
         private void NotifyContentChanged()
         {
-            if(OnContentChanged != null) { OnContentChanged.Invoke(); }
+            if (OnContentChanged != null) { OnContentChanged.Invoke(); }
         }
 
         /// <summary>
@@ -60,9 +121,9 @@ namespace AFKHero.Inventory
             this.capacity = capacity;
             Slot[] newSlots = new Slot[capacity];
             slots.CopyTo(newSlots, 0);
-            for(int i = 0; i<newSlots.Length; i++)
+            for (int i = 0; i < newSlots.Length; i++)
             {
-                if(newSlots[i] == null)
+                if (newSlots[i] == null)
                 {
                     newSlots[i] = new Slot();
                 }
@@ -79,6 +140,20 @@ namespace AFKHero.Inventory
         {
             capacity += amount;
             SetCapacity(capacity);
+        }
+
+        public SaveData Save(SaveData save)
+        {
+            save.capacity = capacity;
+            save.inventory = slots;
+            return save;
+        }
+
+        public void Load(SaveData data)
+        {
+            capacity = data.capacity;
+            slots = data.inventory;
+            NotifyContentChanged();
         }
     }
 }

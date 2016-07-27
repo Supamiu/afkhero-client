@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using AFKHero.Core.Event;
 using AFKHero.Behaviour;
@@ -28,7 +28,8 @@ namespace AFKHero
 
 		void Start ()
 		{
-			hero.onDeath += () => {
+            print(Application.persistentDataPath);
+            hero.onDeath += () => {
 				Invoke ("GameOver", 0.5f);
 			};
 			Application.targetFrameRate = 60;
@@ -42,7 +43,7 @@ namespace AFKHero
 			}));
 		}
 
-		public static string version = "0.1.0";
+		public static string version = "0.0.1";
 
 		private static float distance = 0f;
 
@@ -73,7 +74,7 @@ namespace AFKHero
 		{
 			SceneManager.LoadScene (gameScene);
 			distance = worldManager.GetCheckpoint();
-		}
+        }
 
 		private void GameOver ()
 		{

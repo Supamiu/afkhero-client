@@ -3,6 +3,7 @@ using AFKHero.Core.Database;
 using UnityEditor;
 using AFKHero.EditorExtension.Layout;
 using AFKHero.Core;
+using System.IO;
 
 public class DatabaseManager : EditorWindow
 {
@@ -21,15 +22,15 @@ public class DatabaseManager : EditorWindow
     {
         GetWindow(typeof(DatabaseManager));
         WorldDatabase resourceWorldsDatabase = ResourceLoader.LoadWorldDatabase();
-        if (resourceWorldsDatabase == null)
+        if (resourceWorldsDatabase == null && !File.Exists(ResourceLoader.WORLD_DATABASE_PATH))
             DatabaseCreator.CreateWorldDatabase();
 
         WearableDatabase resourceWearableDatabase = ResourceLoader.LoadWearableDatabase();
-        if (resourceWearableDatabase == null)
+        if (resourceWearableDatabase == null && !File.Exists(ResourceLoader.WEARABLE_DATABASE_PATH))
             DatabaseCreator.CreateWearableDatabase();
 
         ConsumableDatabase resourceItemDatabase = ResourceLoader.LoadConsumableDatabase();
-        if (resourceItemDatabase == null)
+        if (resourceItemDatabase == null && !File.Exists(ResourceLoader.CONSUMABLE_DATABASE_PATH))
             DatabaseCreator.CreateConsumableDatabase();
     }
 

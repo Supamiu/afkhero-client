@@ -2,11 +2,13 @@ using UnityEngine;
 using AFKHero.Inventory;
 using UnityEngine.UI;
 using AFKHero.Model;
+using AFKHero.UI.Tools;
 
 namespace AFKHero.UI.Inventory
 {
     public class SlotUI : MonoBehaviour
     {
+        private Image image;
 
         public Slot slot;
 
@@ -18,9 +20,14 @@ namespace AFKHero.UI.Inventory
 
         public void UpdateDisplay()
         {
+            if(image == null)
+            {
+                image = GetComponent<Image>();
+            }
             if (slot.item != null)
             {
                 icon.sprite = slot.item.icon;
+                image.color = UITools.GetItemColor(slot.item.rarity);
                 icon.gameObject.SetActive(true);
                 if (slot.stack > 1)
                 {
@@ -36,6 +43,7 @@ namespace AFKHero.UI.Inventory
             {
                 icon.gameObject.SetActive(false);
                 stackNumber.gameObject.SetActive(false);
+                image.color = Color.white;
             }
         }
 
@@ -48,8 +56,7 @@ namespace AFKHero.UI.Inventory
                 return;
 
             wearableDetailsPopup.Show((Wearable)slot.item);
-
-            Debug.Log(slot.item.GetType());
+            
             if(slot.item.GetType() == typeof(Wearable))
             {
                 wearableDetailsPopup.Show((Wearable)slot.item);

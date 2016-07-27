@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using AFKHero.Core.Event;
@@ -33,9 +33,13 @@ namespace AFKHero.Core.Save
 			foreach (GameObject go in allGO) {
 				saveables.AddRange (go.GetComponents<Saveable> ());
 			}
-			if (File.Exists (Application.persistentDataPath + "/AFKHero.gd")) {
-				//TODO load data.
-			}
+			if (File.Exists (Application.persistentDataPath + "/AFKHero.save")) {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream file = File.Open(Application.persistentDataPath + "/AFKHero.save", FileMode.Open);
+                save = JsonUtility.FromJson<SaveData>(CryptoService.Instance.Xor(bf.Deserialize(file).ToString()));
+                file.Close();
+                Load();
+            }
 		}
 
 		void OnLevelWasLoaded (int level)
@@ -49,10 +53,11 @@ namespace AFKHero.Core.Save
 		/// </summary>
 		public void Save ()
 		{
-			SaveEngine.save = new SaveData ();
+            save = new SaveData ();
 			foreach (Saveable s in saveables) {
-				SaveEngine.save = s.Save (SaveEngine.save);
+                save = s.Save (save);
 			}
+            Persist();
 		}
 
 		/// <summary>
@@ -61,7 +66,7 @@ namespace AFKHero.Core.Save
 		public void Load ()
 		{
 			foreach (Saveable s in saveables) {
-				s.Load (SaveEngine.save);
+				s.Load (save);
 			}
 		}
 
@@ -69,7 +74,7 @@ namespace AFKHero.Core.Save
 		{
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Create (Application.persistentDataPath + "/AFKHero.save");
-			bf.Serialize (file, CryptoService.Instance.Xor (JsonUtility.ToJson (SaveEngine.save)));
+			bf.Serialize (file, CryptoService.Instance.Xor (JsonUtility.ToJson (save)));
 			file.Close ();
 		}
 	}

@@ -36,6 +36,23 @@ namespace AFKHero.UI.Inventory
             };
         }
 
+        void OnEnable()
+        {
+            if (inventorySystem.slots.Length != currentSlots.Length)
+            {
+                SetCapacity(inventorySystem.slots.Length);
+            }
+            for (int i = 0; i < inventorySystem.slots.Length; i++)
+            {
+                currentSlots[i].slot = inventorySystem.slots[i];
+                if (currentSlots[i].wearableDetailsPopup == null)
+                {
+                    currentSlots[i].wearableDetailsPopup = wearableDetailsPopup;
+                }
+                currentSlots[i].UpdateDisplay();
+            }
+        }
+
         /// <summary>
         /// Met � jout la capacit� de l'inventaire.
         /// </summary>

@@ -1,9 +1,9 @@
-﻿using AFKHero.Core.Event;
+using AFKHero.Core.Event;
 using AFKHero.EventData;
 
-namespace AFKHero.Model.Affix
+namespace AFKHero.Core.Affix
 {
-    public class HPBonus : ListeningAffixModel
+    public class HPBonus : ListeningAffixImpl
     {
         public override string GetEventName()
         {
@@ -18,7 +18,7 @@ namespace AFKHero.Model.Affix
                 {
                     gameEvent.Data.ratio += gameEvent.Data.stat.ratio * value / 100f;
                 }
-            });
+            }); ;
         }
     }
 }

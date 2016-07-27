@@ -17,21 +17,21 @@ namespace AFKHero.Behaviour.Monster
 	{
 
 		[Header ("Spawn ponderation")]
-		public int weight = 10;
+		public int weight;
 
 		[Header ("Ratio vitality/m")]
-		public float vitalityRatio = 1f;
+		public float vitalityRatio;
 
 		[Header ("Ratio strength/m")]
-		public float strengthRatio = 1f;
+		public float strengthRatio;
 
 		[Header ("Ratio dodge/m")]
-		public float dodgeRatio = 1f;
+		public float dodgeRatio;
 
         [Header("Valeur de base de la défense")]
-        public double baseDefenseValue = 1f;
-        
-        public List<WearableDrop> dropList = new List<WearableDrop>();
+        public double baseDefenseValue;
+
+        public List<Drop> dropList;
 
 		public float Distance{ get; private set; }
 

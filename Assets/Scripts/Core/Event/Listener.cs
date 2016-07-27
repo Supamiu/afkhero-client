@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 
 namespace AFKHero.Core.Event
@@ -8,6 +8,11 @@ namespace AFKHero.Core.Event
 	/// </summary>
 	public class Listener<T> : IListener where T : GameEvent
 	{
+
+        /// <summary>
+        /// L'id unique du listener, peut servir.
+        /// </summary>
+        private string id;
 
 		/// <summary>
 		/// La delegate à implémenter 
@@ -46,7 +51,19 @@ namespace AFKHero.Core.Event
             Priority = priority;
 		}
 
-		public Type getType ()
+        /// <summary>
+		/// Créé une instance à partir d'un callback, d'une priorité et d'un id.
+		/// </summary>
+		/// <param name="callback">Callback.</param>
+		/// <param name="priority">Priority.</param>
+		public Listener(GameEventAction callback, int priority, string id)
+        {
+            Callback = callback;
+            Priority = priority;
+            this.id = id;
+        }
+
+        public Type getType ()
 		{
 			return typeof(T);
 		}
@@ -65,5 +82,10 @@ namespace AFKHero.Core.Event
 		{
 			return Priority;
 		}
-	}
+
+        public string GetId()
+        {
+            return this.id;
+        }
+    }
 }

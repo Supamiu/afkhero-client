@@ -161,7 +161,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1286875094}
+      - m_Target: {fileID: 1874456381}
         m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
@@ -342,78 +342,6 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
---- !u!1001 &815835476
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 431772, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 431772, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 431772, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 431772, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 431772, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 431772, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 431772, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 431772, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-  m_RootGameObject: {fileID: 844110656}
-  m_IsPrefabParent: 0
---- !u!1 &844110656
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 128152, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-  m_PrefabInternal: {fileID: 815835476}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 844110657}
-  m_Layer: 0
-  m_Name: Application
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &844110657
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 431772, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-  m_PrefabInternal: {fileID: 815835476}
-  m_GameObject: {fileID: 844110656}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children:
-  - {fileID: 1146369507}
-  m_Father: {fileID: 0}
   m_RootOrder: 3
 --- !u!1 &936296171
 GameObject:
@@ -563,47 +491,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1052010499}
---- !u!1 &1146369506
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 194976, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-  m_PrefabInternal: {fileID: 815835476}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1146369507}
-  - 114: {fileID: 1286875094}
-  m_Layer: 0
-  m_Name: AFKHero
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1146369507
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 415744, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
-  m_PrefabInternal: {fileID: 815835476}
-  m_GameObject: {fileID: 1146369506}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 844110657}
-  m_RootOrder: 0
---- !u!114 &1286875094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11450598, guid: 6be557a408ab4a14881d0330b54438d3,
-    type: 2}
-  m_PrefabInternal: {fileID: 815835476}
-  m_GameObject: {fileID: 1146369506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1b1809729e529e4cb759d0c9f5730f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1858744892
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +573,52 @@ Transform:
   m_GameObject: {fileID: 1858744892}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+--- !u!1 &1874456380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 110798, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1874456382}
+  - 114: {fileID: 1874456381}
+  m_Layer: 0
+  m_Name: AFKHero
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1874456381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11475068, guid: 6be557a408ab4a14881d0330b54438d3,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1874456380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1b1809729e529e4cb759d0c9f5730f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hero: {fileID: 0}
+  gameOver: {fileID: 0}
+  worldManager: {fileID: 0}
+  spawnEngine: {fileID: 0}
+  gameScene: Game
+--- !u!4 &1874456382
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 416160, guid: 6be557a408ab4a14881d0330b54438d3, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1874456380}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -781,7 +714,7 @@ RectTransform:
   - {fileID: 342913006}
   - {fileID: 659190580}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}

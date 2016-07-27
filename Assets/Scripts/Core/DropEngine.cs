@@ -19,29 +19,28 @@ namespace AFKHero.Core
         /// <param name="monsterDropList"></param>
         public void Drop()
         {
-            List<WearableDrop> wearableDropList = new List<WearableDrop>(GetStageWearableDropList());
-            Debug.Log(wearableDropList.Count);
-            foreach (WearableDrop drop in wearableDropList)
+            List<Drop> dropList = new List<Drop>(GetStageDropList());
+            foreach (Drop drop in dropList)
             {
                 if (PercentageUtils.Instance.GetResult(drop.rate))
                 {
-                    Debug.Log("Drop");
-                    EventDispatcher.Instance.Dispatch("drop.wearable", new GenericGameEvent<WearableDrop>(drop));
+                    EventDispatcher.Instance.Dispatch("drop", new GenericGameEvent<Drop>(drop));
+                    Handheld.Vibrate();
                 }
             }
         }
 
-        private List<WearableDrop> GetStageWearableDropList()
+        private List<Drop> GetStageDropList()
         {
             WorldManager wm = FindObjectOfType<WorldManager>();
             foreach (Stage stage in wm.GetAllStages())
             {
                 if (wm.GetStageEnd(stage) > AFKHero.GetDistance())
                 {
-                    return stage.wearableDropList;
+                    return stage.dropList;
                 }
             }
-            return new List<WearableDrop>();
+            return new List<Drop>();
         }
     }
 }

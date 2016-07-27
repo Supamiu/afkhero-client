@@ -1,11 +1,9 @@
-﻿using System;
 using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
     public class Vitality : AbstractStat
 	{
-
 		public double currentHp;
 
 		public override void Add (int points)
@@ -14,7 +12,7 @@ namespace AFKHero.Stat
             amount += points;
             currentHp = ratio * Value;
 			if (OnVitalityUpdated != null) {
-                OnVitalityUpdated();
+                OnVitalityUpdated.Invoke();
 			}
 		}
 
@@ -28,7 +26,7 @@ namespace AFKHero.Stat
                 currentHp = Value;
 			}
 			if (OnVitalityUpdated != null) {
-                OnVitalityUpdated();
+                OnVitalityUpdated.Invoke();
 			}
 			return healed;
 		}
@@ -62,7 +60,7 @@ namespace AFKHero.Stat
 		{
             amount = data.vitality;
 			if (OnVitalityUpdated != null) {
-                OnVitalityUpdated();
+                OnVitalityUpdated.Invoke();
 			}
 		}
 

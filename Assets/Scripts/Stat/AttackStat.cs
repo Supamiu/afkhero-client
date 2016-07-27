@@ -25,7 +25,6 @@ namespace AFKHero.Stat
                 if (gameEvent.Data.attacker == agressive)
                 {
                     gameEvent.Data.baseDamage = (1 + strength.Value / 10d) * Value;
-                    //(1 + force/10) * atk 
                 }
             }, 4000));
 

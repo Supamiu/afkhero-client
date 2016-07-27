@@ -26,7 +26,7 @@ namespace AFKHero.EditorExtension.Layout
         private GUIContent[] itemNames;
         private float dropRate;
         private int dropAmount = 1;
-        private static WearableDrop wearableDrop;
+        private static Drop drop;
         private bool customRate = false;
 
         public WorldDatabaseLayout()
@@ -123,6 +123,7 @@ namespace AFKHero.EditorExtension.Layout
 
         public void DrawWorldEdit(ref World w, bool edit)
         {
+            EditorUtility.SetDirty(worldsDatabase);
             if (!edit)
             {
                 worldScrollPosition = GUILayout.BeginScrollView(worldScrollPosition);
@@ -168,29 +169,30 @@ namespace AFKHero.EditorExtension.Layout
                 EditorGUILayout.LabelField("DropLists", EditorStyles.boldLabel);
                 GUILayout.Space(10);
                 EditorGUILayout.LabelField("Wearables", EditorStyles.wordWrappedLabel);
-                if (w.stages[i].wearableDropList == null)
+                if (w.stages[i].dropList == null)
                 {
-                    w.stages[i].wearableDropList = new List<WearableDrop>();
+                    w.stages[i].dropList = new List<Drop>();
                 }
-                if (w.stages[i].wearableDropList.Count == 0)
+                if (w.stages[i].dropList.Count == 0)
                 {
                     EditorGUILayout.HelpBox("Empty droplist", MessageType.Info);
                 }
 
-                if(w.stages[i].wearableDropList == null)
+                if (w.stages[i].dropList == null)
                 {
-                    w.stages[i].wearableDropList = new List<WearableDrop>();
+                    w.stages[i].dropList = new List<Drop>();
                 }
-                for (int j = 0; j < w.stages[i].wearableDropList.Count; j++)
+                for (int j = 0; j < w.stages[i].dropList.Count; j++)
                 {
-                    WearableDrop d = w.stages[i].wearableDropList[j];
+                    Drop d = w.stages[i].dropList[j];
 
                     EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField(d.item.itemName + (d.amount > 1 ? " x " + d.amount : "") + " : " + (d.rate * 100f) + "%");
+
+                    EditorGUILayout.LabelField(d.itemID + (d.amount > 1 ? " x " + d.amount : "") + " : " + (d.rate * 100f) + "%");
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("X"))
                     {
-                        w.stages[j].wearableDropList.RemoveAt(i);
+                        w.stages[j].dropList.RemoveAt(i);
                     }
                     EditorGUILayout.EndHorizontal();
                 }
@@ -201,18 +203,17 @@ namespace AFKHero.EditorExtension.Layout
                 customRate = EditorGUILayout.BeginToggleGroup("Custom drop rate", customRate);
                 if (!customRate)
                 {
-                    dropRate = WearableDrop.RateForRarity(item.rarity);
+                    dropRate = Drop.RateForRarity(item.rarity);
                 }
                 dropRate = EditorGUILayout.Slider("rate", dropRate, 0f, 1f);
                 EditorGUILayout.EndToggleGroup();
                 dropAmount = EditorGUILayout.IntField("amount", dropAmount);
-                wearableDrop = new WearableDrop(item);
-                wearableDrop.rate = dropRate;
-                wearableDrop.amount = dropAmount;
+                drop = new Drop(item.GetId());
+                drop.rate = dropRate;
+                drop.amount = dropAmount;
                 if (GUILayout.Button("Add item"))
                 {
-                    w.stages[i].wearableDropList.Add(wearableDrop);
-                    Debug.Log(w.stages[i].wearableDropList.Count);
+                    w.stages[i].dropList.Add(drop);
                 }
                 EditorGUILayout.EndVertical();
                 GUILayout.EndVertical();
@@ -223,14 +224,13 @@ namespace AFKHero.EditorExtension.Layout
             {
                 if (GUILayout.Button("Create"))
                 {
-                    EditorUtility.SetDirty(worldsDatabase);
                     worldsDatabase.worlds.Add(w);
                     createdWorld = new World();
-                    EditorUtility.SetDirty(worldsDatabase);
                 }
 
                 GUILayout.EndScrollView();
             }
+            EditorUtility.SetDirty(worldsDatabase);
         }
     }
 }

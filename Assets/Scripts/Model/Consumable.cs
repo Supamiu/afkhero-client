@@ -7,6 +7,6 @@ namespace AFKHero.Model
     [Serializable]
     public class Consumable : Item
     {
-        public List<AbstractConsumableEffect> effects = new List<AbstractConsumableEffect>();        
+        public List<AbstractConsumableEffect> effects = new List<AbstractConsumableEffect>();
     }
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using AFKHero.Core.Tools;
 using System.Collections.Generic;
 
@@ -43,16 +43,28 @@ namespace AFKHero.Tools
 		}
 
         /// <summary>
+        /// Récupère un item aléatoire dans une liste.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
+		public T GetRandomItem<T> (IList<T> items)
+		{
+			int position = Random.Range (0, items.Count - 1);
+			return items [position];
+		}
+
+        /// <summary>
         /// Récupère un item aléatoire dans un tableau.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="items"></param>
         /// <returns></returns>
-		public T GetRandomItem<T> (T[] items)
-		{
-			int position = Random.Range (0, items.Length - 1);
-			return items [position];
-		}
+		public T GetRandomItem<T>(T[] items)
+        {
+            int position = Random.Range(0, items.Length - 1);
+            return items[position];
+        }
 
         /// <summary>
         /// Récupère un float aléatoire entre deux valeurs données.

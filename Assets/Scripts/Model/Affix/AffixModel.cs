@@ -1,45 +1,47 @@
-﻿using UnityEngine;
+using UnityEngine;
 using AFKHero.Tools;
+using AFKHEro.Model.Affix;
+using AFKHero.Core.Affix;
 
 namespace AFKHero.Model.Affix
 {
     [System.Serializable]
-    public abstract class AffixModel
+    public class AffixModel
     {
         /// <summary>
         /// Constructeur pour préparer une affixe.
         /// </summary>
-        protected AffixModel() { }
+        public AffixModel() { }
 
         /// <summary>
         /// La valeur actuelle du roll de l'affixe.
         /// </summary>
         [SerializeField]
-        public float value { get; protected set; }
+        public float value;
 
         /// <summary>
         /// Valeur minimale du roll de l'affixe.
         /// </summary>
         [SerializeField]
-        public float minValue { get; set; }
+        public float minValue;
 
         /// <summary>
         /// Valeur maximale du roll de l'affixe.
         /// </summary>
         [SerializeField]
-        public float maxValue { get; set; }
+        public float maxValue;
 
         /// <summary>
-        /// Le nom de l'affixe.
+        /// Type de l'affixe.
         /// </summary>
         [SerializeField]
-        public string affixName { get; set; }
+        public AffixType type;
 
-        public AffixModel(string name, float min, float max)
+        public AffixModel(AffixType type, float min, float max)
         {
             minValue = min;
             maxValue = max;
-            affixName = name;
+            this.type = type;
         }
 
         /// <summary>
@@ -54,11 +56,17 @@ namespace AFKHero.Model.Affix
         /// Application de l'affixe.
         /// </summary>
         /// <param name="go"></param>
-        public abstract void OnAttach(GameObject go);
+        public void OnAttach(GameObject go)
+        {
+            AffixEngine.Instance.AttachAffix(this, go);
+        }
 
         /// <summary>
         /// Détachement de l'affixe.
         /// </summary>
-        public abstract void OnDetach();
+        public void OnDetach()
+        {
+            AffixEngine.Instance.DetachAffix(this);
+        }
     }
 }
