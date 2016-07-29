@@ -14,7 +14,7 @@ namespace AFKHero.UI.Tools
                 case Rarity.MAGIC:
                     return new Color32(45, 134, 51, 255);
                 case Rarity.RARE:
-                    return new Color32(40, 119, 79, 255);
+                    return new Color32(68, 112, 250, 255);
                 case Rarity.EPIC:
                     return new Color32(62, 18, 85, 255);
                 case Rarity.LEGENDARY:
