@@ -23,6 +23,8 @@ namespace AFKHero.Model
 
         public int mainStat;
 
+        public int mainStatRatio;
+
         public int upgrade;
 
         public void Roll()

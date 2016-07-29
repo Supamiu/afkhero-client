@@ -6,9 +6,10 @@ using System.IO;
 using AFKHero.Core.Tools;
 using System.Linq;
 
+
 namespace AFKHero.Core.Save
 {
-    public class SaveEngine : Singleton<SaveEngine>
+    public class SaveEngine : MonoBehaviour
 	{
 		List<Saveable> saveables;
 
@@ -16,13 +17,13 @@ namespace AFKHero.Core.Save
 
 		void Awake ()
 		{
-            SaveEngine[] instances = FindObjectsOfType<SaveEngine>();
-            if (instances.Length > 1)
-            {
-                Destroy(instances[instances.Length - 1].gameObject);
-                instances = instances.Reverse().Skip(1).Reverse().ToArray();
-            }
-            DontDestroyOnLoad (this);
+			SaveEngine[] instances = FindObjectsOfType<SaveEngine>();
+			if (instances.Length > 1)
+			{
+				Destroy(instances[instances.Length - 1].gameObject);
+				instances = instances.Reverse().Skip(1).Reverse().ToArray();
+			}
+			DontDestroyOnLoad (this);
 			EventDispatcher.Instance.Register ("save", new Listener<GameEvent> ((ref GameEvent e) => {
                 Save();
 			}));
@@ -33,7 +34,7 @@ namespace AFKHero.Core.Save
 
 		// Use this for initialization
 		void Start ()
-		{            
+		{
             saveables = new List<Saveable> ();
 			GameObject[] allGO = FindObjectsOfType<GameObject> ();
 			foreach (GameObject go in allGO) {
