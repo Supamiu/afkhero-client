@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using AFKHero.Core.Event;
 using System.IO;
 using AFKHero.Core.Tools;
+using System.Linq;
 
 
 namespace AFKHero.Core.Save
@@ -16,6 +17,12 @@ namespace AFKHero.Core.Save
 
 		void Awake ()
 		{
+			SaveEngine[] instances = FindObjectsOfType<SaveEngine>();
+			if (instances.Length > 1)
+			{
+				Destroy(instances[instances.Length - 1].gameObject);
+				instances = instances.Reverse().Skip(1).Reverse().ToArray();
+			}
 			DontDestroyOnLoad (this);
 			EventDispatcher.Instance.Register ("save", new Listener<GameEvent> ((ref GameEvent e) => {
                 Save();
