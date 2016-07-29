@@ -1,3 +1,4 @@
+using AFKHero.Core.Event;
 using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
@@ -38,6 +39,10 @@ namespace AFKHero.Stat
 		void Start ()
 		{
             currentHp = Value;
+            EventDispatcher.Instance.Register("health.fullHeal", new Listener<GameEvent>((ref GameEvent e) =>
+            {
+                currentHp = Value;
+            }));
 		}
 
 		public void Init ()

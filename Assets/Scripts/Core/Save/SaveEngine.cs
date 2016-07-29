@@ -27,7 +27,10 @@ namespace AFKHero.Core.Save
 			EventDispatcher.Instance.Register ("save", new Listener<GameEvent> ((ref GameEvent e) => {
                 Save();
 			}));
-			EventDispatcher.Instance.Register ("load", new Listener<GameEvent> ((ref GameEvent e) => {
+            EventDispatcher.Instance.Register("restart", new Listener<GenericGameEvent<float>>((ref GenericGameEvent<float> e) => {
+                save.distance = e.Data;
+            }));
+            EventDispatcher.Instance.Register ("load", new Listener<GameEvent> ((ref GameEvent e) => {
                 Load();
 			}));
 		}
@@ -43,7 +46,7 @@ namespace AFKHero.Core.Save
 			if (File.Exists (Application.persistentDataPath + "/AFKHero.save")) {
                 BinaryFormatter bf = new BinaryFormatter();
                 FileStream file = File.Open(Application.persistentDataPath + "/AFKHero.save", FileMode.Open);
-                save = JsonUtility.FromJson<SaveData>(CryptoService.Instance.Xor(bf.Deserialize(file).ToString()));
+                save = JsonUtility.FromJson<SaveData>(CryptoService.Xor(bf.Deserialize(file).ToString()));
                 file.Close();
                 Load();
             }
@@ -61,10 +64,14 @@ namespace AFKHero.Core.Save
 		public void Save ()
 		{
             save = new SaveData ();
-			foreach (Saveable s in saveables) {
-                save = s.Save (save);
-			}
-            Persist();
+            if (saveables != null)
+            {
+                foreach (Saveable s in saveables)
+                {
+                    save = s.Save(save);
+                }
+                Persist();
+            }
 		}
 
 		/// <summary>
@@ -81,7 +88,7 @@ namespace AFKHero.Core.Save
 		{
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Create (Application.persistentDataPath + "/AFKHero.save");
-			bf.Serialize (file, CryptoService.Instance.Xor (JsonUtility.ToJson (save)));
+			bf.Serialize (file, CryptoService.Xor (JsonUtility.ToJson (save)));
 			file.Close ();
 		}
 	}

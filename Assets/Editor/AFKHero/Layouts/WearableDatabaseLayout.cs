@@ -6,9 +6,8 @@ using AFKHero.Core.Database;
 using AFKHero.Core;
 using AFKHero.Core.Gear;
 using AFKHero.Model.Affix;
-using System;
 using AFKHEro.Model.Affix;
-using AFKHero.UI.Tools;
+using AFKHero.Tools;
 
 namespace AFKHero.EditorExtension.Layout
 {
@@ -18,6 +17,7 @@ namespace AFKHero.EditorExtension.Layout
         private Vector2 scrollPosition;
         private List<bool> managedItem = new List<bool>();
         private static Wearable createdWearable = (Wearable)new Wearable().GenerateId();
+        private bool customRatio = false;
 
         //Création d'affixe
         private AffixModel createdAffix = new AffixModel();
@@ -131,8 +131,13 @@ namespace AFKHero.EditorExtension.Layout
             {
                 mainStatName = "Defense";
             }
-            subject.mainStat = EditorGUILayout.IntField(mainStatName, subject.mainStat);
-
+            if (!customRatio)
+            {
+                subject.mainStatRatio = RatioEngine.Editor.GetDefaultMainStatRatio(subject.type);
+            }
+            customRatio = EditorGUILayout.BeginToggleGroup("Custom ratio", customRatio);
+            subject.mainStatRatio = EditorGUILayout.FloatField(mainStatName + " ratio", subject.mainStatRatio);
+            EditorGUILayout.EndToggleGroup();
             GUILayout.BeginVertical("Box");
             GUILayout.Label("Affixes possibles", EditorStyles.boldLabel);
             if (subject.affixPool == null)

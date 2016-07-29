@@ -23,12 +23,13 @@ namespace AFKHero.Model
 
         public int mainStat;
 
-        public int mainStatRatio;
+        public float mainStatRatio;
 
         public int upgrade;
 
         public void Roll()
         {
+            mainStat = RatioEngine.Instance.GetMainStat(this);
             if(affixPool == null)
             {
                 return;

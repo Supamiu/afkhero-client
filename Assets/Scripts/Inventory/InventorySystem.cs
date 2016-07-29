@@ -5,6 +5,7 @@ using AFKHero.Core.Save;
 using AFKHero.Error;
 using AFKHero.Model;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AFKHero.Inventory
@@ -100,7 +101,6 @@ namespace AFKHero.Inventory
                     return;
                 }
             }
-            Debug.Log(slots[slots.Length - 1].item.itemName);
             throw new InventoryFullException();
         }
 
@@ -145,14 +145,45 @@ namespace AFKHero.Inventory
         public SaveData Save(SaveData save)
         {
             save.capacity = capacity;
-            save.inventory = slots;
+            save.wearableInventory = new List<Wearable>();
+            save.consumableInventory = new List<Consumable>();
+            save.otherInventory = new List<Item>();
+            foreach (Slot slot in slots)
+            {
+                if (slot.item != null)
+                {
+                    if (slot.item.GetType() == typeof(Wearable))
+                    {
+                        save.wearableInventory.Add((Wearable)slot.item);
+                    }
+                    else if (slot.item.GetType() == typeof(Consumable))
+                    {
+                        save.consumableInventory.Add((Consumable)slot.item);
+                    }
+                    else
+                    {
+                        save.otherInventory.Add(slot.item);
+                    }
+                }
+            }
             return save;
         }
 
         public void Load(SaveData data)
         {
-            capacity = data.capacity;
-            slots = data.inventory;
+            SetCapacity(data.capacity);
+            foreach (Wearable item in data.wearableInventory)
+            {
+                AddItem(item);
+            }
+            foreach (Consumable item in data.consumableInventory)
+            {
+                AddItem(item);
+            }
+            foreach (Item item in data.otherInventory)
+            {
+                AddItem(item);
+            }
             NotifyContentChanged();
         }
     }

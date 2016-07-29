@@ -4,11 +4,13 @@ using AFKHero.Core.Event;
 using AFKHero.Behaviour;
 using AFKHero.Core;
 using AFKHero.UI;
+using AFKHero.Core.Save;
+using System;
 
 namespace AFKHero
 {
 
-    public class AFKHero : MonoBehaviour
+    public class AFKHero : MonoBehaviour, Saveable
 	{
 
 		[Header ("Référence vers le héro pour l'écran de GameOver")]
@@ -28,7 +30,6 @@ namespace AFKHero
 
 		void Start ()
 		{
-            print(Application.persistentDataPath);
             hero.onDeath += () => {
 				Invoke ("GameOver", 0.5f);
 			};
@@ -87,9 +88,31 @@ namespace AFKHero
 		public void Restart ()
 		{
 			distance = worldManager.GetCheckpoint();
+            EventDispatcher.Instance.Dispatch("restart", new GenericGameEvent<float>(distance));
             spawnEngine.Clear ();
 			EventDispatcher.Instance.Clear ();
 			SceneManager.LoadScene (gameScene);
 		}
-	}
+
+        void OnApplicationQuit()
+        {
+            EventDispatcher.Instance.Dispatch("save");
+        }
+
+        void OnApplicationPause()
+        {
+            EventDispatcher.Instance.Dispatch("save");
+        }
+
+        public SaveData Save(SaveData save)
+        {
+            save.distance = distance;
+            return save;
+        }
+
+        public void Load(SaveData data)
+        {
+            distance = data.distance;
+        }
+    }
 }

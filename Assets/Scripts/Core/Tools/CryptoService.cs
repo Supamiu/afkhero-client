@@ -1,14 +1,10 @@
-﻿namespace AFKHero.Core.Tools
+namespace AFKHero.Core.Tools
 {
-    public class CryptoService : Singleton<CryptoService>
+    public class CryptoService
 	{
 		private const string key = "zAlUuA5FjOQifdp0Q2kBnlxeaRyFo8il";
 
-		protected CryptoService ()
-		{
-		}
-
-		public string Xor (string baseString)
+		public static string Xor (string baseString)
 		{
 			char[] src = baseString.ToCharArray ();
 			char[] k = key.ToCharArray ();

@@ -26,6 +26,8 @@ namespace AFKHero.Model
             {
                 case Rarity.COMMON:
                     return 0.01f;
+                case Rarity.MAGIC:
+                    return 0.005f;
                 case Rarity.RARE:
                     return 0.001f;
                 case Rarity.EPIC:

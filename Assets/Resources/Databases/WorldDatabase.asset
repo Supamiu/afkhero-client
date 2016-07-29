@@ -23,14 +23,11 @@ MonoBehaviour:
     stages:
     - bestiary:
       - {fileID: 11455734, guid: a4f7396b34908dc48a0edb1bdc7fd443, type: 2}
-      boss: {fileID: 0}
+      boss: {fileID: 11430094, guid: a32b695b0116f2042bcf2dcc89d5ee87, type: 2}
       dropList:
-      - itemID: 348563641
+      - itemID: 1586548674
         amount: 1
-        rate: 0.332
-      - itemID: 1390663619
-        amount: 1
-        rate: 0.89
+        rate: 0.1
       done: 0
     - bestiary: []
       boss: {fileID: 0}

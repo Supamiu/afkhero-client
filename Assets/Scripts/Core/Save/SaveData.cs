@@ -8,6 +8,8 @@ namespace AFKHero.Core.Save
     [System.Serializable]
 	public class SaveData
 	{
+        public float distance = 0f;
+
 		//Système de stats
 		public int statPoints = 0;
 
@@ -26,7 +28,9 @@ namespace AFKHero.Core.Save
 		//Inventaire
 		public double gold = 0;
         public int capacity = 24;
-        public Slot[] inventory = new Slot[0];
+        public List<Wearable> wearableInventory;
+        public List<Consumable> consumableInventory;
+        public List<Item> otherInventory;
 
         //Gear
         public Wearable[] gear;

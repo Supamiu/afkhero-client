@@ -15,8 +15,9 @@ namespace AFKHero.Core.Affix
             {AffixType.CRIT_DAMAGE_BONUS, new CritDamageBonus() },
             {AffixType.DAMAGE_BONUS, new DamageBonus() },
             {AffixType.HP_BONUS, new HPBonus() },
+
             {AffixType.LEGENDARY_KICK_ASS_RING, new KickAssRing() }
-        }; 
+        };
 
         public void AttachAffix(AffixModel affix, GameObject go)
         {
@@ -28,10 +29,12 @@ namespace AFKHero.Core.Affix
             GetImpl(affix.type).Detach();
         }
 
+        
         private AffixImpl GetImpl(AffixType type)
         {
             AffixImpl impl = null;
             affixImpls.TryGetValue(type, out impl);
+            //premi�re fois, c'est ptet une l�gendaire !
             if(impl == null)
             {
                 Debug.LogError("No implementation for affix type " + type.ToString());

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using AFKHero.Core.Event;
 using System;
 using AFKHero.EventData;
@@ -54,6 +54,8 @@ namespace AFKHero.Behaviour.Hero
             level = save.level;
             xp = save.xp;
             xpForNextLevel = save.xpForNextLevel;
-		}
+            EventDispatcher.Instance.Dispatch("level.update", new GenericGameEvent<LevelUp>(new LevelUp(level, GetXpForLevel(level), xp)));
+            EventDispatcher.Instance.Dispatch("experience.ui", new GenericGameEvent<XPGain>(new XPGain(xp, xpForNextLevel)));
+        }
 	}
 }

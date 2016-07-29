@@ -1,3 +1,4 @@
+using AFKHero.Core.Event;
 using AFKHero.Core.Save;
 using AFKHero.Inventory;
 using AFKHero.Model;
@@ -179,6 +180,7 @@ namespace AFKHero.Core.Gear
                     Equip(item);
                 }
             }
+            EventDispatcher.Instance.Dispatch("health.fullHeal");
         }
     }
 }

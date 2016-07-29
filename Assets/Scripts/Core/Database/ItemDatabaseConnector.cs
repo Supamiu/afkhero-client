@@ -74,6 +74,7 @@ namespace AFKHero.Core.Database
             wCopy.icon = w.icon;
             wCopy.itemName = w.itemName;
             wCopy.mainStat = w.mainStat;
+            wCopy.mainStatRatio = w.mainStatRatio;
             wCopy.rarity = w.rarity;
             wCopy.sprite = w.sprite;
             wCopy.type = w.type;
