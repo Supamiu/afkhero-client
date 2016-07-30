@@ -28,16 +28,12 @@ MonoBehaviour:
       - itemID: 1586548674
         amount: 1
         rate: 0.1
-      done: 0
     - bestiary: []
       boss: {fileID: 0}
       dropList: []
-      done: 0
     - bestiary: []
       boss: {fileID: 0}
       dropList: []
-      done: 0
     - bestiary: []
       boss: {fileID: 0}
       dropList: []
-      done: 0

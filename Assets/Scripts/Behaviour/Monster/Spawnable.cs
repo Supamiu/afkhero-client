@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using AFKHero.Model;
 using System;
 using AFKHero.Core;
+using AFKHero.Core.Event;
 
 namespace AFKHero.Behaviour.Monster
 {
@@ -31,6 +32,9 @@ namespace AFKHero.Behaviour.Monster
         [Header("Valeur de base de la défense")]
         public double baseDefenseValue;
 
+        [Header("Si c'est un boss")]
+        public bool isBoss = false;
+
         public List<Drop> dropList;
 
 		public float Distance{ get; private set; }
@@ -53,6 +57,10 @@ namespace AFKHero.Behaviour.Monster
         public void OnDeath()
         {
             DropEngine.Instance.Drop();
+            if (isBoss)
+            {
+                EventDispatcher.Instance.Dispatch("boss.killed", new GenericGameEvent<Spawnable>(this));
+            }
         }
     }
 }

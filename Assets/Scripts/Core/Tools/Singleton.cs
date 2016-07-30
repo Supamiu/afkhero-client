@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 
 namespace AFKHero.Core.Tools{

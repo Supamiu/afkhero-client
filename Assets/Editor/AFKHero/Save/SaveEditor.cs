@@ -18,7 +18,6 @@ public class SaveEditor : EditorWindow
     private static void Init()
     {
         GetWindow(typeof(SaveEditor));
-
     }
 
     private void OnGUI()
@@ -151,5 +150,6 @@ public class SaveEditor : EditorWindow
 
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
+        Persist();
     }
 }

@@ -1,7 +1,6 @@
 using AFKHero.Core.Affix.Legendary;
 using AFKHero.Core.Tools;
 using AFKHero.Model.Affix;
-using AFKHEro.Model.Affix;
 using System.Collections.Generic;
 using UnityEngine;
 

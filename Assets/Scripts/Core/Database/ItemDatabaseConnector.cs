@@ -64,6 +64,7 @@ namespace AFKHero.Core.Database
         private Wearable CloneWearable(Wearable w)
         {
             Wearable wCopy = new Wearable();
+            wCopy.id = w.GetId();
             wCopy.affixPool = new List<AffixModel>();
             foreach (AffixModel a in w.affixPool)
             {

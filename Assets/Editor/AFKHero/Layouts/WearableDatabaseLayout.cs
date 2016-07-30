@@ -6,7 +6,6 @@ using AFKHero.Core.Database;
 using AFKHero.Core;
 using AFKHero.Core.Gear;
 using AFKHero.Model.Affix;
-using AFKHEro.Model.Affix;
 using AFKHero.Tools;
 
 namespace AFKHero.EditorExtension.Layout

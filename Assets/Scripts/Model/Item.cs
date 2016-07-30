@@ -8,8 +8,7 @@ namespace AFKHero.Model
         /// <summary>
         /// L'id unique de l'item.
         /// </summary>
-        [SerializeField]
-        private int id;
+        public int id;
 
         /// <summary>
         /// L'icône pour le display.

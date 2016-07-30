@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using AFKHero.Model;
-using AFKHero.Core.Gear;
-using AFKHero.Inventory;
 
 namespace AFKHero.Core.Save
 {
@@ -34,5 +32,8 @@ namespace AFKHero.Core.Save
 
         //Gear
         public Wearable[] gear;
+
+        //Progression
+        public List<StageProgression> progressionStages;
 	}
 }

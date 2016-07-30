@@ -2,6 +2,8 @@ using UnityEngine;
 using AFKHero.Core.Database;
 using System;
 using System.IO;
+using AFKHero.Model;
+using System.Collections.Generic;
 
 namespace AFKHero.Core
 {

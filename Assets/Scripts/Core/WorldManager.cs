@@ -2,8 +2,9 @@ using UnityEngine;
 using AFKHero.Model;
 using AFKHero.Common;
 using System.Collections.Generic;
-using AFKHero.Core.Database;
 using AFKHero.Behaviour.Monster;
+using AFKHero.Core.Event;
+using AFKHero.Core.Save;
 
 namespace AFKHero.Core
 {
@@ -24,13 +25,23 @@ namespace AFKHero.Core
 
         void Start()
         {
-            worlds = ResourceLoader.LoadWorldDatabase().worlds;
+            worlds = new List<World>(ResourceLoader.LoadWorldDatabase().worlds);
             if (worlds.Count == 0)
             {
                 Debug.LogError("WorldManager has 0 worlds, this should never happen !");
                 return;
             }
             SetWorld(GetCurrentWorld());
+            EventDispatcher.Instance.Register("boss.killed", new Listener<GenericGameEvent<Spawnable>>((ref GenericGameEvent<Spawnable> e) =>
+            {
+                foreach(Stage s in GetAllStages())
+                {
+                    if(GetStageEnd(s) <= e.Data.Distance)
+                    {
+                        Progression.Instance.StageDone(s, e.Data.Distance);
+                    }
+                }
+            }));
         }
 
         public float GetCheckpoint()
@@ -40,7 +51,7 @@ namespace AFKHero.Core
             float distance = 0f;
             foreach (Stage s in w.stages)
             {
-                if (s.done)
+                if (Progression.Instance.IsStageDone(s, distance))
                 {
                     distance += stageDistance;
                 }
@@ -64,7 +75,7 @@ namespace AFKHero.Core
                 foreach (Stage s in w.stages)
                 {
                     //Si on a dépassé ce stage, on vérifie qu'il a bien été fait.
-                    if (!s.done)
+                    if (!Progression.Instance.IsStageDone(s, GetStageEnd(s)))
                     {
                         return w;
                     }
@@ -90,7 +101,7 @@ namespace AFKHero.Core
                 else
                 {
                     //Si on a dépassé ce stage, on vérifie qu'il a bien été fait.
-                    if (!s.done)
+                    if (!Progression.Instance.IsStageDone(s, GetStageEnd(s)))
                     {
                         List<Spawnable> bossSpawn = new List<Spawnable>();
                         bossSpawn.Add(s.boss);

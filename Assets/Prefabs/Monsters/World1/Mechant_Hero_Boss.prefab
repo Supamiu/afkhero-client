@@ -228,6 +228,7 @@ MonoBehaviour:
   strengthRatio: 1.5
   dodgeRatio: 1
   baseDefenseValue: 2
+  isBoss: 1
   dropList: []
 --- !u!114 &11433180
 MonoBehaviour:

@@ -1,5 +1,5 @@
 
-namespace AFKHEro.Model.Affix
+namespace AFKHero.Model.Affix
 {
     [System.Serializable]
     public enum AffixType
