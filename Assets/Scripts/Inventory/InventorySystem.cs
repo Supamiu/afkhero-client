@@ -93,6 +93,11 @@ namespace AFKHero.Inventory
         /// <param name="item"></param>
         public void AddItem(Item item)
         {
+            //Il semble y avoir un bug lors de la sérialization, ça devrait le fix.
+            if(item.itemName.Length < 1 || item.icon == null)
+            {
+                return;
+            }
             foreach (Slot slot in slots)
             {
                 if (slot.Store(item))

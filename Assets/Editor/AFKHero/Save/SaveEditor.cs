@@ -18,7 +18,7 @@ public class SaveEditor : EditorWindow
     private static void Init()
     {
         GetWindow(typeof(SaveEditor));
-        
+
     }
 
     private void OnGUI()

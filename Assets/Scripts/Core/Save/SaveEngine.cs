@@ -47,6 +47,7 @@ namespace AFKHero.Core.Save
                 BinaryFormatter bf = new BinaryFormatter();
                 FileStream file = File.Open(Application.persistentDataPath + "/AFKHero.save", FileMode.Open);
                 save = JsonUtility.FromJson<SaveData>(CryptoService.Xor(bf.Deserialize(file).ToString()));
+                Debug.Log(JsonUtility.ToJson(save));
                 file.Close();
                 Load();
             }
