@@ -25,6 +25,7 @@ namespace AFKHero.Core.Save
 
 		//Inventaire
 		public double gold = 0;
+        public double dust = 0;
         public int capacity = 24;
         public List<Wearable> wearableInventory;
         public List<Consumable> consumableInventory;
@@ -32,6 +33,7 @@ namespace AFKHero.Core.Save
 
         //Gear
         public Wearable[] gear;
+        public bool defaultWeaponAdded;
 
         //Progression
         public List<StageProgression> progressionStages;

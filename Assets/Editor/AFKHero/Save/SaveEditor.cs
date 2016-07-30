@@ -145,7 +145,14 @@ public class SaveEditor : EditorWindow
         GUILayout.Space(10);
 
         GUILayout.Label("Gear", EditorStyles.centeredGreyMiniLabel);
-        //TODO
+        for (int i = 0; i < save.gear.Length; i++)
+        {
+            GUILayout.BeginVertical("Box");
+            GUILayout.Label(save.gear[i].GetId().ToString());
+            GUILayout.Label(save.gear[i].itemName);
+            //TODO
+            GUILayout.EndVertical();
+        }
         GUILayout.Space(10);
 
         GUILayout.EndScrollView();

@@ -1,7 +1,7 @@
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 
-namespace AFKHero.Core.Affix
+namespace AFKHero.Core.Affix.Normal
 {
     public class HPBonus : ListeningAffixImpl
     {

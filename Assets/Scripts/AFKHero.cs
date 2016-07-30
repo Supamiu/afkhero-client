@@ -106,7 +106,11 @@ namespace AFKHero
 
         public SaveData Save(SaveData save)
         {
-            save.distance = distance;
+            save.distance = Mathf.Round(distance - spawnEngine.offset);
+            if(save.distance < 0)
+            {
+                save.distance = 0;
+            }
             return save;
         }
 

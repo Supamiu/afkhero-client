@@ -18,6 +18,8 @@ namespace AFKHero.Inventory
 
         public int capacity = 24;
 
+        public double dust = 0;
+
         public event Action OnContentChanged;
 
         void Start()
@@ -31,6 +33,12 @@ namespace AFKHero.Inventory
                     ((Wearable)i).Roll();
                 }
                 AddItem(i);
+            }));
+
+            EventDispatcher.Instance.Register("dust", new Listener<GenericGameEvent<double>>((ref GenericGameEvent<double> e) =>
+            {
+                dust += e.Data;
+                NotifyContentChanged();
             }));
         }
 
@@ -150,6 +158,7 @@ namespace AFKHero.Inventory
         public SaveData Save(SaveData save)
         {
             save.capacity = capacity;
+            save.dust = dust;
             save.wearableInventory = new List<Wearable>();
             save.consumableInventory = new List<Consumable>();
             save.otherInventory = new List<Item>();
@@ -176,7 +185,9 @@ namespace AFKHero.Inventory
 
         public void Load(SaveData data)
         {
+            slots = new Slot[capacity];
             SetCapacity(data.capacity);
+            dust = data.dust;
             foreach (Wearable item in data.wearableInventory)
             {
                 AddItem(item);

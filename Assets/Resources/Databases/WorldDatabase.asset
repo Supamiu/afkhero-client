@@ -27,7 +27,31 @@ MonoBehaviour:
       dropList:
       - itemID: 1586548674
         amount: 1
-        rate: 0.1
+        rate: 0.05
+      - itemID: 1828966542
+        amount: 1
+        rate: 0.05
+      - itemID: 557796649
+        amount: 1
+        rate: 0.05
+      - itemID: 549826339
+        amount: 1
+        rate: 0.05
+      - itemID: 1395760149
+        amount: 1
+        rate: 0.05
+      - itemID: 799770147
+        amount: 1
+        rate: 0.05
+      - itemID: 1957087475
+        amount: 1
+        rate: 0.05
+      - itemID: 2039993851
+        amount: 1
+        rate: 0.05
+      - itemID: 639186913
+        amount: 1
+        rate: 0.05
     - bestiary: []
       boss: {fileID: 0}
       dropList: []

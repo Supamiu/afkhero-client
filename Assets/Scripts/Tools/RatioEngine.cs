@@ -37,11 +37,38 @@ namespace AFKHero.Tools
             return baseValue * 1 + (distance * AFKHero.Config.DEFENSE_BONUS_PER_METER);
         }
 
+        public float GetDamageReductionPercent(double value)
+        {
+            return (float)value / (5000f + (float)value);
+        }
+
         public int GetMainStat(Wearable wearable)
         {
             float ratio = Editor.GetMainStatRatio(wearable);
             float baseValue = 10 + ratio * AFKHero.GetDistance() * wearable.mainStatRatio;
             return Mathf.CeilToInt(Random.Range(baseValue * .90f, baseValue * 1.10f));
+        }
+
+
+        //Tout ce qui concerne l'upgrade de wearables.
+        public double GetDust(Wearable w)
+        {
+            return w.mainStat / 8 * ((int)w.rarity + 1);
+        }
+
+        public int GetUpgradedStat(Wearable w)
+        {
+            return 1 + Mathf.RoundToInt(w.mainStat * (1 + ((int)w.rarity + 1) / 100f));
+        }
+
+        public double GetUpgradeCost(Wearable w)
+        {
+            return 1 + Mathf.Floor(((int)w.rarity + 1f) / 2f * Mathf.Pow(w.upgrade, 1.8f));
+        }
+
+        public float GetUpgradeChances(Wearable w)
+        {
+            return 1f - w.upgrade / 4f;
         }
 
 

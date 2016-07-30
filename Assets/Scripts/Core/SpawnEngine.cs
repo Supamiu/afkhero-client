@@ -30,7 +30,7 @@ namespace AFKHero.Core
         /// <summary>
         /// L'offset de spawn (la distance entre le héro et le spawnEngine pour avoir des monstres bien scale en damage.
         /// </summary>
-        private float offset = 0f;
+        public float offset { get; private set; }
 
         // Use this for initialization
         void Start()

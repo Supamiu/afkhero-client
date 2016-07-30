@@ -201,9 +201,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldManager: {fileID: 11470686}
-  spawnInterval: 1.5
+  spawnInterval: 2
   spawnChances: 0.5
   hero: {fileID: 0}
+  spawnEnabled: 1
 --- !u!114 &11464526
 MonoBehaviour:
   m_ObjectHideFlags: 1

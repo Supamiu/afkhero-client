@@ -5,7 +5,7 @@ namespace AFKHero.EventData
 
     public class Attack
     {
-        
+
         public Attack(Agressive attacker, Damageable target)
         {
             this.target = target;
@@ -41,7 +41,7 @@ namespace AFKHero.EventData
         /// <summary>
         /// La réduction de damage causée par la défense de la cible.
         /// </summary>
-        public double damageReduction = 0;
+        public float damageReductionPercent = 0;
 
         /// <summary>
         /// Le bonus de damage total.
@@ -64,8 +64,16 @@ namespace AFKHero.EventData
         /// <returns>The damage.</returns>
         public Damage getDamage()
         {
-            double finalDamage = critical ? (baseDamage * criticalRatio) - damageReduction : baseDamage - damageReduction;
-            if(finalDamage < 0)
+            double finalDamage;
+            if (critical)
+            {
+                finalDamage = (baseDamage * criticalRatio) * 1 - damageReductionPercent;
+            }
+            else
+            {
+                finalDamage = baseDamage * 1 - damageReductionPercent;
+            }
+            if (finalDamage < 0)
             {
                 finalDamage = 0;
             }

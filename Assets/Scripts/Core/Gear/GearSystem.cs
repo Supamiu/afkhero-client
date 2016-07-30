@@ -1,3 +1,4 @@
+using AFKHero.Core.Database;
 using AFKHero.Core.Event;
 using AFKHero.Core.Save;
 using AFKHero.Inventory;
@@ -23,31 +24,42 @@ namespace AFKHero.Core.Gear
 
         private InventorySystem inventory;
 
+        private bool defaultWeaponAdded = false;
+
         //Slots Spine
         [SpineSlot]
         public string weapon;
+
+        public Wearable defaultWeapon;
         //Fin slots Spine.
 
         void Start()
         {
             //TODO gérer les slots un par un pour mettre à jour leur spineSlot.
             //Si le stuff est inexistant, on créé sa structure.
-
             InitGear();
         }
 
         void InitGear()
         {
+            if (currentGear == null)
+            {
+                currentGear = new Dictionary<GearSlot, Wearable>();
+                foreach (GearSlot slot in GearSlot.Slots)
+                {
+                    if (slot == GearSlot.WEAPON)
+                    {
+                        slot.spineSlot = weapon;
+                    }
+                    currentGear.Add(slot, null);
+                }
+            }
             inventory = GetComponent<InventorySystem>();
             skeleton = GetComponent<SkeletonRenderer>().skeleton;
-            currentGear = new Dictionary<GearSlot, Wearable>();
-            foreach (GearSlot slot in GearSlot.Slots)
+            if (!defaultWeaponAdded)
             {
-                if (slot == GearSlot.WEAPON)
-                {
-                    slot.spineSlot = weapon;
-                }
-                currentGear.Add(slot, null);
+                Equip(defaultWeapon);
+                defaultWeaponAdded = true;
             }
         }
 
@@ -133,6 +145,25 @@ namespace AFKHero.Core.Gear
             return false;
         }
 
+        public bool UnEquip(Wearable item)
+        {
+            if (inventory.HasFreeSlot())
+            {
+                foreach (GearSlot slot in GetSlotsForType(item.type))
+                {
+                    if (currentGear[slot] == item)
+                    {
+                        item.Detach();
+                        inventory.AddItem(item);
+                        currentGear[slot] = null;
+                        NotifyGearChange();
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Récupère une liste de slots disponibles pour un certain type d'équipement.
         /// </summary>
@@ -154,7 +185,7 @@ namespace AFKHero.Core.Gear
         /// <summary>
         /// Notifie les listeners de l'event de changement de stuff.
         /// </summary>
-        private void NotifyGearChange()
+        public void NotifyGearChange()
         {
             if (GearChangeEvent != null)
             {
@@ -164,6 +195,7 @@ namespace AFKHero.Core.Gear
 
         public SaveData Save(SaveData save)
         {
+            save.defaultWeaponAdded = defaultWeaponAdded;
             Wearable[] gear = new Wearable[currentGear.Values.Count];
             currentGear.Values.CopyTo(gear, 0);
             save.gear = gear;
@@ -172,15 +204,17 @@ namespace AFKHero.Core.Gear
 
         public void Load(SaveData data)
         {
+            defaultWeaponAdded = true;
             InitGear();
             foreach (Wearable item in data.gear)
             {
-                if (item != null)
+                if (item != null && item.itemName.Length > 0 && item.mainStat > 0)
                 {
                     Equip(item);
                 }
             }
             EventDispatcher.Instance.Dispatch("health.fullHeal");
+            NotifyGearChange();
         }
     }
 }

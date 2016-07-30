@@ -14,7 +14,7 @@ namespace AFKHero.Stat
 
         private Strength strength;
 
-        void Start()
+        void Awake()
         {
             amount = 0;
             agressive = GetComponent<Agressive>();
@@ -28,9 +28,12 @@ namespace AFKHero.Stat
                 }
             }, 4000));
 
-            EventDispatcher.Instance.Register("gearstat.attack", new Listener<GenericGameEvent<int>>((ref GenericGameEvent<int> e) =>
+            EventDispatcher.Instance.Register("gearstat.attack", new Listener<GenericGameEvent<GearStat>>((ref GenericGameEvent<GearStat> e) =>
             {
-                amount += e.Data;
+                if (e.Data.subject == gameObject)
+                {
+                    amount += e.Data.amount;
+                }
             }));
         }
 

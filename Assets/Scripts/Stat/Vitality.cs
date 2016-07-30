@@ -37,13 +37,17 @@ namespace AFKHero.Stat
 		public event UpdateEvent OnVitalityUpdated;
 
 		void Start ()
-		{
+        {
             currentHp = Value;
             EventDispatcher.Instance.Register("health.fullHeal", new Listener<GameEvent>((ref GameEvent e) =>
             {
                 currentHp = Value;
+                if (OnVitalityUpdated != null)
+                {
+                    OnVitalityUpdated.Invoke();
+                }
             }));
-		}
+        }
 
 		public void Init ()
 		{

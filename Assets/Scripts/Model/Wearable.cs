@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using AFKHero.Tools;
+using AFKHero.EventData;
 
 namespace AFKHero.Model
 {
@@ -27,19 +28,20 @@ namespace AFKHero.Model
 
         public int upgrade;
 
+        [NonSerialized]
+        private GameObject go;
+
         public void Roll()
         {
             mainStat = RatioEngine.Instance.GetMainStat(this);
-            if(affixPool == null)
+            if (affixPool == null)
             {
                 return;
             }
             affixes = new List<AffixModel>();
-            for (int i = 0; i< GetAffixNumber(rarity); i++)
+            for (int i = 0; i < GetAffixNumber(rarity); i++)
             {
-                AffixModel affix = PercentageUtils.Instance.GetRandomItem(affixPool);
-                affixPool.Remove(affix);
-                affixes.Add(affix);
+                AddAffix();
             }
             foreach (AffixModel affix in affixes)
             {
@@ -51,19 +53,45 @@ namespace AFKHero.Model
             }
         }
 
-        public void Upgrade()
+        public bool Upgrade()
         {
-            //TODO
+            if (upgrade < 12)
+            {
+                if (PercentageUtils.Instance.GetResult(RatioEngine.Instance.GetUpgradeChances(this)))
+                {
+                    mainStat = RatioEngine.Instance.GetUpgradedStat(this);
+                    upgrade++;
+                    //Si c'est un multiple de 3, on change de qualit� :)
+                    if (upgrade % 3 == 0 && rarity < Rarity.EPIC)
+                    {
+                        rarity++;
+                        AffixModel affix = AddAffix();
+                        affix.Roll();
+                        affix.OnAttach(go);
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private AffixModel AddAffix()
+        {
+            AffixModel affix = PercentageUtils.Instance.GetRandomItem(affixPool);
+            affixPool.Remove(affix);
+            affixes.Add(affix);
+            return affix;
         }
 
         public void Attach(GameObject go)
         {
+            this.go = go;
             UpdateGearStat(true);
             foreach (AffixModel affix in affixes)
             {
                 affix.OnAttach(go);
             }
-            if(rarity == Rarity.LEGENDARY && legendaryAffix != null)
+            if (rarity == Rarity.LEGENDARY && legendaryAffix != null)
             {
                 legendaryAffix.OnAttach(go);
             }
@@ -86,16 +114,21 @@ namespace AFKHero.Model
             }
         }
 
+        public bool IsUpgradeable()
+        {
+            return upgrade >= 0;
+        }
+
         private void UpdateGearStat(bool equipped)
         {
             int value = equipped ? mainStat : -1 * mainStat;
             if (type == GearType.WEAPON)
             {
-                EventDispatcher.Instance.Dispatch("gearstat.attack", new GenericGameEvent<int>(value));
+                EventDispatcher.Instance.Dispatch("gearstat.attack", new GenericGameEvent<GearStat>(new GearStat(value, go)));
             }
             else
             {
-                EventDispatcher.Instance.Dispatch("gearstat.defense", new GenericGameEvent<int>(value));
+                EventDispatcher.Instance.Dispatch("gearstat.defense", new GenericGameEvent<GearStat>(new GearStat(value, go)));
             }
         }
 

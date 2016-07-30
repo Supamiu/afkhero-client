@@ -1,4 +1,6 @@
+using AFKHero.Common;
 using AFKHero.Inventory;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,11 +16,15 @@ namespace AFKHero.UI.Inventory
 
         public GridLayoutGroup content;
 
+        public Text dustValue;
+
         private SlotUI[] currentSlots = new SlotUI[0];
+
+        private Action OnContentChanged;
 
         void Awake()
         {
-            inventorySystem.OnContentChanged += () =>
+            OnContentChanged = () =>
             {
                 if (inventorySystem.slots.Length != currentSlots.Length)
                 {
@@ -33,24 +39,14 @@ namespace AFKHero.UI.Inventory
                     }
                     currentSlots[i].UpdateDisplay();
                 }
+                dustValue.text = Formatter.Format(inventorySystem.dust);
             };
+            inventorySystem.OnContentChanged += OnContentChanged;
         }
 
         void OnEnable()
         {
-            if (inventorySystem.slots.Length != currentSlots.Length)
-            {
-                SetCapacity(inventorySystem.slots.Length);
-            }
-            for (int i = 0; i < inventorySystem.slots.Length; i++)
-            {
-                currentSlots[i].slot = inventorySystem.slots[i];
-                if (currentSlots[i].wearableDetailsPopup == null)
-                {
-                    currentSlots[i].wearableDetailsPopup = wearableDetailsPopup;
-                }
-                currentSlots[i].UpdateDisplay();
-            }
+            OnContentChanged.Invoke();
         }
 
         /// <summary>
