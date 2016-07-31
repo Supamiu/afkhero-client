@@ -1,10 +1,16 @@
 using AFKHero.Core.Event;
 using AFKHero.EventData;
+using AFKHero.Model.Affix;
 
 namespace AFKHero.Core.Affix.Normal
 {
     public class HPBonus : ListeningAffixImpl
     {
+        public override AffixType GetAffixType()
+        {
+            return AffixType.HP_BONUS;
+        }
+
         public override string GetEventName()
         {
             return "stat.compute.vitality";

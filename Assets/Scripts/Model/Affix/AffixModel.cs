@@ -68,5 +68,13 @@ namespace AFKHero.Model.Affix
         {
             AffixEngine.Instance.DetachAffix(this);
         }
+
+        public bool Equals(AffixModel obj)
+        {
+            return type == obj.type
+                && value == obj.value
+                && maxValue == obj.maxValue
+                && minValue == obj.minValue;
+        }
     }
 }

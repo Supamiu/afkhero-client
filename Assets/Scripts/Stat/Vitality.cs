@@ -47,6 +47,14 @@ namespace AFKHero.Stat
                     OnVitalityUpdated.Invoke();
                 }
             }));
+
+            EventDispatcher.Instance.Register("gear.modified", new Listener<GameEvent>((ref GameEvent e) =>
+            {
+                if (OnVitalityUpdated != null)
+                {
+                    OnVitalityUpdated.Invoke();
+                }
+            }));
         }
 
 		public void Init ()

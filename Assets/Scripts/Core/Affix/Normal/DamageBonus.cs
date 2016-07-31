@@ -1,6 +1,7 @@
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 using System;
+using AFKHero.Model.Affix;
 
 namespace AFKHero.Core.Affix.Normal
 {
@@ -20,6 +21,11 @@ namespace AFKHero.Core.Affix.Normal
         public override string GetEventName()
         {
             return "attack.compute";
+        }
+
+        public override AffixType GetAffixType()
+        {
+            return AffixType.DAMAGE_BONUS;
         }
     }
 }

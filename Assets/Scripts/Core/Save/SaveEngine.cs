@@ -29,6 +29,7 @@ namespace AFKHero.Core.Save
 			}));
             EventDispatcher.Instance.Register("restart", new Listener<GenericGameEvent<float>>((ref GenericGameEvent<float> e) => {
                 save.distance = e.Data;
+                Persist();
             }));
             EventDispatcher.Instance.Register ("load", new Listener<GameEvent> ((ref GameEvent e) => {
                 Load();

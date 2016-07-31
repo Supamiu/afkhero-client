@@ -9,7 +9,7 @@ public class DatabaseManager : EditorWindow
 {
     private int selectedTab = 0;
 
-    private static string[] Tabs = { "worlds", "wearables", "consumables", "items", "recipes" };
+    private static string[] Tabs = { "worlds", "wearables", "consumables", "items"};
 
     private static WorldDatabaseLayout WorldLayout = new WorldDatabaseLayout();
 

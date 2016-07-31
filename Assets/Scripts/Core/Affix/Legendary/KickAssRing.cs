@@ -1,11 +1,18 @@
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 using AFKHero.Behaviour;
+using AFKHero.Model.Affix;
+using System;
 
 namespace AFKHero.Core.Affix.Legendary
 {
     public class KickAssRing : ListeningAffixImpl
     {
+        public override AffixType GetAffixType()
+        {
+            return AffixType.LEGENDARY_KICK_ASS_RING;
+        }
+
         public override string GetEventName()
         {
             return "attack.damage";

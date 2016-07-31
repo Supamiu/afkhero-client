@@ -17,13 +17,13 @@ namespace AFKHero.Core.Affix
 
         public ListeningAffixImpl()
         {
-            this.listener = GetListener();
+            listener = GetListener();
         }
 
-        public override void Attach(GameObject go, float value)
+        public override void DoAttach(GameObject go)
         {
             gameObject = go;
-            this.value = value;
+            value = model.value;
             EventDispatcher.Instance.Register(GetEventName(), listener);
         }
 

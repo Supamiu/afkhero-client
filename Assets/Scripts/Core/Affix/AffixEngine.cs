@@ -10,38 +10,55 @@ namespace AFKHero.Core.Affix
 {
     public class AffixEngine : Singleton<AffixEngine>
     {
-        private Dictionary<AffixType, Type> affixImpls = new Dictionary<AffixType, Type>()
+        private List<AffixImpl> affixImpls = new List<AffixImpl>()
         {
-            {AffixType.CRIT_CHANCES_BONUS, typeof(CritChancesBonus) },
-            {AffixType.CRIT_DAMAGE_BONUS, typeof(CritDamageBonus) },
-            {AffixType.DAMAGE_BONUS, typeof(DamageBonus) },
-            {AffixType.HP_BONUS, typeof(HPBonus) },
+            {new CritChancesBonus() },
+            {new CritDamageBonus() },
+            {new DamageBonus() },
+            {new HPBonus() },
 
-            {AffixType.LEGENDARY_KICK_ASS_RING, typeof(KickAssRing) }
+            {new KickAssRing() }
         };
+
+        private List<AffixImpl> attached = new List<AffixImpl>();
 
         public void AttachAffix(AffixModel affix, GameObject go)
         {
-            GetImpl(affix.type).Attach(go, affix.value);
+            AffixImpl attached = GetImpl(affix.type);
+            attached.Attach(go, affix);
+            this.attached.Add(attached);
         }
 
         public void DetachAffix(AffixModel affix)
         {
-            GetImpl(affix.type).Detach();
+            foreach (AffixImpl a in attached)
+            {
+                if (a.model.Equals(affix))
+                {
+                    a.Detach();
+                    attached.Remove(a);
+                    return;
+                }
+            }
         }
 
-        
+
         private AffixImpl GetImpl(AffixType type)
         {
-            Type implType = null;
-            affixImpls.TryGetValue(type, out implType);
-            //premi�re fois, c'est ptet une l�gendaire !
-            if(implType == null)
+            AffixImpl implType = null;
+            foreach (AffixImpl impl in affixImpls)
+            {
+                if (impl.GetAffixType() == type)
+                {
+                    implType = impl;
+                }
+            }
+            if (implType == null)
             {
                 Debug.LogError("No implementation for affix type " + type.ToString());
                 return null;
             }
-            return (AffixImpl)Activator.CreateInstance(implType);
+            return (AffixImpl)Activator.CreateInstance(implType.GetType());
         }
     }
 }

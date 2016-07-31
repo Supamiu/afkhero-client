@@ -83,11 +83,11 @@ namespace AFKHero
 			offsetDistanceDone = 0f;
             gameOver.Init (distance);
             gameOver.gameObject.SetActive (true);
-		}
+            distance = worldManager.GetCheckpoint();
+        }
 
 		public void Restart ()
 		{
-			distance = worldManager.GetCheckpoint();
             EventDispatcher.Instance.Dispatch("restart", new GenericGameEvent<float>(distance));
             spawnEngine.Clear ();
 			EventDispatcher.Instance.Clear ();

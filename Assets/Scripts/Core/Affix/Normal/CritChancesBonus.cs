@@ -1,10 +1,17 @@
+using System;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
+using AFKHero.Model.Affix;
 
 namespace AFKHero.Core.Affix.Normal
 {
     public class CritChancesBonus : ListeningAffixImpl
     {
+        public override AffixType GetAffixType()
+        {
+            return AffixType.CRIT_CHANCES_BONUS;
+        }
+
         public override string GetEventName()
         {
             return "attack.compute";

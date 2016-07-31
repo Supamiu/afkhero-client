@@ -191,6 +191,7 @@ namespace AFKHero.Core.Gear
             {
                 GearChangeEvent.Invoke();
             }
+            EventDispatcher.Instance.Dispatch("gear.modified");
         }
 
         public SaveData Save(SaveData save)
