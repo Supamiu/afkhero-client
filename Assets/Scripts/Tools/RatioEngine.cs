@@ -7,6 +7,10 @@ namespace AFKHero.Tools
 {
     public class RatioEngine : Singleton<RatioEngine>
     {
+		// Ratio des attaque au click sur l'écran
+		public double GetClickDamage(double baseDamage, double intelligence) {
+			return baseDamage * 0.1 + (baseDamage * 0.002 * intelligence);
+		}
 
         public double GetEnemyDamage(float damageRatio, float distance)
         {
@@ -48,8 +52,7 @@ namespace AFKHero.Tools
             float baseValue = 10 + ratio * AFKHero.GetDistance() * wearable.mainStatRatio;
             return Mathf.CeilToInt(Random.Range(baseValue * .90f, baseValue * 1.10f));
         }
-
-
+			
         //Tout ce qui concerne l'upgrade de wearables.
         public double GetDust(Wearable w)
         {
@@ -68,7 +71,9 @@ namespace AFKHero.Tools
 
         public float GetUpgradeChances(Wearable w)
         {
-            return 1f - w.upgrade / 4f;
+			// -5% par palier pour un commun, -6.4% pour un magic, -7.3% pour un rare et -8.2% pour un epic et légendaire
+			// 15% de chance au dernier palier
+			return 1f - (w.upgrade - 1f) * 0.055f - (0.009f * w.upgrade * Mathf.Max((int) w.rarity, 3));
         }
 
 

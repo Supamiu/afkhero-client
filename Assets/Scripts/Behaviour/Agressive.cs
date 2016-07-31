@@ -75,5 +75,9 @@ namespace AFKHero.Behaviour
 		void ComputeDamage(){
             nextDamage = ((GenericGameEvent<Attack>)EventDispatcher.Instance.Dispatch ("attack.compute", new GenericGameEvent<Attack>(new Attack(this, target)))).Data.getDamage();
 		}
+
+		public Damage getNextDamage() {
+			return nextDamage;
+		}
 	}
 }

@@ -1,0 +1,54 @@
+﻿using UnityEngine;
+using System.Collections;
+using AFKHero.Behaviour.Monster;
+using AFKHero.Behaviour;
+using AFKHero.Core.Event;
+using AFKHero.EventData;
+using AFKHero.Stat;
+using AFKHero.Tools;
+using AFKHero.Core;
+using System.Collections.Generic;
+
+
+public class ClickAttack : MonoBehaviour {
+
+	private Camera cam;
+	private Plane[] planes;
+	private Agressive attacker;
+	private SpawnEngine spawnEngine;
+	public int maxTarget;
+
+	// Use this for initialization
+	void Start () {
+		cam = Camera.main;
+		planes = GeometryUtility.CalculateFrustumPlanes (cam);
+		attacker = GetComponent<Agressive> ();
+		spawnEngine = Object.FindObjectOfType<SpawnEngine> ();
+		maxTarget = 1;
+	}
+
+	// Update is called once per frame
+	public void AttackEnnemy () {
+		List<Spawnable> spawnables = spawnEngine.getSpawneds();
+		Damageable target;
+		int targetLocked = 0;
+
+		foreach (Spawnable spawnable in spawnables)
+		{			
+			// Si l'ennemi est visible
+			if (GeometryUtility.TestPlanesAABB (planes, spawnable.gameObject.GetComponent<BoxCollider2D>().bounds)) {
+				target = spawnable.GetComponent<Damageable> ();
+				Damage damage = ((GenericGameEvent<Attack>)EventDispatcher.Instance.Dispatch ("attack.compute", new GenericGameEvent<Attack>(new Attack(attacker, target)))).Data.getDamage();
+				double clickDamage = RatioEngine.Instance.GetClickDamage(damage.damage, GetComponent<Intelligence>().Value);
+
+				damage = new Damage (attacker, target, clickDamage, damage.critical, true);
+				EventDispatcher.Instance.Dispatch ("attack.damage", new GenericGameEvent<Damage>(damage));
+
+				targetLocked++;
+				if (targetLocked >= maxTarget) {
+					break;
+				}
+			}
+		}
+	}
+}

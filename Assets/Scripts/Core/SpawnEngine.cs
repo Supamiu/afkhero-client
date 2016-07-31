@@ -94,5 +94,9 @@ namespace AFKHero.Core
                 Destroy(s.gameObject);
             });
         }
+
+		public List<Spawnable> getSpawneds() {
+			return spawneds;
+		}
     }
 }
