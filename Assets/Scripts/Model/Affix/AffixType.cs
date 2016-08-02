@@ -9,8 +9,11 @@ namespace AFKHero.Model.Affix
         CRIT_CHANCES_BONUS,
         CRIT_DAMAGE_BONUS,
         HP_BONUS,
+        MOVESPEED_BONUS,
+        REGEN_BONUS,
 
         //Affixes légendaires
-        LEGENDARY_KICK_ASS_RING
+        LEGENDARY_KICK_ASS_RING,
+        LEGENDARY_BLOOD_SWORD,
     }
 }

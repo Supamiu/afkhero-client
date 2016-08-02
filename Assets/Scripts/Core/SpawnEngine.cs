@@ -4,6 +4,7 @@ using AFKHero.Behaviour.Monster;
 using AFKHero.Core.Event;
 using AFKHero.Tools;
 using AFKHero.Behaviour;
+using AFKHero.Common;
 
 namespace AFKHero.Core
 {
@@ -23,6 +24,8 @@ namespace AFKHero.Core
 
         private float moved = 0f;
 
+        public ScrollingScript ground;
+
         private List<Spawnable> spawneds = new List<Spawnable>();
 
         public bool spawnEnabled = true;
@@ -37,9 +40,13 @@ namespace AFKHero.Core
         {
             spawnPosition = transform.position;
             offset = Vector2.Distance(hero.position, transform.position);
-            EventDispatcher.Instance.Register("movement.moved", new Listener<GenericGameEvent<float>>((ref GenericGameEvent<float> e) =>
+        }
+
+        void Update()
+        {
+            if (ground.moving)
             {
-                moved += e.Data;
+                moved += ground.Speed * Time.deltaTime;
                 if (moved >= spawnInterval && PercentageUtils.Instance.GetResult(spawnChances))
                 {
                     Spawn(PercentageUtils.Instance.GetItemFromPonderables(worldManager.GetSpawnList(AFKHero.GetDistance() + offset)));
@@ -49,7 +56,7 @@ namespace AFKHero.Core
                 {
                     moved = 0f;
                 }
-            }));
+            }
         }
 
         void Spawn(Spawnable s)
@@ -95,8 +102,9 @@ namespace AFKHero.Core
             });
         }
 
-		public List<Spawnable> getSpawneds() {
-			return spawneds;
-		}
+        public List<Spawnable> getSpawneds()
+        {
+            return spawneds;
+        }
     }
 }

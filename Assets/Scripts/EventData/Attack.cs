@@ -1,4 +1,5 @@
 using AFKHero.Behaviour;
+using UnityEngine;
 
 namespace AFKHero.EventData
 {
@@ -31,7 +32,7 @@ namespace AFKHero.EventData
         /// <summary>
         /// The crit chances.
         /// </summary>
-        public float critChances = 0f;
+        public float critChances = .01f;
 
         /// <summary>
         /// hits?

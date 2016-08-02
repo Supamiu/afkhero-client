@@ -39,6 +39,7 @@ namespace AFKHero.Behaviour
             anim.state.Event += (Spine.AnimationState state, int trackIndex, Spine.Event e) => {
 				if (target != null && e.Data.Name == hitEvent && state.GetCurrent (trackIndex).Animation.Name == attackName) {
 					EventDispatcher.Instance.Dispatch ("attack.damage", new GenericGameEvent<Damage> (nextDamage));
+                    EventDispatcher.Instance.Dispatch("shake");
 				}
 			};
             //Avant le premier coup, on compute.

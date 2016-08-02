@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace AFKHero.EditorExtension.Inspectors
 {
-    //[CustomEditor(typeof(Spawnable))]
+    [CustomEditor(typeof(Spawnable))]
     public class SpawnableInspector : Editor
     {
-        /*
+        
         private WearableDatabase wdb = ResourceLoader.LoadWearableDatabase();
 
         private Dictionary<GUIContent, Item> items = new Dictionary<GUIContent, Item>();
@@ -20,7 +20,7 @@ namespace AFKHero.EditorExtension.Inspectors
 
         private float dropRate;
         private int dropAmount = 1;
-        private static Drop<Wearable> drop;
+        private static Drop drop;
         private bool customRate = false;
 
         public override void OnInspectorGUI()
@@ -52,7 +52,7 @@ namespace AFKHero.EditorExtension.Inspectors
                 Drop d = spawnable.dropList[i];
 
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(d.item.itemName + (d.amount > 1 ? " x " + d.amount : "") + " : " + (d.rate * 100f) + "%");
+                EditorGUILayout.LabelField(d.itemID + (d.amount > 1 ? " x " + d.amount : "") + " : " + (d.rate * 100f) + "%");
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button("X"))
                 {
@@ -72,7 +72,7 @@ namespace AFKHero.EditorExtension.Inspectors
             dropRate = EditorGUILayout.Slider("rate", dropRate, 0f, 1f);
             EditorGUILayout.EndToggleGroup();
             dropAmount = EditorGUILayout.IntField("amount", dropAmount);
-            drop = new Drop(item);
+            drop = new Drop(item.id);
             drop.rate = dropRate;
             drop.amount = dropAmount;
             if (GUILayout.Button("Add item"))
@@ -82,7 +82,5 @@ namespace AFKHero.EditorExtension.Inspectors
             EditorGUILayout.EndVertical();
             GUILayout.EndVertical();
         }
-        */
-        //TODO TOUT REFAIRE :'(
     }
 }

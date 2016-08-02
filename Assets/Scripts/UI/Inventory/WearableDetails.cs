@@ -89,17 +89,16 @@ namespace AFKHero.UI.Inventory
                 upgradeButton.interactable = true;
             }
 
-            if (detailsRows.Count < w.affixes.Count)
+            ClearDetails();
+            foreach (AffixModel affix in w.affixes)
             {
-                foreach (AffixModel affix in w.affixes)
-                {
-                    Text affixDetails = Instantiate(AffixTextPrefab);
-                    affixDetails.text = affix.type.ToString() + (affix.value > 0 ? "+ " : "- ") + Mathf.Abs(affix.value) + "% (" + affix.minValue + " - " + affix.maxValue + ")";
-                    affixDetails.transform.SetParent(affixZone.transform);
-                    affixDetails.transform.localScale = Vector3.one;
-                    detailsRows.Add(affixDetails.gameObject);
-                }
+                Text affixDetails = Instantiate(AffixTextPrefab);
+                affixDetails.text = affix.type.ToString() + (affix.value > 0 ? "+ " : "- ") + Mathf.Abs(affix.value) + "% (" + affix.minValue + " - " + affix.maxValue + ")";
+                affixDetails.transform.SetParent(affixZone.transform);
+                affixDetails.transform.localScale = Vector3.one;
+                detailsRows.Add(affixDetails.gameObject);
             }
+
             if (model.rarity == Rarity.LEGENDARY)
             {
                 string affixText = model.legendaryAffix.description.Replace("{value}", model.legendaryAffix.value.ToString());
@@ -123,6 +122,11 @@ namespace AFKHero.UI.Inventory
         public void Hide()
         {
             gameObject.SetActive(false);
+            ClearDetails();
+        }
+
+        public void ClearDetails()
+        {
             foreach (GameObject row in detailsRows)
             {
                 Destroy(row);

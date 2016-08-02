@@ -56,7 +56,7 @@ namespace AFKHero.Behaviour.Monster
 
         public void OnDeath()
         {
-            DropEngine.Instance.Drop();
+            DropEngine.Instance.Drop(dropList);
             if (isBoss)
             {
                 EventDispatcher.Instance.Dispatch("boss.killed", new GenericGameEvent<Spawnable>(this));

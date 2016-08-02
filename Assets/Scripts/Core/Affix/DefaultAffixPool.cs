@@ -24,9 +24,11 @@ namespace AFKHero.Core.Affix
 
                 case GearType.ARMS:
                 case GearType.LEGS:
-                case GearType.BOOTS:
                 case GearType.HEAD:
                     return secondaryArmor;
+
+                case GearType.BOOTS:
+                    return boots;
 
                 case GearType.BELT:
                 case GearType.NECKLACE:
@@ -45,8 +47,10 @@ namespace AFKHero.Core.Affix
         };
 
         private static List<AffixModel> chest = new List<AffixModel>() {
-            new AffixModel(AffixType.HP_BONUS, 5,20)
-        };
+            new AffixModel(AffixType.HP_BONUS, 5,20),
+            new AffixModel(AffixType.REGEN_BONUS, 10,30),
+            new AffixModel(AffixType.DAMAGE_BONUS, 5,10)
+    };
 
         private static List<AffixModel> secondaryArmor = new List<AffixModel>() {
             new AffixModel(AffixType.HP_BONUS,1,10),
@@ -60,6 +64,12 @@ namespace AFKHero.Core.Affix
             new AffixModel(AffixType.CRIT_CHANCES_BONUS,1,5)
         };
 
+        private static List<AffixModel> boots = new List<AffixModel>() {
+            new AffixModel(AffixType.HP_BONUS,1,10),
+            new AffixModel(AffixType.CRIT_DAMAGE_BONUS,10,30),
+            new AffixModel(AffixType.CRIT_CHANCES_BONUS, 1,5),
+            new AffixModel(AffixType.MOVESPEED_BONUS, 10,30)
+        };
 
     }
 }

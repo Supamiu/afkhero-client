@@ -23,7 +23,7 @@ namespace AFKHero.Core.Affix.Normal
             {
                 if (gameEvent.Data.attacker.gameObject == gameObject)
                 {
-                    gameEvent.Data.critChances += (1 + value / 100f);
+                    gameEvent.Data.critChances += value / 100f;
                 }
             }, 2100);
         }

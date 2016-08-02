@@ -6,7 +6,7 @@ namespace AFKHero.EventData
     public class Damage
 	{
 
-		public double damage{ get; private set; }
+		public double damage{ get; set; }
 
 		public bool critical{ get; private set; }
 

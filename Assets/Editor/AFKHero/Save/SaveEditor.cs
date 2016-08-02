@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class SaveEditor : EditorWindow
 {
-
+    
     private static SaveData save;
 
     private static Vector2 scrollPosition;
@@ -157,6 +157,10 @@ public class SaveEditor : EditorWindow
 
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
-        Persist();
+
+        if (GUILayout.Button("Save"))
+        {
+            Persist();
+        }
     }
 }

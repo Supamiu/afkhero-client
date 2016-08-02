@@ -4,20 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Canvas
-  - MainInventory
-  - Panel
-  - Slots
-  - DraggingItem
-  - EventSystem
-  - Slot
-  - Item
-  - ItemIcon
-  - CraftSystem
-  - ResultSlot
-  - EquipmentSystem
-  - Hotbar
-  - Tooltip
+  - Ground
   layers:
   - Default
   - TransparentFX

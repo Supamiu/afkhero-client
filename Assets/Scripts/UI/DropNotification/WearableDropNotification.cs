@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using AFKHero.Model;
 using AFKHero.UI.Tools;
+using System;
 
 namespace AFKHero.UI.DropNotification
 {
@@ -14,6 +15,8 @@ namespace AFKHero.UI.DropNotification
         public Text itemName;
 
         public Image border;
+
+        public event Action OnRemove;
 
         void OnEnable()
         {
@@ -35,6 +38,10 @@ namespace AFKHero.UI.DropNotification
         public void Remove()
         {
             Destroy(gameObject);
+            if(OnRemove != null)
+            {
+                OnRemove.Invoke();
+            }
         }
     }
 }

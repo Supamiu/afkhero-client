@@ -23,8 +23,6 @@ namespace AFKHero.EditorExtension.Layout
         private Vector2 scrollPosition;
         private List<bool> managedItem = new List<bool>();
         private static Wearable createdWearable = (Wearable)new Wearable().GenerateId();
-        private bool customRatio = false;
-        private bool customAffixPool = false;
 
         //Création d'affixe
         private AffixModel createdAffix = new AffixModel();
@@ -144,22 +142,22 @@ namespace AFKHero.EditorExtension.Layout
             {
                 mainStatName = "Defense";
             }
-            if (!customRatio)
+            if (!subject.customRatio)
             {
                 subject.mainStatRatio = RatioEngine.Editor.GetDefaultMainStatRatio(subject.type);
             }
-            customRatio = EditorGUILayout.BeginToggleGroup("Custom ratio", customRatio);
+            subject.customRatio = EditorGUILayout.BeginToggleGroup("Custom ratio", subject.customRatio);
             subject.mainStatRatio = EditorGUILayout.FloatField(mainStatName + " ratio", subject.mainStatRatio);
             EditorGUILayout.EndToggleGroup();
             GUILayout.BeginVertical("Box");
             GUILayout.Label("Affixes possibles", EditorStyles.boldLabel);
 
-            if (!customAffixPool)
+            if (!subject.customAffixPool)
             {
                 subject.affixPool = DefaultAffixPool.ForType(subject.type);
             }
 
-            customAffixPool = EditorGUILayout.BeginToggleGroup("Costum affix pool", customAffixPool);
+            subject.customAffixPool = EditorGUILayout.BeginToggleGroup("Costum affix pool", subject.customAffixPool);
             if (subject.affixPool == null)
             {
                 subject.affixPool = DefaultAffixPool.ForType(subject.type);

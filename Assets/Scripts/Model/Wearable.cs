@@ -28,8 +28,12 @@ namespace AFKHero.Model
 
         public int upgrade;
 
+        public bool customRatio;
+
+        public bool customAffixPool;
+
         [NonSerialized]
-        private GameObject go;
+        private GameObject go = null;
 
         public void Roll()
         {
@@ -67,7 +71,10 @@ namespace AFKHero.Model
                         rarity++;
                         AffixModel affix = AddAffix();
                         affix.Roll();
-                        affix.OnAttach(go);
+                        if (go != null)
+                        {
+                            affix.OnAttach(go);
+                        }
                     }
                     return true;
                 }
@@ -143,7 +150,6 @@ namespace AFKHero.Model
                 case Rarity.RARE:
                     return 2;
                 case Rarity.EPIC:
-                    return 3;
                 case Rarity.LEGENDARY:
                     return 3;
                 default:

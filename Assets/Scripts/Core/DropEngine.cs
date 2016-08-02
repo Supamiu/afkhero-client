@@ -17,9 +17,10 @@ namespace AFKHero.Core
         /// Gère les loots à la mort d'un monstre.
         /// </summary>
         /// <param name="monsterDropList"></param>
-        public void Drop()
+        public void Drop(List<Drop> spawnableDropList)
         {
             List<Drop> dropList = new List<Drop>(GetStageDropList());
+            dropList.AddRange(spawnableDropList);
             foreach (Drop drop in dropList)
             {
                 if (PercentageUtils.Instance.GetResult(drop.rate))

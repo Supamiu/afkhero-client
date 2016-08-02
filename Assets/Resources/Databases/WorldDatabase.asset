@@ -52,6 +52,9 @@ MonoBehaviour:
       - itemID: 639186913
         amount: 1
         rate: 0.05
+      - itemID: 1665657065
+        amount: 1
+        rate: 0.00001
     - bestiary: []
       boss: {fileID: 0}
       dropList: []

@@ -233,6 +233,10 @@ MonoBehaviour:
       minValue: 1
       maxValue: 5
       type: 1
+    - value: 0
+      minValue: 10
+      maxValue: 30
+      type: 4
     legendaryAffix:
       value: 0
       minValue: 0
@@ -273,4 +277,64 @@ MonoBehaviour:
     type: 7
     mainStat: 0
     mainStatRatio: 0.2
+    upgrade: 0
+  - id: 1975911904
+    icon: {fileID: 21300000, guid: 5fd50594014b70e48bd6993443d46b32, type: 3}
+    itemName: "Ep\xE9e du jumeau"
+    rarity: 2
+    description: "Une \xE9p\xE9e port\xE9e par un ancien jumeau."
+    affixes: []
+    affixPool:
+    - value: 0
+      minValue: 0
+      maxValue: 10
+      type: 0
+    - value: 0
+      minValue: 10
+      maxValue: 50
+      type: 2
+    - value: 0
+      minValue: 1
+      maxValue: 5
+      type: 1
+    legendaryAffix:
+      value: 0
+      minValue: 0
+      maxValue: 0
+      type: 0
+      description: 
+    sprite: {fileID: 21300002, guid: ffd77414b932ced4699a62a0b0005e29, type: 3}
+    type: 8
+    mainStat: 0
+    mainStatRatio: 1
+    upgrade: 0
+  - id: 1665657065
+    icon: {fileID: 21300000, guid: 5fd50594014b70e48bd6993443d46b32, type: 3}
+    itemName: "Ep\xE9e du d\xE9mon de sang"
+    rarity: 4
+    description: "Une \xE9p\xE9e habit\xE9e par un ancien d\xE9mon de sang."
+    affixes: []
+    affixPool:
+    - value: 0
+      minValue: 10
+      maxValue: 30
+      type: 0
+    - value: 0
+      minValue: 80
+      maxValue: 100
+      type: 2
+    - value: 0
+      minValue: 5
+      maxValue: 10
+      type: 1
+    legendaryAffix:
+      value: 5
+      minValue: 1
+      maxValue: 5
+      type: 6
+      description: "Consomme {value}% de votre vie pour les ajouter \xE0 chaque coup."
+    sprite: {fileID: 21300000, guid: 768c02f09d295954983afe992a1c00e6, type: 3}
+    type: 8
+    mainStat: 0
+    mainStatRatio: 1
     upgrade: 0

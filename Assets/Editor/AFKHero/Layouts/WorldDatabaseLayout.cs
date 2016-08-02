@@ -192,7 +192,7 @@ namespace AFKHero.EditorExtension.Layout
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("X"))
                     {
-                        w.stages[j].dropList.RemoveAt(i);
+                        w.stages[i].dropList.RemoveAt(j);
                     }
                     EditorGUILayout.EndHorizontal();
                 }

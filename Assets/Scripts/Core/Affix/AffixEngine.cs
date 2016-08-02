@@ -5,22 +5,26 @@ using AFKHero.Model.Affix;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace AFKHero.Core.Affix
 {
     public class AffixEngine : Singleton<AffixEngine>
     {
-        private List<AffixImpl> affixImpls = new List<AffixImpl>()
-        {
-            {new CritChancesBonus() },
-            {new CritDamageBonus() },
-            {new DamageBonus() },
-            {new HPBonus() },
-
-            {new KickAssRing() }
-        };
+        private List<AffixImpl> affixImpls;
 
         private List<AffixImpl> attached = new List<AffixImpl>();
+        
+        void Awake()
+        {
+            Type[] types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
+            Type[] result = (from Type type in types where type.IsSubclassOf(typeof(AffixImpl)) && !type.IsAbstract select type).ToArray();
+            affixImpls = new List<AffixImpl>();
+            foreach(Type t in result)
+            {
+                affixImpls.Add((AffixImpl)Activator.CreateInstance(t));
+            }
+        }
 
         public void AttachAffix(AffixModel affix, GameObject go)
         {
