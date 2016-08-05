@@ -52,7 +52,7 @@ namespace Spine.Unity.Modules {
 
 		void Start () {
 			// Duplicate this gameObject as the "shadow" with a different parent.
-			shadowRoot = Instantiate<GameObject>(gameObject);
+			shadowRoot = Instantiate<GameObject>(this.gameObject);
 			Destroy(shadowRoot.GetComponent<SkeletonUtilityKinematicShadow>());
 
 			// Prepare shadow gameObject's properties.
@@ -83,7 +83,7 @@ namespace Spine.Unity.Modules {
 			var bones = GetComponentsInChildren<SkeletonUtilityBone>();
 			var shadowBones = shadowRoot.GetComponentsInChildren<SkeletonUtilityBone>();
 			foreach (var b in bones) {
-				if (b.gameObject == gameObject)
+				if (b.gameObject == this.gameObject)
 					continue;
 				
 				foreach (var sb in shadowBones) {

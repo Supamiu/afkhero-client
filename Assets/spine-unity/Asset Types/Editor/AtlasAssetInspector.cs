@@ -30,16 +30,17 @@
  *****************************************************************************/
 //#define BAKE_ALL_BUTTON
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using Spine;
 
-namespace Spine.Unity.Editor
-{
-
-    [CustomEditor(typeof(AtlasAsset))]
+namespace Spine.Unity.Editor {
+	
+	[CustomEditor(typeof(AtlasAsset))]
 	public class AtlasAssetInspector : UnityEditor.Editor {
 		private SerializedProperty atlasFile, materials;
 		private AtlasAsset atlasAsset;

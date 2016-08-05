@@ -30,10 +30,10 @@
  *****************************************************************************/
 
 using UnityEngine;
+using System.Collections;
 
-namespace Spine.Unity
-{
-    [RequireComponent(typeof(SkeletonUtilityBone)), ExecuteInEditMode]
+namespace Spine.Unity {
+	[RequireComponent(typeof(SkeletonUtilityBone)), ExecuteInEditMode]
 	public abstract class SkeletonUtilityConstraint : MonoBehaviour {
 
 		protected SkeletonUtilityBone utilBone;

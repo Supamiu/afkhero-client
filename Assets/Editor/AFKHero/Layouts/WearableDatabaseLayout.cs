@@ -34,14 +34,14 @@ namespace AFKHero.EditorExtension.Layout
 
         public WearableDatabaseLayout()
         {
-            wearableDatabase = ResourceLoader.LoadWearableDatabase();
+            wearableDatabase = ResourceLoader.Load<WearableDatabase>(ResourceLoader.WEARABLE_DATABASE_PATH);
         }
 
         public override void DrawDatabase()
         {
             if (wearableDatabase == null)
             {
-                wearableDatabase = ResourceLoader.LoadWearableDatabase();
+                wearableDatabase = ResourceLoader.Load<WearableDatabase>(ResourceLoader.WEARABLE_DATABASE_PATH);
             }
             GUILayout.BeginHorizontal();
             selectedInnerTab = GUILayout.Toolbar(selectedInnerTab, innerTabs);

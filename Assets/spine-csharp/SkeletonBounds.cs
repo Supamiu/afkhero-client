@@ -31,9 +31,8 @@
 
 using System;
 
-namespace Spine
-{
-    public class SkeletonBounds {
+namespace Spine {
+	public class SkeletonBounds {
 		private ExposedList<Polygon> polygonPool = new ExposedList<Polygon>();
 		private float minX, minY, maxX, maxY;
 
@@ -80,7 +79,7 @@ namespace Spine
 				int count = boundingBox.Vertices.Length;
 				polygon.Count = count;
 				if (polygon.Vertices.Length < count) polygon.Vertices = new float[count];
-				boundingBox.ComputeWorldVertices(slot.bone, polygon.Vertices);
+				boundingBox.ComputeWorldVertices(slot, polygon.Vertices);
 			}
 
 			if (updateAabb) aabbCompute();

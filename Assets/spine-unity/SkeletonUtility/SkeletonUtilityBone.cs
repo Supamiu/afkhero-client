@@ -6,12 +6,14 @@
 *****************************************************************************/
 
 using System;
+using System.IO;
+using System.Collections.Generic;
 using UnityEngine;
+using Spine;
 
-namespace Spine.Unity
-{
-    /// <summary>Sets a GameObject's transform to match a bone on a Spine skeleton.</summary>
-    [ExecuteInEditMode]
+namespace Spine.Unity {
+	/// <summary>Sets a GameObject's transform to match a bone on a Spine skeleton.</summary>
+	[ExecuteInEditMode]
 	[AddComponentMenu("Spine/SkeletonUtilityBone")]
 	public class SkeletonUtilityBone : MonoBehaviour {
 

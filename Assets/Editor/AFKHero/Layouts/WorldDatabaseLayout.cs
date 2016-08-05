@@ -31,20 +31,20 @@ namespace AFKHero.EditorExtension.Layout
 
         public WorldDatabaseLayout()
         {
-            wdb = ResourceLoader.LoadWearableDatabase();
+            wdb = ResourceLoader.Load<WearableDatabase>(ResourceLoader.WEARABLE_DATABASE_PATH);
 
-            worldsDatabase = ResourceLoader.LoadWorldDatabase();
+            worldsDatabase = ResourceLoader.Load<WorldDatabase>(ResourceLoader.WORLD_DATABASE_PATH);
         }
 
         public override void DrawDatabase()
         {
             if (worldsDatabase == null)
             {
-                worldsDatabase = ResourceLoader.LoadWorldDatabase();
+                worldsDatabase = ResourceLoader.Load<WorldDatabase>(ResourceLoader.WORLD_DATABASE_PATH);
             }
             if (wdb == null)
             {
-                wdb = ResourceLoader.LoadWearableDatabase();
+                wdb = ResourceLoader.Load<WearableDatabase>(ResourceLoader.WEARABLE_DATABASE_PATH);
             }
             foreach (Wearable w in wdb.wearables)
             {

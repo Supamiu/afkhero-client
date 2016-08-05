@@ -84,7 +84,6 @@ MonoBehaviour:
   pmaVertexColors: 1
   calculateNormals: 0
   calculateTangents: 0
-  frontFacing: 0
   logErrors: 0
   disableRenderingOnOverride: 1
   _animationName: 

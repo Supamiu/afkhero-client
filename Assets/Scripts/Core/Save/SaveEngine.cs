@@ -5,7 +5,7 @@ using AFKHero.Core.Event;
 using System.IO;
 using AFKHero.Core.Tools;
 using System.Linq;
-
+using UnityEngine.SceneManagement;
 
 namespace AFKHero.Core.Save
 {
@@ -39,6 +39,7 @@ namespace AFKHero.Core.Save
 		// Use this for initialization
 		void Start ()
 		{
+            SceneManager.sceneLoaded += SceneManager_sceneLoaded;
             saveables = new List<Saveable> ();
 			GameObject[] allGO = FindObjectsOfType<GameObject> ();
 			foreach (GameObject go in allGO) {
@@ -53,11 +54,11 @@ namespace AFKHero.Core.Save
             }
 		}
 
-		void OnLevelWasLoaded (int level)
-		{
+        private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
             Start();
             Load();
-		}
+        }
 
 		/// <summary>
 		/// Save this instance.

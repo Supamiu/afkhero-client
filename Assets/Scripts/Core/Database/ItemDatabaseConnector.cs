@@ -16,8 +16,8 @@ namespace AFKHero.Core.Database
             public ItemNotFoundException(int id) : base("Objet non trouv� dans les bases : " + id) { }
         }
 
-        WearableDatabase wearables = ResourceLoader.LoadWearableDatabase();
-        ConsumableDatabase consumables = ResourceLoader.LoadConsumableDatabase();
+        WearableDatabase wearables = ResourceLoader.Instance.LoadWearableDatabase();
+        ConsumableDatabase consumables = ResourceLoader.Instance.LoadConsumableDatabase();
 
         public List<Item> GetAllItems()
         {

@@ -28,7 +28,6 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-//#define SPINE_OPTIONAL_NORMALS
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -40,13 +39,11 @@ namespace Spine.Unity.MeshGeneration {
 	public class ArraysSubmeshedMeshGenerator : ArraysMeshGenerator, ISubmeshedMeshGenerator {
 
 		readonly List<Slot> separators = new List<Slot>();
-		public List<Slot> Separators { get { return separators; } }
+		public List<Slot> Separators { get { return this.separators; } }
 
-		public float zSpacing = 0f;
-		#if SPINE_OPTIONAL_NORMALS
-		public bool generateNormals;
-		public bool generateTangents;
-		#endif
+		#region Settings
+		public float ZSpacing { get; set; }
+		#endregion
 
 		readonly DoubleBuffered<SmartMesh> doubleBufferedSmartMesh = new DoubleBuffered<SmartMesh>();
 		readonly SubmeshedMeshInstruction currentInstructions = new SubmeshedMeshInstruction();
@@ -70,7 +67,7 @@ namespace Spine.Unity.MeshGeneration {
 			int drawOrderCount = drawOrder.Count;
 			int separatorCount = separators.Count;
 
-			var instructionList = currentInstructions.submeshInstructions;
+			var instructionList = this.currentInstructions.submeshInstructions;
 			instructionList.Clear(false);
 
 			currentInstructions.attachmentList.Clear(false);
@@ -91,16 +88,10 @@ namespace Spine.Unity.MeshGeneration {
 					var meshAttachment = attachment as MeshAttachment;
 					if (meshAttachment != null) {
 						rendererObject = meshAttachment.RendererObject;
-						attachmentVertexCount = meshAttachment.vertices.Length >> 1;
+						attachmentVertexCount = meshAttachment.worldVerticesLength >> 1;
 						attachmentTriangleCount = meshAttachment.triangles.Length;
 					} else {
-						var skinnedMeshAttachment = attachment as WeightedMeshAttachment;
-						if (skinnedMeshAttachment != null) {
-							rendererObject = skinnedMeshAttachment.RendererObject;
-							attachmentVertexCount = skinnedMeshAttachment.uvs.Length >> 1;
-							attachmentTriangleCount = skinnedMeshAttachment.triangles.Length;
-						} else
-							continue;
+						continue;
 					}
 				}
 
@@ -164,12 +155,13 @@ namespace Spine.Unity.MeshGeneration {
 			var instructionList = meshInstructions.submeshInstructions;
 
 			// STEP 1: Ensure correct buffer sizes.
+			int vertexCount = meshInstructions.vertexCount;
 			bool submeshBuffersResized = ArraysMeshGenerator.EnsureTriangleBuffersSize(submeshBuffers, submeshCount, instructionList.Items);
-			bool vertBufferResized = ArraysMeshGenerator.EnsureSize(meshInstructions.vertexCount, ref meshVertices, ref meshUVs, ref meshColors32);
-			Vector3[] vertices = meshVertices;
+			bool vertBufferResized = ArraysMeshGenerator.EnsureSize(vertexCount, ref this.meshVertices, ref this.meshUVs, ref this.meshColors32);
+			Vector3[] vertices = this.meshVertices;
 
 			// STEP 2: Update buffers based on Skeleton.
-			float zSpacing = this.zSpacing;
+			float zSpacing = this.ZSpacing;
 			Vector3 meshBoundsMin;
 			Vector3 meshBoundsMax;
 			int attachmentCount = meshInstructions.attachmentList.Count;
@@ -198,21 +190,23 @@ namespace Spine.Unity.MeshGeneration {
 				int start = submeshInstruction.startSlot;
 				int end = submeshInstruction.endSlot;
 				var skeleton = submeshInstruction.skeleton;
-				ArraysMeshGenerator.FillVerts(skeleton, start, end, zSpacing, premultiplyVertexColors, vertices, meshUVs, meshColors32, ref vertexIndex, ref attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
+				ArraysMeshGenerator.FillVerts(skeleton, start, end, zSpacing, this.PremultiplyVertexColors, vertices, this.meshUVs, this.meshColors32, ref vertexIndex, ref this.attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
 				if (structureDoesntMatch) {
 					var currentBuffer = submeshBuffers.Items[submeshIndex];
 					bool isLastSubmesh = (submeshIndex == submeshCount - 1);
-					ArraysMeshGenerator.FillTriangles(skeleton, submeshInstruction.triangleCount, submeshInstruction.firstVertexIndex, start, end, ref currentBuffer.triangles, isLastSubmesh);
+					ArraysMeshGenerator.FillTriangles(ref currentBuffer.triangles, skeleton, submeshInstruction.triangleCount, submeshInstruction.firstVertexIndex, start, end, isLastSubmesh);
+					currentBuffer.triangleCount = submeshInstruction.triangleCount;
+					currentBuffer.firstVertex = submeshInstruction.firstVertexIndex;
 				}
 			}
 
 			if (structureDoesntMatch) {
 				mesh.Clear();
-                sharedMaterials = meshInstructions.GetUpdatedMaterialArray(sharedMaterials);
+				this.sharedMaterials = meshInstructions.GetUpdatedMaterialArray(this.sharedMaterials);
 			}
 
 			// STEP 3: Assign the buffers into the Mesh.
-			smartMesh.Set(meshVertices, meshUVs, meshColors32, meshInstructions);
+			smartMesh.Set(this.meshVertices, this.meshUVs, this.meshColors32, meshInstructions);
 			mesh.bounds = ArraysMeshGenerator.ToBounds(meshBoundsMin, meshBoundsMax);
 
 			if (structureDoesntMatch) {
@@ -221,24 +215,16 @@ namespace Spine.Unity.MeshGeneration {
 				for (int i = 0; i < submeshCount; i++)
 					mesh.SetTriangles(submeshBuffers.Items[i].triangles, i);			
 
-				#if SPINE_OPTIONAL_NORMALS
-				if (generateNormals) {
-					int vertexCount = meshInstructions.vertexCount;
-					Vector3[] normals = new Vector3[vertexCount];
-					Vector3 normal = new Vector3(0, 0, -1);
-					for (int i = 0; i < vertexCount; i++)
-						normals[i] = normal;			
-					mesh.normals = normals;
+				TryAddNormalsTo(mesh, vertexCount);
+			}
 
-					if (generateTangents) {
-						Vector4[] tangents = new Vector4[vertexCount];
-						Vector4 tangent = new Vector4(1, 0, 0, -1);
-						for (int i = 0; i < vertexCount; i++)
-							tangents[i] = tangent;
-						mesh.tangents = tangents;
-					}	
+			if (addTangents) { 
+				SolveTangents2DEnsureSize(ref this.meshTangents, ref this.tempTanBuffer, vertexCount);
+				for (int i = 0, n = submeshCount; i < n; i++) {
+					var submesh = submeshBuffers.Items[i];
+					SolveTangents2DTriangles(this.tempTanBuffer, submesh.triangles, submesh.triangleCount, meshVertices, meshUVs, vertexCount);
 				}
-				#endif
+				SolveTangents2DBuffer(this.meshTangents, this.tempTanBuffer, vertexCount);
 			}
 				
 			return new MeshAndMaterials(smartMesh.mesh, sharedMaterials);
@@ -269,19 +255,19 @@ namespace Spine.Unity.MeshGeneration {
 
 			public bool StructureDoesntMatch (SubmeshedMeshInstruction instructions) {
 				// Check count inequality.
-				if (instructions.attachmentList.Count != attachmentsUsed.Count) return true;
-				if (instructions.submeshInstructions.Count != instructionsUsed.Count) return true;
+				if (instructions.attachmentList.Count != this.attachmentsUsed.Count) return true;
+				if (instructions.submeshInstructions.Count != this.instructionsUsed.Count) return true;
 
 				// Check each attachment.
 				var attachmentsPassed = instructions.attachmentList.Items;
-				var myAttachments = attachmentsUsed.Items;
+				var myAttachments = this.attachmentsUsed.Items;
 				for (int i = 0, n = attachmentsUsed.Count; i < n; i++)
 					if (attachmentsPassed[i] != myAttachments[i]) return true;
 
 				// Check each submesh for equal arrangement.
 				var instructionListItems = instructions.submeshInstructions.Items;
-				var myInstructions = instructionsUsed.Items;
-				for (int i = 0, n = instructionsUsed.Count; i < n; i++) {
+				var myInstructions = this.instructionsUsed.Items;
+				for (int i = 0, n = this.instructionsUsed.Count; i < n; i++) {
 					var lhs = instructionListItems[i];
 					var rhs = myInstructions[i];
 					if (

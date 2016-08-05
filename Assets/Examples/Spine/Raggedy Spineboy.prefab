@@ -28,8 +28,9 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183998}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5, y: -3.06, z: 0}
+  m_LocalPosition: {x: -2.55, y: -3.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -106,7 +107,6 @@ MonoBehaviour:
   pmaVertexColors: 1
   calculateNormals: 0
   calculateTangents: 0
-  frontFacing: 0
   logErrors: 0
   disableRenderingOnOverride: 1
   _animationName: animation
@@ -126,9 +126,10 @@ MonoBehaviour:
   startingBoneName: hip
   stopBoneNames: []
   applyOnStart: 0
+  disableIK: 1
+  disableOtherConstraints: 0
   pinStartBone: 0
   gravityScale: 3
-  disableIK: 1
   thickness: 0.125
   rotationLimit: 20
   rootMass: 40
@@ -148,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 257
   restoreDuration: 0.5
   launchVelocity: {x: 40, y: 85}
 --- !u!1001 &100100000

@@ -25,7 +25,7 @@ namespace AFKHero.Core
 
         void Start()
         {
-            worlds = new List<World>(ResourceLoader.LoadWorldDatabase().worlds);
+            worlds = new List<World>(ResourceLoader.Instance.LoadWorldDatabase().worlds);
             if (worlds.Count == 0)
             {
                 Debug.LogError("WorldManager has 0 worlds, this should never happen !");

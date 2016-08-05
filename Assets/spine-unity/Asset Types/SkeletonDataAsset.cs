@@ -32,16 +32,18 @@
 using System;
 using System.IO;
 using UnityEngine;
+using Spine;
 
-namespace Spine.Unity
-{
-    public class SkeletonDataAsset : ScriptableObject {
+namespace Spine.Unity {
+	public class SkeletonDataAsset : ScriptableObject {
 		public AtlasAsset[] atlasAssets;
 		#if SPINE_TK2D
 		public tk2dSpriteCollectionData spriteCollection;
+		public float scale = 1f;
+		#else
+		public float scale = 0.01f;
 		#endif
 		public TextAsset skeletonJSON;
-		public float scale = 0.01f;
 		public String[] fromAnimation;
 		public String[] toAnimation;
 		public float[] duration;

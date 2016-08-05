@@ -38,7 +38,7 @@ namespace Spine.Unity.Modules {
 
 		void Start () {
 			if (ghostShader == null)
-				ghostShader = Shader.Find("Spine/SkeletonGhost");
+				ghostShader = Shader.Find("Spine/Special/SkeletonGhost");
 
 			skeletonRenderer = GetComponent<SkeletonRenderer>();
 			meshFilter = GetComponent<MeshFilter>();
@@ -69,7 +69,7 @@ namespace Spine.Unity.Modules {
 				if (e.Float > 0)
 					spawnRate = e.Float;
 				if (e.String != null) {
-                    color = HexToColor(e.String);
+					this.color = HexToColor(e.String);
 				}
 			}
 		}

@@ -21,14 +21,14 @@ namespace AFKHero.EditorExtension.Layout
 
         public ConsumableDatabaseLayout()
         {
-            itemDatabase = ResourceLoader.LoadConsumableDatabase();
+            itemDatabase = ResourceLoader.Load<ConsumableDatabase>(ResourceLoader.CONSUMABLE_DATABASE_PATH);
         }
 
         public override void DrawDatabase()
         {
             if (itemDatabase == null)
             {
-                itemDatabase = ResourceLoader.LoadConsumableDatabase();
+                itemDatabase = ResourceLoader.Load<ConsumableDatabase>(ResourceLoader.CONSUMABLE_DATABASE_PATH);
             }
             GUILayout.BeginHorizontal();
             selectedInnerTab = GUILayout.Toolbar(selectedInnerTab, innerTabs);

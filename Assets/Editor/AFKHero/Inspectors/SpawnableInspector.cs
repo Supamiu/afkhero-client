@@ -12,7 +12,7 @@ namespace AFKHero.EditorExtension.Inspectors
     public class SpawnableInspector : Editor
     {
         
-        private WearableDatabase wdb = ResourceLoader.LoadWearableDatabase();
+        private WearableDatabase wdb = ResourceLoader.Load<WearableDatabase>(ResourceLoader.WEARABLE_DATABASE_PATH);
 
         private Dictionary<GUIContent, Item> items = new Dictionary<GUIContent, Item>();
 

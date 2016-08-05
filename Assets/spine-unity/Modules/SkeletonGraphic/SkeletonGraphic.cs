@@ -34,15 +34,16 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using Spine;
 
-namespace Spine.Unity
-{
-    [ExecuteInEditMode, RequireComponent(typeof(CanvasRenderer), typeof(RectTransform)), DisallowMultipleComponent]
+namespace Spine.Unity {
+	[ExecuteInEditMode, RequireComponent(typeof(CanvasRenderer), typeof(RectTransform)), DisallowMultipleComponent]
 	[AddComponentMenu("Spine/SkeletonGraphic (Unity UI Canvas)")]
-	public class SkeletonGraphic : MaskableGraphic {
+	public class SkeletonGraphic : MaskableGraphic, ISkeletonComponent, IAnimationStateComponent, ISkeletonAnimation {
 
 		#region Inspector
 		public SkeletonDataAsset skeletonDataAsset;
+		public SkeletonDataAsset SkeletonDataAsset { get { return skeletonDataAsset; } }
 
 		[SpineSkin(dataField:"skeletonDataAsset")]
 		public string initialSkinName = "default";
@@ -58,7 +59,7 @@ namespace Spine.Unity
 			// This handles Scene View preview.
 			base.OnValidate ();
 			#if !PREUNITY_5_2
-			if (IsValid) {
+			if (this.IsValid) {
 				if (skeletonDataAsset == null) {
 					Clear();
 					startingAnimation = "";
@@ -66,15 +67,13 @@ namespace Spine.Unity
 					Clear();
 					Initialize(true);
 					startingAnimation = "";
-					if (skeletonDataAsset.atlasAssets.Length > 1 || skeletonDataAsset.atlasAssets[0].materials.Length > 1) {
+					if (skeletonDataAsset.atlasAssets.Length > 1 || skeletonDataAsset.atlasAssets[0].materials.Length > 1)
 						Debug.LogError("Unity UI does not support multiple textures per Renderer. Your skeleton will not be rendered correctly. Recommend using SkeletonAnimation instead. This requires the use of a Screen space camera canvas.");
-					}
 				} else {
 					if (freeze) return;
 					skeleton.SetToSetupPose();
-					if (!string.IsNullOrEmpty(startingAnimation)) {
+					if (!string.IsNullOrEmpty(startingAnimation))
 						skeleton.PoseWithAnimation(startingAnimation, 0f, false);
-					}
 				}
 			} else {
 				if (skeletonDataAsset != null)
@@ -88,13 +87,8 @@ namespace Spine.Unity
 
 		protected override void Reset () {
 			base.Reset();
-			if (canvas == null) {
-				Debug.LogWarningFormat("SkeletonGraphic requires a Canvas to be visible. Move this GameObject ({0}) in the Hierarchy so it becomes a child of a Canvas.", gameObject.name);
-			}
-
-			if (material == null || material.shader != Shader.Find("Spine/SkeletonGraphic (Premultiply Alpha)")) {
-				Debug.LogWarning("SkeletonGraphic works best with the SkeletonGraphic material.");
-			}
+			if (material == null || material.shader != Shader.Find("Spine/SkeletonGraphic (Premultiply Alpha)"))
+				Debug.LogWarning("SkeletonGraphic works best with the SkeletonGraphic material.");			
 		}
 		#endif
 		#endregion
@@ -111,7 +105,7 @@ namespace Spine.Unity
 
 		protected override void Awake () {
 			base.Awake ();
-			if (!IsValid) {
+			if (!this.IsValid) {
 				Initialize(false);
 				Rebuild(CanvasUpdate.PreRender);
 			}
@@ -129,7 +123,7 @@ namespace Spine.Unity
 		}
 
 		public virtual void Update (float deltaTime) {
-			if (!IsValid) return;
+			if (!this.IsValid) return;
 
 			deltaTime *= timeScale;
 			skeleton.Update(deltaTime);
@@ -148,7 +142,7 @@ namespace Spine.Unity
 			if (UpdateComplete != null) UpdateComplete(this);
 		}
 
-		void LateUpdate () {
+		public void LateUpdate () {
 			if (freeze) return;
 			//this.SetVerticesDirty(); // Which is better?
 			UpdateMesh();
@@ -166,12 +160,11 @@ namespace Spine.Unity
 
 		// This is any object that can give you a mesh when you give it a skeleton to render.
 		protected Spine.Unity.MeshGeneration.ISimpleMeshGenerator spineMeshGenerator;
-		public Spine.Unity.MeshGeneration.ISimpleMeshGenerator SpineMeshGenerator { get { return spineMeshGenerator; } }
+		public Spine.Unity.MeshGeneration.ISimpleMeshGenerator SpineMeshGenerator { get { return this.spineMeshGenerator; } }
 
-		public delegate void UpdateDelegate (SkeletonGraphic skeletonGraphic);
-		public event UpdateDelegate UpdateLocal;
-		public event UpdateDelegate UpdateWorld;
-		public event UpdateDelegate UpdateComplete;
+		public event UpdateBonesDelegate UpdateLocal;
+		public event UpdateBonesDelegate UpdateWorld;
+		public event UpdateBonesDelegate UpdateComplete;
 
 		public void Clear () {
 			skeleton = null;
@@ -179,23 +172,23 @@ namespace Spine.Unity
 		}
 
 		public void Initialize (bool overwrite) {
-			if (IsValid && !overwrite) return;
+			if (this.IsValid && !overwrite) return;
 
 			// Make sure none of the stuff is null
-			if (skeletonDataAsset == null) return;
-			var skeletonData = skeletonDataAsset.GetSkeletonData(false);
+			if (this.skeletonDataAsset == null) return;
+			var skeletonData = this.skeletonDataAsset.GetSkeletonData(false);
 			if (skeletonData == null) return;
 
 			if (skeletonDataAsset.atlasAssets.Length <= 0 || skeletonDataAsset.atlasAssets[0].materials.Length <= 0) return;
 
-            state = new Spine.AnimationState(skeletonDataAsset.GetAnimationStateData());
+			this.state = new Spine.AnimationState(skeletonDataAsset.GetAnimationStateData());
 			if (state == null) {
 				Clear();
 				return;
 			}
 
-            skeleton = new Skeleton(skeletonData);
-            spineMeshGenerator = new Spine.Unity.MeshGeneration.ArraysSimpleMeshGenerator(); // You can switch this out with any other implementer of Spine.Unity.MeshGeneration.ISimpleMeshGenerator
+			this.skeleton = new Skeleton(skeletonData);
+			this.spineMeshGenerator = new Spine.Unity.MeshGeneration.ArraysSimpleMeshGenerator(); // You can switch this out with any other implementer of Spine.Unity.MeshGeneration.ISimpleMeshGenerator
 
 			// Set the initial Skin and Animation
 			if (!string.IsNullOrEmpty(initialSkinName))
@@ -206,10 +199,10 @@ namespace Spine.Unity
 		}
 
 		public void UpdateMesh () {
-			if (IsValid) {
-				skeleton.SetColor(color);
+			if (this.IsValid) {
+				skeleton.SetColor(this.color);
 				if (canvas != null)
-					spineMeshGenerator.Scale = canvas.referencePixelsPerUnit; // TODO: move this to a listener to of the canvas?
+					spineMeshGenerator.Scale = canvas.referencePixelsPerUnit; //JOHN: left a todo: move this to a listener to of the canvas?
 
 				canvasRenderer.SetMesh(spineMeshGenerator.GenerateMesh(skeleton));
 				//this.UpdateMaterial(); // TODO: This allocates memory.

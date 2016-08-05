@@ -21,15 +21,15 @@ public class DatabaseManager : EditorWindow
     private static void Init()
     {
         GetWindow(typeof(DatabaseManager));
-        WorldDatabase resourceWorldsDatabase = ResourceLoader.LoadWorldDatabase();
+        WorldDatabase resourceWorldsDatabase = ResourceLoader.Load<WorldDatabase>(ResourceLoader.WORLD_DATABASE_PATH);
         if (resourceWorldsDatabase == null && !File.Exists(ResourceLoader.WORLD_DATABASE_PATH))
             DatabaseCreator.CreateWorldDatabase();
 
-        WearableDatabase resourceWearableDatabase = ResourceLoader.LoadWearableDatabase();
+        WearableDatabase resourceWearableDatabase = ResourceLoader.Load<WearableDatabase>(ResourceLoader.WEARABLE_DATABASE_PATH);
         if (resourceWearableDatabase == null && !File.Exists(ResourceLoader.WEARABLE_DATABASE_PATH))
             DatabaseCreator.CreateWearableDatabase();
 
-        ConsumableDatabase resourceItemDatabase = ResourceLoader.LoadConsumableDatabase();
+        ConsumableDatabase resourceItemDatabase = ResourceLoader.Load<ConsumableDatabase>(ResourceLoader.CONSUMABLE_DATABASE_PATH);
         if (resourceItemDatabase == null && !File.Exists(ResourceLoader.CONSUMABLE_DATABASE_PATH))
             DatabaseCreator.CreateConsumableDatabase();
     }

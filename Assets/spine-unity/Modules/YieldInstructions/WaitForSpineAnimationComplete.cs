@@ -35,13 +35,13 @@
 
 using UnityEngine;
 using System.Collections;
+using Spine;
 
-namespace Spine.Unity
-{
-    /// <summary>
-    /// Use this as a condition-blocking yield instruction for Unity Coroutines. 
-    /// The routine will pause until the AnimationState.TrackEntry fires its Complete event.</summary>
-    public class WaitForSpineAnimationComplete : IEnumerator {
+namespace Spine.Unity {
+	/// <summary>
+	/// Use this as a condition-blocking yield instruction for Unity Coroutines. 
+	/// The routine will pause until the AnimationState.TrackEntry fires its Complete event.</summary>
+	public class WaitForSpineAnimationComplete : IEnumerator {
 		
 		bool m_WasFired = false;
 

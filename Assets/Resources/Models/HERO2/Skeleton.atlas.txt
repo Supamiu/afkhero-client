@@ -1,0 +1,250 @@
+
+Skeleton-1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Build hero1/Fxspeedattack
+  rotate: false
+  xy: 1184, 1564
+  size: 652, 482
+  orig: 756, 603
+  offset: 58, 67
+  index: -1
+Build hero1/HERO_0001_Main_devant
+  rotate: true
+  xy: 1875, 358
+  size: 138, 122
+  orig: 138, 122
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0002_Bras_devant
+  rotate: false
+  xy: 1184, 1213
+  size: 428, 349
+  orig: 428, 349
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0003_Sourcil
+  rotate: true
+  xy: 1614, 209
+  size: 138, 89
+  orig: 138, 89
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0004_Oeil
+  rotate: true
+  xy: 1614, 88
+  size: 119, 106
+  orig: 134, 114
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0005_Oreille
+  rotate: false
+  xy: 1705, 243
+  size: 91, 104
+  orig: 91, 104
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0006_Cheveux2
+  rotate: false
+  xy: 276, 54
+  size: 229, 116
+  orig: 229, 116
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0007_Cheveux-1
+  rotate: true
+  xy: 735, 219
+  size: 494, 358
+  orig: 494, 358
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0008_Nez
+  rotate: true
+  xy: 2, 41
+  size: 129, 272
+  orig: 129, 272
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0009_Bouche-attaque2
+  rotate: true
+  xy: 1552, 525
+  size: 228, 107
+  orig: 228, 107
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0010_Bouche_attaque1
+  rotate: false
+  xy: 1087, 33
+  size: 190, 112
+  orig: 190, 112
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0011_Bouche_Course
+  rotate: false
+  xy: 1492, 2
+  size: 105, 85
+  orig: 105, 85
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0012_Barbe
+  rotate: true
+  xy: 1838, 1648
+  size: 398, 193
+  orig: 398, 193
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0013_TETE
+  rotate: true
+  xy: 1708, 929
+  size: 306, 305
+  orig: 306, 305
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0014_Short_Avant
+  rotate: true
+  xy: 1492, 89
+  size: 174, 120
+  orig: 174, 120
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0023_Short_Arriere
+  rotate: true
+  xy: 1492, 89
+  size: 174, 120
+  orig: 174, 120
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0015_Jambe_Avant1
+  rotate: false
+  xy: 1294, 265
+  size: 266, 171
+  orig: 266, 171
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0016_Jambe_Avant2
+  rotate: false
+  xy: 735, 2
+  size: 174, 215
+  orig: 174, 215
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0017_Jambe_Avant3
+  rotate: false
+  xy: 1708, 671
+  size: 304, 256
+  orig: 304, 256
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0018_Jambe_Avant4
+  rotate: true
+  xy: 1095, 349
+  size: 364, 197
+  orig: 364, 197
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0027_Jambe_Arriere4
+  rotate: true
+  xy: 1095, 349
+  size: 364, 197
+  orig: 364, 197
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0019_Jambe_Avant5
+  rotate: true
+  xy: 1095, 147
+  size: 200, 193
+  orig: 200, 193
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0020_Short
+  rotate: false
+  xy: 507, 46
+  size: 188, 124
+  orig: 188, 124
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0021_Muscle
+  rotate: true
+  xy: 1614, 1237
+  size: 325, 364
+  orig: 325, 364
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0022_Corps
+  rotate: true
+  xy: 2, 172
+  size: 541, 731
+  orig: 558, 731
+  offset: 17, 0
+  index: -1
+Build hero1/HERO_0024_Jambe_Arriere1
+  rotate: false
+  xy: 1661, 498
+  size: 266, 171
+  orig: 266, 171
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0025_Jambe_Arriere2
+  rotate: false
+  xy: 911, 2
+  size: 174, 215
+  orig: 174, 215
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0026_Jambe_Arriere3
+  rotate: true
+  xy: 1294, 438
+  size: 304, 256
+  orig: 304, 256
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0028_Jambe_Arriere5
+  rotate: false
+  xy: 1290, 70
+  size: 200, 193
+  orig: 200, 193
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0029_Main_arriere
+  rotate: false
+  xy: 1929, 528
+  size: 114, 141
+  orig: 114, 141
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0030_Bras_arriere
+  rotate: false
+  xy: 1184, 744
+  size: 307, 467
+  orig: 307, 467
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0031_Arme_test
+  rotate: true
+  xy: 1493, 755
+  size: 456, 213
+  orig: 456, 213
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0032_jambe_arriere_attack
+  rotate: false
+  xy: 1737, 355
+  size: 136, 141
+  orig: 136, 141
+  offset: 0, 0
+  index: -1
+Build hero1/HERO_0033_jambe_avant_attack
+  rotate: false
+  xy: 1562, 349
+  size: 173, 147
+  orig: 173, 147
+  offset: 0, 0
+  index: -1
+HERO
+  rotate: false
+  xy: 2, 715
+  size: 1180, 1331
+  orig: 1180, 1331
+  offset: 0, 0
+  index: -1

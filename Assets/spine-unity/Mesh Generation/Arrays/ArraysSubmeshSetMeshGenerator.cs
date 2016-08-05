@@ -28,13 +28,12 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-#define SPINE_OPTIONAL_NORMALS
 using UnityEngine;
 
 namespace Spine.Unity.MeshGeneration {
 	public class ArraysSubmeshSetMeshGenerator : ArraysMeshGenerator, ISubmeshSetMeshGenerator {
 		#region Settings
-		public float zSpacing = 0f;
+		public float ZSpacing { get; set; }
 		#endregion
 
 		readonly DoubleBuffered<SmartMesh> doubleBufferedSmartMesh = new DoubleBuffered<SmartMesh>();
@@ -48,7 +47,7 @@ namespace Spine.Unity.MeshGeneration {
 			var paramItems = instructions.Items;
 			currentInstructions.Clear(false);
 			for (int i = startSubmesh, n = endSubmesh; i < n; i++) {
-                currentInstructions.Add(paramItems[i]);
+				this.currentInstructions.Add(paramItems[i]);
 			}
 			var smartMesh = doubleBufferedSmartMesh.GetNext();
 			var mesh = smartMesh.mesh;
@@ -61,7 +60,7 @@ namespace Spine.Unity.MeshGeneration {
 			}
 
 			// STEP 1: Ensure correct buffer sizes.
-			bool vertBufferResized = ArraysMeshGenerator.EnsureSize(vertexCount, ref meshVertices, ref meshUVs, ref meshColors32); 
+			bool vertBufferResized = ArraysMeshGenerator.EnsureSize(vertexCount, ref this.meshVertices, ref this.meshUVs, ref this.meshColors32); 
 			bool submeshBuffersResized = ArraysMeshGenerator.EnsureTriangleBuffersSize(submeshBuffers, submeshCount, currentInstructionsItems);
 
 			// STEP 2: Update buffers based on Skeleton.
@@ -69,7 +68,7 @@ namespace Spine.Unity.MeshGeneration {
 			// Initial values for manual Mesh Bounds calculation
 			Vector3 meshBoundsMin;
 			Vector3 meshBoundsMax;
-			float zSpacing = this.zSpacing;
+			float zSpacing = this.ZSpacing;
 			if (vertexCount <= 0) {
 				meshBoundsMin = new Vector3(0, 0, 0);
 				meshBoundsMax = new Vector3(0, 0, 0);
@@ -90,7 +89,7 @@ namespace Spine.Unity.MeshGeneration {
 			}
 				
 			// For each submesh, add vertex data from attachments.
-			var workingAttachments = attachmentBuffer;
+			var workingAttachments = this.attachmentBuffer;
 			workingAttachments.Clear(false);
 			int vertexIndex = 0; // modified by FillVerts
 			for (int submeshIndex = 0; submeshIndex < submeshCount; submeshIndex++) {
@@ -103,7 +102,7 @@ namespace Spine.Unity.MeshGeneration {
 					var ca = skeletonDrawOrderItems[i].attachment;
 					if (ca != null) workingAttachments.Add(ca); // Includes BoundingBoxes. This is ok.
 				}
-				ArraysMeshGenerator.FillVerts(skeleton, startSlot, endSlot, zSpacing, premultiplyVertexColors, meshVertices, meshUVs, meshColors32, ref vertexIndex, ref attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
+				ArraysMeshGenerator.FillVerts(skeleton, startSlot, endSlot, zSpacing, this.PremultiplyVertexColors, this.meshVertices, this.meshUVs, this.meshColors32, ref vertexIndex, ref this.attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
 			}
 
 			bool structureDoesntMatch = vertBufferResized || submeshBuffersResized || smartMesh.StructureDoesntMatch(workingAttachments, currentInstructions);
@@ -112,27 +111,40 @@ namespace Spine.Unity.MeshGeneration {
 				if (structureDoesntMatch) {
 					var currentBuffer = submeshBuffers.Items[submeshIndex];
 					bool isLastSubmesh = (submeshIndex == submeshCount - 1);
-					ArraysMeshGenerator.FillTriangles(currentInstruction.skeleton, currentInstruction.triangleCount, currentInstruction.firstVertexIndex, currentInstruction.startSlot, currentInstruction.endSlot, ref currentBuffer.triangles, isLastSubmesh);
+					ArraysMeshGenerator.FillTriangles(ref currentBuffer.triangles, currentInstruction.skeleton, currentInstruction.triangleCount, currentInstruction.firstVertexIndex, currentInstruction.startSlot, currentInstruction.endSlot, isLastSubmesh);
+					currentBuffer.triangleCount = currentInstruction.triangleCount;
+					currentBuffer.firstVertex = currentInstruction.firstVertexIndex;
 				}
 			}
 
 			if (structureDoesntMatch) {
 				mesh.Clear();
-                sharedMaterials = currentInstructions.GetUpdatedMaterialArray(sharedMaterials);
+				this.sharedMaterials = currentInstructions.GetUpdatedMaterialArray(this.sharedMaterials);
 			}
 
 			// STEP 3: Assign the buffers into the Mesh.
-			smartMesh.Set(meshVertices, meshUVs, meshColors32, workingAttachments, currentInstructions);
+			smartMesh.Set(this.meshVertices, this.meshUVs, this.meshColors32, workingAttachments, currentInstructions);
 			mesh.bounds = ArraysMeshGenerator.ToBounds(meshBoundsMin, meshBoundsMax);
-#if SPINE_OPTIONAL_NORMALS
-            TryAddNormalsTo(mesh, vertexCount);
-			#endif
+
 
 			if (structureDoesntMatch) {
 				// Push new triangles if doesn't match.
 				mesh.subMeshCount = submeshCount;
 				for (int i = 0; i < submeshCount; i++)
 					mesh.SetTriangles(submeshBuffers.Items[i].triangles, i);			
+
+				this.TryAddNormalsTo(mesh, vertexCount);
+			}
+
+			if (addTangents) { 
+				SolveTangents2DEnsureSize(ref this.meshTangents, ref this.tempTanBuffer, vertexCount);
+
+				for (int i = 0, n = submeshCount; i < n; i++) {
+					var submesh = submeshBuffers.Items[i];
+					SolveTangents2DTriangles(this.tempTanBuffer, submesh.triangles, submesh.triangleCount, meshVertices, meshUVs, vertexCount);
+				}
+					
+				SolveTangents2DBuffer(this.meshTangents, this.tempTanBuffer, vertexCount);
 			}
 				
 			return new MeshAndMaterials(smartMesh.mesh, sharedMaterials);
@@ -163,19 +175,19 @@ namespace Spine.Unity.MeshGeneration {
 
 			public bool StructureDoesntMatch (ExposedList<Attachment> attachments, ExposedList<SubmeshInstruction> instructions) {
 				// Check count inequality.
-				if (attachments.Count != attachmentsUsed.Count) return true;
-				if (instructions.Count != instructionsUsed.Count) return true;
+				if (attachments.Count != this.attachmentsUsed.Count) return true;
+				if (instructions.Count != this.instructionsUsed.Count) return true;
 
 				// Check each attachment.
 				var attachmentsPassed = attachments.Items;
-				var myAttachments = attachmentsUsed.Items;
+				var myAttachments = this.attachmentsUsed.Items;
 				for (int i = 0, n = attachmentsUsed.Count; i < n; i++)
 					if (attachmentsPassed[i] != myAttachments[i]) return true;
 
 				// Check each submesh for equal arrangement.
 				var instructionListItems = instructions.Items;
-				var myInstructions = instructionsUsed.Items;
-				for (int i = 0, n = instructionsUsed.Count; i < n; i++) {
+				var myInstructions = this.instructionsUsed.Items;
+				for (int i = 0, n = this.instructionsUsed.Count; i < n; i++) {
 					var lhs = instructionListItems[i];
 					var rhs = myInstructions[i];
 					if (

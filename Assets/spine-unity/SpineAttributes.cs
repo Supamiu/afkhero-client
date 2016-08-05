@@ -5,10 +5,10 @@
  * Full irrevocable rights and permissions granted to Esoteric Software
 *****************************************************************************/
 using UnityEngine;
+using System.Collections;
 
-namespace Spine.Unity
-{
-    public abstract class SpineAttributeBase : PropertyAttribute {
+namespace Spine.Unity {
+	public abstract class SpineAttributeBase : PropertyAttribute {
 		public string dataField = "";
 		public string startsWith = "";
 	}
@@ -170,8 +170,7 @@ namespace Spine.Unity
 	}
 
 	public class SpineAtlasRegion : PropertyAttribute {
-		//TODO:  Standardize with Skeleton attributes
-		//NOTE:  For now, relies on locally scoped field named "atlasAsset" for source.
+	
 	}
 
 }

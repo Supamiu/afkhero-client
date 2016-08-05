@@ -30,12 +30,13 @@
  *****************************************************************************/
 using UnityEngine;
 using UnityEditor;
+
+using Spine.Unity;
 using Spine.Unity.Editor;
 
-namespace Spine.Unity.Modules
-{
-
-    [CustomEditor(typeof(SkeletonRenderSeparator))]
+namespace Spine.Unity.Modules {
+	
+	[CustomEditor(typeof(SkeletonRenderSeparator))]
 	public class SkeletonRenderSeparatorInspector : UnityEditor.Editor {
 		SkeletonRenderSeparator component;
 
@@ -75,7 +76,7 @@ namespace Spine.Unity.Modules
 		}
 
 		public override void OnInspectorGUI () {
-			// TODO: Add Undo support
+			//JOHN: left todo: Add Undo support
 			var componentRenderers = component.partsRenderers;
 			int totalParts;
 

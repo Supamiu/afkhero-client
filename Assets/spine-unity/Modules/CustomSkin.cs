@@ -29,10 +29,11 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 using UnityEngine;
+using Spine;
+using Spine.Unity;
 
-namespace Spine.Unity.Modules
-{
-    public class CustomSkin : MonoBehaviour {
+namespace Spine.Unity.Modules {
+	public class CustomSkin : MonoBehaviour {
 
 		[System.Serializable]
 		public class SkinPair {
