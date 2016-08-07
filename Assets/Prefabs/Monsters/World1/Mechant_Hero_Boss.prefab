@@ -78,17 +78,20 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 3f2dc5643bc5f944a926cea1c79955c2, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -184,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1785cb35b70013c4a82c17639c3fb4eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackAnimationScale: 1
   hitEvent: Hit
   walkName: Move
   attackName: Attack
@@ -212,6 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2026a67117f0314496526384d7ea8e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  relativeSpeed: 0
 --- !u!114 &11430094
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -301,7 +306,6 @@ MonoBehaviour:
   pmaVertexColors: 1
   calculateNormals: 0
   calculateTangents: 0
-  frontFacing: 0
   logErrors: 0
   disableRenderingOnOverride: 1
   _animationName: Idle

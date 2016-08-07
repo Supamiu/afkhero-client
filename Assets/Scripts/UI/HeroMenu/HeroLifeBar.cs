@@ -15,7 +15,8 @@ namespace AFKHero.UI.HeroMenu
 
 		public Damageable hero;
 
-		private RectTransform barRect;
+		//private RectTransform barRect;
+		private Image barImage;
 
 		private Vitality hp;
 
@@ -25,8 +26,11 @@ namespace AFKHero.UI.HeroMenu
 
 		void Start ()
 		{
-            barRect = bar.GetComponent<RectTransform> ();
-            maxWidth = barRect.sizeDelta.x;
+			barImage = bar.GetComponent<Image> ();
+
+            //barRect = bar.GetComponent<RectTransform> ();
+            //maxWidth = barRect.sizeDelta.x;
+
             hp = hero.GetComponent <Vitality> ();
             hero.OnDamaged += () => {
                 UpdateBar();
@@ -45,7 +49,9 @@ namespace AFKHero.UI.HeroMenu
 			} else if (percent <= 0.66f) {
                 bar.color = Color.yellow;
 			} else {
-                bar.color = Color.green;
+				Color color = new Color ();
+				ColorUtility.TryParseHtmlString("#51C304FF", out color);
+				bar.color = color;
 			}
 			double hpValue = hp.currentHp > 0 ? hp.currentHp : 0;
             innerText.text = Formatter.Format (Math.Round (hpValue)) + "/" + Formatter.Format (Math.Round (hp.Value));
@@ -53,7 +59,8 @@ namespace AFKHero.UI.HeroMenu
 
 		void Update ()
 		{
-            barRect.sizeDelta = Vector2.Lerp (barRect.sizeDelta, new Vector2 (maxWidth * percent, barRect.sizeDelta.y), Time.deltaTime);
+			barImage.fillAmount -= (barImage.fillAmount - percent) * Time.deltaTime;
+            //barRect.sizeDelta = Vector2.Lerp (barRect.sizeDelta, new Vector2 (maxWidth * percent, barRect.sizeDelta.y), Time.deltaTime);
 		}
 	}
 }
