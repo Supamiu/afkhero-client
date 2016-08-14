@@ -39,8 +39,7 @@ namespace AFKHero.UI.CombatText
 
 		private void CreateCombatText (string text, Transform location, CombatTextType type)
 		{
-			CombatText instance = Instantiate (prefab);
-
+			CombatText instance = Instantiate(prefab);
 			instance.transform.SetParent (parent.transform, false);
 			instance.transform.position = location.position;
 			instance.SetColor (type.GetColor ());

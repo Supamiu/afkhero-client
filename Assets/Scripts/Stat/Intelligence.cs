@@ -29,6 +29,11 @@ namespace AFKHero.Stat
         public override StatType GetStatType()
         {
             return StatType.PRIMARY;
-        }
+		}
+
+		public override string GetAbbreviation() 
+		{
+			return "Int";
+		}
     }
 }

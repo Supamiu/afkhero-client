@@ -57,6 +57,11 @@ namespace AFKHero.Stat
         public override SaveData Save(SaveData save)
         {
             return save;
-        }
+		}
+
+		public override string GetAbbreviation() 
+		{
+			return "Atk";
+		}
     }
 }

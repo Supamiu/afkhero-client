@@ -6,7 +6,6 @@ namespace AFKHero.UI.HeroMenu
 {
     public class PopulateStatList : MonoBehaviour
     {
-
         public GameObject hero;
         public StatElement prefab;
 

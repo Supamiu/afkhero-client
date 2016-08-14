@@ -62,6 +62,11 @@ namespace AFKHero.Stat
         {
             EventDispatcher.Instance.Unregister("gearstat.defense", listener1);
             EventDispatcher.Instance.Unregister("attack.compute", listener2);
-        }
+		}
+
+		public override string GetAbbreviation() 
+		{
+			return "Def";
+		}
     }
 }

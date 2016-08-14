@@ -85,5 +85,10 @@ namespace AFKHero.Stat
         {
             return StatType.PRIMARY;
         }
+
+		public override string GetAbbreviation() 
+		{
+			return "Vit";
+		}
     }
 }

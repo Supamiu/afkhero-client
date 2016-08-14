@@ -29,6 +29,8 @@ namespace AFKHero.Stat
 
         public abstract StatType GetStatType();
 
+		public abstract string GetAbbreviation ();
+
         public void Load(SaveData data)
         {
             DoLoad(data);
