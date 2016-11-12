@@ -13,7 +13,7 @@ namespace AFKHero.Core.Affix.Normal
 
         public override string GetEventName()
         {
-            return "stat.compute.vitality";
+            return Events.Stat.Vitality.COMPUTE;
         }
 
         public override IListener GetListener()

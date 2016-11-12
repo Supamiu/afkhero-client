@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using AFKHero.Core.Event;
 
 namespace AFKHero.UI.Tools
@@ -11,7 +10,7 @@ namespace AFKHero.UI.Tools
         public float shake_decay;
         public float shake_intensity;
 
-        void OnGUI()
+        private void OnGUI()
         {
             EventDispatcher.Instance.Register("shake", new Listener<GameEvent>((ref GameEvent e) =>
             {
@@ -19,26 +18,22 @@ namespace AFKHero.UI.Tools
             }));
         }
 
-        void Update()
+        private void Update()
         {
-            if (shake_intensity > 0)
-            {
-                transform.position = originPosition + Random.insideUnitSphere * shake_intensity;
-                transform.rotation = new Quaternion(
+            if (!(shake_intensity > 0)) return;
+            transform.position = originPosition + Random.insideUnitSphere * shake_intensity;
+            transform.rotation = new Quaternion(
                 originRotation.x + Random.Range(-shake_intensity, shake_intensity) * .2f,
                 originRotation.y + Random.Range(-shake_intensity, shake_intensity) * .2f,
                 originRotation.z + Random.Range(-shake_intensity, shake_intensity) * .2f,
                 originRotation.w + Random.Range(-shake_intensity, shake_intensity) * .2f);
-                shake_intensity -= shake_decay;
-                if (shake_intensity <= 0)
-                {
-                    transform.position = originPosition;
-                    transform.rotation = originRotation;
-                }
-            }            
+            shake_intensity -= shake_decay;
+            if (!(shake_intensity <= 0)) return;
+            transform.position = originPosition;
+            transform.rotation = originRotation;
         }
 
-        void Shake()
+        private void Shake()
         {
             originPosition = transform.position;
             originRotation = transform.rotation;

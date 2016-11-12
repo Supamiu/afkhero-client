@@ -51,22 +51,22 @@ public class Raptor : MonoBehaviour {
 	public AudioSource footstepAudioSource;
 	#endregion
 
-	SkeletonAnimation skeletonAnimation;
+    private SkeletonAnimation skeletonAnimation;
 
-	void Start () {
+    private void Start () {
 		skeletonAnimation = GetComponent<SkeletonAnimation>();
 		skeletonAnimation.state.Event += HandleEvent;
 		StartCoroutine(GunGrabRoutine());
 	}
 
-	void HandleEvent (Spine.AnimationState state, int trackIndex, Spine.Event e) {
+    private void HandleEvent (Spine.AnimationState state, int trackIndex, Spine.Event e) {
 		if (e.Data.Name == footstepEvent) {
 			footstepAudioSource.pitch = 0.5f + Random.Range(-0.2f, 0.2f);
 			footstepAudioSource.Play();
 		}
 	}
 
-	IEnumerator GunGrabRoutine () {		
+    private IEnumerator GunGrabRoutine () {		
 		// Play the walk animation on track 0.
 		skeletonAnimation.state.SetAnimation(0, walk, true);
 

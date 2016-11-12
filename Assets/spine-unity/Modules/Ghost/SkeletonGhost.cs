@@ -26,17 +26,17 @@ namespace Spine.Unity.Modules {
 		public bool sortWithDistanceOnly;
 		public float zOffset = 0f;
 
-		float nextSpawnTime;
-		SkeletonGhostRenderer[] pool;
-		int poolIndex = 0;
-		SkeletonRenderer skeletonRenderer;
-		MeshRenderer meshRenderer;
-		MeshFilter meshFilter;
+	    private float nextSpawnTime;
+	    private SkeletonGhostRenderer[] pool;
+	    private int poolIndex = 0;
+	    private SkeletonRenderer skeletonRenderer;
+	    private MeshRenderer meshRenderer;
+	    private MeshFilter meshFilter;
 
 
-		Dictionary<Material, Material> materialTable = new Dictionary<Material, Material>();
+	    private Dictionary<Material, Material> materialTable = new Dictionary<Material, Material>();
 
-		void Start () {
+	    private void Start () {
 			if (ghostShader == null)
 				ghostShader = Shader.Find("Spine/Special/SkeletonGhost");
 
@@ -45,8 +45,8 @@ namespace Spine.Unity.Modules {
 			meshRenderer = GetComponent<MeshRenderer>();
 			nextSpawnTime = Time.time + spawnRate;
 			pool = new SkeletonGhostRenderer[maximumGhosts];
-			for (int i = 0; i < maximumGhosts; i++) {
-				GameObject go = new GameObject(gameObject.name + " Ghost", typeof(SkeletonGhostRenderer));
+			for (var i = 0; i < maximumGhosts; i++) {
+				var go = new GameObject(gameObject.name + " Ghost", typeof(SkeletonGhostRenderer));
 				pool[i] = go.GetComponent<SkeletonGhostRenderer>();
 				go.SetActive(false);
 				go.hideFlags = HideFlags.HideInHierarchy;
@@ -63,7 +63,8 @@ namespace Spine.Unity.Modules {
 	 *	Float Value:	Values greater than 0 set the spawnRate equal the float value
 	 *	String Value:	Pass RGBA hex color values in to set the color property.  IE:   "A0FF8BFF"
 	 */
-		void OnEvent (Spine.AnimationState state, int trackIndex, Spine.Event e) {
+
+	    private void OnEvent (Spine.AnimationState state, int trackIndex, Spine.Event e) {
 			if (e.Data.Name == "Ghosting") {
 				ghostingEnabled = e.Int > 0;
 				if (e.Float > 0)
@@ -76,19 +77,19 @@ namespace Spine.Unity.Modules {
 
 		//SkeletonAnimator
 		//SkeletonAnimator or Mecanim based animations only support toggling ghostingEnabled.  Be sure not to set anything other than the Int param in Spine or String will take priority.
-		void Ghosting (float val) {
+	    private void Ghosting (float val) {
 			ghostingEnabled = val > 0;
 		}
 
-		void Update () {
+	    private void Update () {
 			if (!ghostingEnabled)
 				return;
 
 			if (Time.time >= nextSpawnTime) {
-				GameObject go = pool[poolIndex].gameObject;
+				var go = pool[poolIndex].gameObject;
 
-				Material[] materials = meshRenderer.sharedMaterials;
-				for (int i = 0; i < materials.Length; i++) {
+				var materials = meshRenderer.sharedMaterials;
+				for (var i = 0; i < materials.Length; i++) {
 					var originalMat = materials[i];
 					Material ghostMat;
 					if (!materialTable.ContainsKey(originalMat)) {
@@ -125,8 +126,8 @@ namespace Spine.Unity.Modules {
 			}
 		}
 
-		void OnDestroy () {
-			for (int i = 0; i < maximumGhosts; i++) {
+	    private void OnDestroy () {
+			for (var i = 0; i < maximumGhosts; i++) {
 				if (pool[i] != null)
 					pool[i].Cleanup();
 			}
@@ -137,14 +138,14 @@ namespace Spine.Unity.Modules {
 
 
 		//based on UnifyWiki  http://wiki.unity3d.com/index.php?title=HexConverter
-		static Color32 HexToColor (string hex) {
+	    private static Color32 HexToColor (string hex) {
 			if (hex.Length < 6)
 				return Color.magenta;
 
 			hex = hex.Replace("#", "");
-			byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-			byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-			byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+			var r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+			var g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+			var b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 			byte a = 0xFF;
 			if (hex.Length == 8)
 				a = byte.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace DigitalRuby.RainMaker
 {
@@ -25,7 +24,7 @@ namespace DigitalRuby.RainMaker
             }
             if (RainMistParticleSystem != null)
             {
-                Vector3 pos = Camera.transform.position;
+                var pos = Camera.transform.position;
                 pos.y = RainMistHeight;
                 RainMistParticleSystem.transform.position = pos;
             }

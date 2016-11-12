@@ -33,10 +33,10 @@ namespace Spine.Unity {
 		protected event UpdateBonesDelegate _UpdateWorld;
 		protected event UpdateBonesDelegate _UpdateComplete;
 
-		readonly Dictionary<int, Spine.Animation> animationTable = new Dictionary<int, Spine.Animation>();
-		readonly Dictionary<AnimationClip, int> clipNameHashCodeTable = new Dictionary<AnimationClip, int>();
-		Animator animator;
-		float lastTime;
+	    private readonly Dictionary<int, Spine.Animation> animationTable = new Dictionary<int, Spine.Animation>();
+	    private readonly Dictionary<AnimationClip, int> clipNameHashCodeTable = new Dictionary<AnimationClip, int>();
+	    private Animator animator;
+	    private float lastTime;
 
 		#if USE_SPINE_EVENTS
 		public delegate void SkeletonAnimatorEventDelegate (Spine.Event firedEvent, float weight);
@@ -69,23 +69,23 @@ namespace Spine.Unity {
 			lastTime = Time.time;
 		}
 
-		void Update () {
+	    private void Update () {
 			if (!valid)
 				return;
 
 			if (layerMixModes.Length != animator.layerCount) {
 				System.Array.Resize<MixMode>(ref layerMixModes, animator.layerCount);
 			}
-			float deltaTime = Time.time - lastTime;
+			var deltaTime = Time.time - lastTime;
 
 			skeleton.Update(Time.deltaTime);
 
 			//apply
-			int layerCount = animator.layerCount;
+			var layerCount = animator.layerCount;
 
-			for (int i = 0; i < layerCount; i++) {
+			for (var i = 0; i < layerCount; i++) {
 
-				float layerWeight = animator.GetLayerWeight(i);
+				var layerWeight = animator.GetLayerWeight(i);
 				if (i == 0)
 					layerWeight = 1;
 
@@ -99,17 +99,17 @@ namespace Spine.Unity {
 				var clipInfo = animator.GetCurrentAnimationClipState(i);
 				var nextClipInfo = animator.GetNextAnimationClipState(i);
 				#endif
-				MixMode mode = layerMixModes[i];
+				var mode = layerMixModes[i];
 
 				if (mode == MixMode.AlwaysMix) {
 					//always use Mix instead of Applying the first non-zero weighted clip
-					for (int c = 0; c < clipInfo.Length; c++) {
+					for (var c = 0; c < clipInfo.Length; c++) {
 						var info = clipInfo[c];
-						float weight = info.weight * layerWeight;
+						var weight = info.weight * layerWeight;
 						if (weight == 0)
 							continue;
 
-						float time = stateInfo.normalizedTime * info.clip.length;
+						var time = stateInfo.normalizedTime * info.clip.length;
 						animationTable[GetAnimationClipNameHashCode(info.clip)].Mix(skeleton, Mathf.Max(0, time - deltaTime), time, stateInfo.loop, events, weight);
 						#if USE_SPINE_EVENTS
 						FireEvents(events, weight, this.AnimationEvent);
@@ -120,13 +120,13 @@ namespace Spine.Unity {
 					#else
 					if (nextStateInfo.nameHash != 0) {
 					#endif
-						for (int c = 0; c < nextClipInfo.Length; c++) {
+						for (var c = 0; c < nextClipInfo.Length; c++) {
 							var info = nextClipInfo[c];
-							float weight = info.weight * layerWeight;
+							var weight = info.weight * layerWeight;
 							if (weight == 0)
 								continue;
 
-							float time = nextStateInfo.normalizedTime * info.clip.length;
+							var time = nextStateInfo.normalizedTime * info.clip.length;
 							animationTable[GetAnimationClipNameHashCode(info.clip)].Mix(skeleton, Mathf.Max(0, time - deltaTime), time, nextStateInfo.loop, events, weight);
 							#if USE_SPINE_EVENTS
 							FireEvents(events, weight, this.AnimationEvent);
@@ -135,15 +135,15 @@ namespace Spine.Unity {
 					}
 				} else if (mode >= MixMode.MixNext) {
 					//apply first non-zero weighted clip
-					int c = 0;
+					var c = 0;
 
 					for (; c < clipInfo.Length; c++) {
 						var info = clipInfo[c];
-						float weight = info.weight * layerWeight;
+						var weight = info.weight * layerWeight;
 						if (weight == 0)
 							continue;
 
-						float time = stateInfo.normalizedTime * info.clip.length;
+						var time = stateInfo.normalizedTime * info.clip.length;
 						animationTable[GetAnimationClipNameHashCode(info.clip)].Apply(skeleton, Mathf.Max(0, time - deltaTime), time, stateInfo.loop, events);
 						#if USE_SPINE_EVENTS
 						FireEvents(events, weight, this.AnimationEvent);
@@ -154,11 +154,11 @@ namespace Spine.Unity {
 					//mix the rest
 					for (; c < clipInfo.Length; c++) {
 						var info = clipInfo[c];
-						float weight = info.weight * layerWeight;
+						var weight = info.weight * layerWeight;
 						if (weight == 0)
 							continue;
 
-						float time = stateInfo.normalizedTime * info.clip.length;
+						var time = stateInfo.normalizedTime * info.clip.length;
 						animationTable[GetAnimationClipNameHashCode(info.clip)].Mix(skeleton, Mathf.Max(0, time - deltaTime), time, stateInfo.loop, events, weight);
 						#if USE_SPINE_EVENTS
 						FireEvents(events, weight, this.AnimationEvent);
@@ -175,11 +175,11 @@ namespace Spine.Unity {
 						if (mode == MixMode.SpineStyle) {
 							for (; c < nextClipInfo.Length; c++) {
 								var info = nextClipInfo[c];
-								float weight = info.weight * layerWeight;
+								var weight = info.weight * layerWeight;
 								if (weight == 0)
 									continue;
 
-								float time = nextStateInfo.normalizedTime * info.clip.length;
+								var time = nextStateInfo.normalizedTime * info.clip.length;
 								animationTable[GetAnimationClipNameHashCode(info.clip)].Apply(skeleton, Mathf.Max(0, time - deltaTime), time, nextStateInfo.loop, events);
 								#if USE_SPINE_EVENTS
 								FireEvents(events, weight, this.AnimationEvent);
@@ -191,11 +191,11 @@ namespace Spine.Unity {
 						//mix the rest
 						for (; c < nextClipInfo.Length; c++) {
 							var info = nextClipInfo[c];
-							float weight = info.weight * layerWeight;
+							var weight = info.weight * layerWeight;
 							if (weight == 0)
 								continue;
 
-							float time = nextStateInfo.normalizedTime * info.clip.length;
+							var time = nextStateInfo.normalizedTime * info.clip.length;
 							animationTable[GetAnimationClipNameHashCode(info.clip)].Mix(skeleton, Mathf.Max(0, time - deltaTime), time, nextStateInfo.loop, events, weight);
 							#if USE_SPINE_EVENTS
 							FireEvents(events, weight, this.AnimationEvent);

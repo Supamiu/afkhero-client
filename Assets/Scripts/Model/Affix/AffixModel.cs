@@ -1,6 +1,5 @@
 using UnityEngine;
 using AFKHero.Tools;
-using AFKHero.Model.Affix;
 using AFKHero.Core.Affix;
 
 namespace AFKHero.Model.Affix

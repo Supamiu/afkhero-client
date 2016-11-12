@@ -12,20 +12,20 @@ namespace AFKHero.UI.DropNotification
 
         public WearableDropNotification notificationPrefab;
 
-        private Queue<Drop> drops = new Queue<Drop>();
+        private readonly Queue<Drop> drops = new Queue<Drop>();
 
-        private bool notifying = false;
+        private bool notifying;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
-            EventDispatcher.Instance.Register("drop", new Listener<GenericGameEvent<Drop>>((ref GenericGameEvent<Drop> e) =>
+            EventDispatcher.Instance.Register(Events.DROP, new Listener<GenericGameEvent<Drop>>((ref GenericGameEvent<Drop> e) =>
             {
                 drops.Enqueue(e.Data);
             }, -10));
         }
 
-        void Update()
+        private void Update()
         {
             if (!notifying && drops.Count > 0)
             {
@@ -33,13 +33,13 @@ namespace AFKHero.UI.DropNotification
             }
         }
 
-        void Notify()
+        private void Notify()
         {
             try
             {
-                Drop drop = drops.Dequeue();
-                Wearable w = ItemDatabaseConnector.Instance.GetWearable(drop.itemID);
-                WearableDropNotification notif = Instantiate(notificationPrefab);
+                var drop = drops.Dequeue();
+                var w = ItemDatabaseConnector.Instance.GetWearable(drop.itemID);
+                var notif = Instantiate(notificationPrefab);
                 notif.SetWearable(w);
                 notif.transform.SetParent(transform);
                 notif.transform.localScale = Vector3.one;

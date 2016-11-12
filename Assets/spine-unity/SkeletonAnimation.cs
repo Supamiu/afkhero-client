@@ -74,7 +74,7 @@ namespace Spine.Unity {
 					return null;
 				}
 
-				TrackEntry entry = state.GetCurrent(0);
+				var entry = state.GetCurrent(0);
 				return entry == null ? null : entry.Animation.Name;
 			}
 			set {

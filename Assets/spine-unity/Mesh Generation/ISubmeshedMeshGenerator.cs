@@ -67,7 +67,7 @@ namespace Spine.Unity.MeshGeneration {
 	public static class SubmeshInstructionExtensions {
 		/// <summary>Returns a material array of the instructions. Fills the passed array if it's the correct size. Creates a new array if it's a different size.</summary>
 		public static Material[] GetUpdatedMaterialArray (this ExposedList<SubmeshInstruction> instructions, Material[] materials) {
-			int submeshCount = instructions.Count;
+			var submeshCount = instructions.Count;
 
 			if (submeshCount != materials.Length)
 				materials = new Material[submeshCount];

@@ -16,7 +16,7 @@ namespace AFKHero.UI
 
 		private Vitality vitality;
 		// Use this for initialization
-		void Start ()
+	    private void Start ()
 		{
             maxWidth = hpBarRect.sizeDelta.x;
             vitality = GetComponentInParent<Vitality> ();

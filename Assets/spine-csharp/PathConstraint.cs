@@ -57,7 +57,7 @@ namespace Spine {
 			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
 			this.data = data;
 			bones = new ExposedList<Bone>(data.Bones.Count);
-			foreach (BoneData boneData in data.bones)
+			foreach (var boneData in data.bones)
 				bones.Add(skeleton.FindBone(boneData.name));
 			target = skeleton.FindSlot(data.target.name);
 			position = data.position;
@@ -71,51 +71,51 @@ namespace Spine {
 		}
 			
 		public void Update () {
-			PathAttachment attachment = target.Attachment as PathAttachment;
+			var attachment = target.Attachment as PathAttachment;
 			if (attachment == null) return;
 
 			float rotateMix = this.rotateMix, translateMix = this.translateMix;
 			bool translate = translateMix > 0, rotate = rotateMix > 0;
 			if (!translate && !rotate) return;
 
-			PathConstraintData data = this.data;
-			SpacingMode spacingMode = data.spacingMode;
-			bool lengthSpacing = spacingMode == SpacingMode.Length;
-			RotateMode rotateMode = data.rotateMode;
+			var data = this.data;
+			var spacingMode = data.spacingMode;
+			var lengthSpacing = spacingMode == SpacingMode.Length;
+			var rotateMode = data.rotateMode;
 			bool tangents = rotateMode == RotateMode.Tangent, scale = rotateMode == RotateMode.ChainScale;
 			int boneCount = this.bones.Count, spacesCount = tangents ? boneCount : boneCount + 1;
-			Bone[] bones = this.bones.Items;
+			var bones = this.bones.Items;
 			ExposedList<float> spaces = this.spaces.Resize(spacesCount), lengths = null;
-			float spacing = this.spacing;
+			var spacing = this.spacing;
 			if (scale || lengthSpacing) {
 				if (scale) lengths = this.lengths.Resize(boneCount);
 				for (int i = 0, n = spacesCount - 1; i < n;) {
-					Bone bone = bones[i];
+					var bone = bones[i];
 					float length = bone.data.length, x = length * bone.a, y = length * bone.c;
 					length = (float)Math.Sqrt(x * x + y * y);
 					if (scale) lengths.Items[i] = length;
 					spaces.Items[++i] = lengthSpacing ? Math.Max(0, length + spacing) : spacing;
 				}
 			} else {
-				for (int i = 1; i < spacesCount; i++)
+				for (var i = 1; i < spacesCount; i++)
 					spaces.Items[i] = spacing;
 			}
 
-			float[] positions = ComputeWorldPositions(attachment, spacesCount, tangents,
+			var positions = ComputeWorldPositions(attachment, spacesCount, tangents,
 				data.positionMode == PositionMode.Percent, spacingMode == SpacingMode.Percent);
-			Skeleton skeleton = target.Skeleton;
+			var skeleton = target.Skeleton;
 			float skeletonX = skeleton.x, skeletonY = skeleton.y;
 			float boneX = positions[0], boneY = positions[1], offsetRotation = data.offsetRotation;
-			bool tip = rotateMode == RotateMode.Chain && offsetRotation == 0;
+			var tip = rotateMode == RotateMode.Chain && offsetRotation == 0;
 			for (int i = 0, p = 3; i < boneCount; i++, p += 3) {
-				Bone bone = (Bone)bones[i];
+				var bone = (Bone)bones[i];
 				bone.worldX += (boneX - skeletonX - bone.worldX) * translateMix;
 				bone.worldY += (boneY - skeletonY - bone.worldY) * translateMix;
 				float x = positions[p], y = positions[p + 1], dx = x - boneX, dy = y - boneY;
 				if (scale) {
-					float length = lengths.Items[i];
+					var length = lengths.Items[i];
 					if (length != 0) {
-						float s = ((float)Math.Sqrt(dx * dx + dy * dy) / length - 1) * rotateMix + 1;
+						var s = ((float)Math.Sqrt(dx * dx + dy * dy) / length - 1) * rotateMix + 1;
 						bone.a *= s;
 						bone.c *= s;
 					}
@@ -134,7 +134,7 @@ namespace Spine {
 					if (tip) {
 						cos = MathUtils.Cos(r);
 						sin = MathUtils.Sin(r);
-						float length = bone.data.length;
+						var length = bone.data.length;
 						boneX += (length * (cos * a - sin * c) - dx) * rotateMix;
 						boneY += (length * (sin * a + cos * c) - dy) * rotateMix;
 					}
@@ -153,30 +153,30 @@ namespace Spine {
 			}
 		}
 
-		float[] ComputeWorldPositions (PathAttachment path, int spacesCount, bool tangents, bool percentPosition,
+	    private float[] ComputeWorldPositions (PathAttachment path, int spacesCount, bool tangents, bool percentPosition,
 			bool percentSpacing) {
 
-			Slot target = this.target;
-			float position = this.position;
+			var target = this.target;
+			var position = this.position;
 			float[] spaces = this.spaces.Items, output = this.positions.Resize(spacesCount * 3 + 2).Items, world;
-			bool closed = path.Closed;
+			var closed = path.Closed;
 			int verticesLength = path.WorldVerticesLength, curveCount = verticesLength / 6, prevCurve = NONE;
 
 			float pathLength;
 			if (!path.ConstantSpeed) {
-				float[] lengths = path.Lengths;
+				var lengths = path.Lengths;
 				curveCount -= closed ? 1 : 2;
 				pathLength = lengths[curveCount];
 				if (percentPosition) position *= pathLength;
 				if (percentSpacing) {
-					for (int i = 0; i < spacesCount; i++)
+					for (var i = 0; i < spacesCount; i++)
 						spaces[i] *= pathLength;
 				}
 				world = this.world.Resize(8).Items;
 				for (int i = 0, o = 0, curve = 0; i < spacesCount; i++, o += 3) {
-					float space = spaces[i];
+					var space = spaces[i];
 					position += space;
-					float p = position;
+					var p = position;
 
 					if (closed) {
 						p %= pathLength;
@@ -200,12 +200,12 @@ namespace Spine {
 
 					// Determine curve containing position.
 					for (;; curve++) {
-						float length = lengths[curve];
+						var length = lengths[curve];
 						if (p > length) continue;
 						if (curve == 0)
 							p /= length;
 						else {
-							float prev = lengths[curve - 1];
+							var prev = lengths[curve - 1];
 							p = (p - prev) / (length - prev);
 						}
 						break;
@@ -240,7 +240,7 @@ namespace Spine {
 			}
 
 			// Curve lengths.
-			float[] curves = this.curves.Resize(curveCount).Items;
+			var curves = this.curves.Resize(curveCount).Items;
 			pathLength = 0;
 			float x1 = world[0], y1 = world[1], cx1 = 0, cy1 = 0, cx2 = 0, cy2 = 0, x2 = 0, y2 = 0;
 			float tmpx, tmpy, dddfx, dddfy, ddfx, ddfy, dfx, dfy;
@@ -277,16 +277,16 @@ namespace Spine {
 			}
 			if (percentPosition) position *= pathLength;
 			if (percentSpacing) {
-				for (int i = 0; i < spacesCount; i++)
+				for (var i = 0; i < spacesCount; i++)
 					spaces[i] *= pathLength;
 			}
 
-			float[] segments = this.segments;
+			var segments = this.segments;
 			float curveLength = 0;
 			for (int i = 0, o = 0, curve = 0, segment = 0; i < spacesCount; i++, o += 3) {
-				float space = spaces[i];
+				var space = spaces[i];
 				position += space;
-				float p = position;
+				var p = position;
 
 				if (closed) {
 					p %= pathLength;
@@ -302,12 +302,12 @@ namespace Spine {
 
 				// Determine curve containing position.
 				for (;; curve++) {
-					float length = curves[curve];
+					var length = curves[curve];
 					if (p > length) continue;
 					if (curve == 0)
 						p /= length;
 					else {
-						float prev = curves[curve - 1];
+						var prev = curves[curve - 1];
 						p = (p - prev) / (length - prev);
 					}
 					break;
@@ -316,7 +316,7 @@ namespace Spine {
 				// Curve segment lengths.
 				if (curve != prevCurve) {
 					prevCurve = curve;
-					int ii = curve * 6;
+					var ii = curve * 6;
 					x1 = world[ii];
 					y1 = world[ii + 1];
 					cx1 = world[ii + 2];
@@ -357,12 +357,12 @@ namespace Spine {
 				// Weight by segment length.
 				p *= curveLength;
 				for (;; segment++) {
-					float length = segments[segment];
+					var length = segments[segment];
 					if (p > length) continue;
 					if (segment == 0)
 						p /= length;
 					else {
-						float prev = segments[segment - 1];
+						var prev = segments[segment - 1];
 						p = segment + (p - prev) / (length - prev);
 					}
 					break;

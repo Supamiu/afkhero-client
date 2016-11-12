@@ -1,4 +1,3 @@
-using System;
 using AFKHero.Behaviour;
 using AFKHero.Core.Event;
 using AFKHero.Core.Save;
@@ -16,7 +15,7 @@ namespace AFKHero.Stat
         private IListener listener1;
         private IListener listener2;
 
-        void Awake()
+        private void Awake()
         {
             listener1 = new Listener<GenericGameEvent<GearStat>>((ref GenericGameEvent<GearStat> e) =>
             {
@@ -35,11 +34,11 @@ namespace AFKHero.Stat
             }, 1000);
             amount = 0;
             damageable = GetComponent<Damageable>();
-            EventDispatcher.Instance.Register("attack.compute", listener2);
-            EventDispatcher.Instance.Register("gearstat.defense", listener1);
+            EventDispatcher.Instance.Register(Events.Attack.COMPUTE, listener2);
+            EventDispatcher.Instance.Register(Events.GearStat.DEFENSE, listener1);
         }
 
-        public override void Add(int amount) { }
+        public override void Add(int pAmount) { }
 
         public override void DoLoad(SaveData data) { }
 
@@ -60,11 +59,11 @@ namespace AFKHero.Stat
 
         public void OnDeath()
         {
-            EventDispatcher.Instance.Unregister("gearstat.defense", listener1);
-            EventDispatcher.Instance.Unregister("attack.compute", listener2);
+            EventDispatcher.Instance.Unregister(Events.GearStat.DEFENSE, listener1);
+            EventDispatcher.Instance.Unregister(Events.Attack.COMPUTE, listener2);
 		}
 
-		public override string GetAbbreviation() 
+		public override string GetAbreviation() 
 		{
 			return "Def";
 		}

@@ -22,7 +22,7 @@ namespace AFKHero.UI.Inventory
 
         private Action OnContentChanged;
 
-        void Awake()
+        private void Awake()
         {
             OnContentChanged = () =>
             {
@@ -30,7 +30,7 @@ namespace AFKHero.UI.Inventory
                 {
                     SetCapacity(inventorySystem.slots.Length);
                 }
-                for (int i = 0; i < inventorySystem.capacity - 1; i++)
+                for (var i = 0; i < inventorySystem.capacity - 1; i++)
                 {
                     currentSlots[i].slot = inventorySystem.slots[i];
                     if(currentSlots[i].wearableDetailsPopup == null)
@@ -44,7 +44,7 @@ namespace AFKHero.UI.Inventory
             inventorySystem.OnContentChanged += OnContentChanged;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             OnContentChanged.Invoke();
         }
@@ -55,11 +55,11 @@ namespace AFKHero.UI.Inventory
         /// <param name="capacity"></param>
         private void SetCapacity(int capacity)
         {
-            SlotUI[] newSlots = new SlotUI[capacity];
+            var newSlots = new SlotUI[capacity];
             currentSlots.CopyTo(newSlots, 0);
-            for (int i = 0; i < newSlots.Length; i++)
+            for (var i = 0; i < newSlots.Length; i++)
             {
-                SlotUI newSlot = Instantiate(slotPrefab);
+                var newSlot = Instantiate(slotPrefab);
                 newSlot.transform.SetParent(content.transform);
                 newSlot.transform.localScale = Vector3.one;
                 newSlots[i] = newSlot;

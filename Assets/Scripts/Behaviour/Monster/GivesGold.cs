@@ -17,7 +17,7 @@ namespace AFKHero.Behaviour.Monster
 
 		public void OnDeath ()
 		{
-			EventDispatcher.Instance.Dispatch ("gold", new GenericGameEvent<double> (GetGold()));
+			EventDispatcher.Instance.Dispatch (Events.GOLD_GAIN, new GenericGameEvent<double> (GetGold()));
 		}
 	}
 }

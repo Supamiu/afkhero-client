@@ -36,7 +36,8 @@ namespace Spine.Unity.Modules {
 	public class SkeletonPartsRenderer : MonoBehaviour {
 
 		#region Properties
-		ISubmeshSetMeshGenerator meshGenerator;
+
+	    private ISubmeshSetMeshGenerator meshGenerator;
 		public ISubmeshSetMeshGenerator MeshGenerator {
 			get {
 				LazyIntialize();
@@ -44,7 +45,7 @@ namespace Spine.Unity.Modules {
 			}
 		}
 
-		MeshRenderer meshRenderer;
+	    private MeshRenderer meshRenderer;
 		public MeshRenderer MeshRenderer {
 			get {
 				LazyIntialize();
@@ -52,7 +53,7 @@ namespace Spine.Unity.Modules {
 			}
 		}
 
-		MeshFilter meshFilter;
+	    private MeshFilter meshFilter;
 		public MeshFilter MeshFilter {
 			get {
 				LazyIntialize();
@@ -61,7 +62,7 @@ namespace Spine.Unity.Modules {
 		}
 		#endregion
 
-		void LazyIntialize () {
+	    private void LazyIntialize () {
 			if (meshGenerator != null) return;
 			meshGenerator = new ArraysSubmeshSetMeshGenerator();
 			meshFilter = GetComponent<MeshFilter>();
@@ -75,7 +76,7 @@ namespace Spine.Unity.Modules {
 
 		public void RenderParts (ExposedList<SubmeshInstruction> instructions, int startSubmesh, int endSubmesh) {
 			LazyIntialize();
-			MeshAndMaterials m = meshGenerator.GenerateMesh(instructions, startSubmesh, endSubmesh);
+			var m = meshGenerator.GenerateMesh(instructions, startSubmesh, endSubmesh);
 			meshFilter.sharedMesh = m.mesh;
 			meshRenderer.sharedMaterials = m.materials;
 		}

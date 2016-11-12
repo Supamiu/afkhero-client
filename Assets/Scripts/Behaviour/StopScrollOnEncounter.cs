@@ -7,22 +7,22 @@ namespace AFKHero.Behaviour
     [RequireComponent (typeof(BoxCollider2D))]
 	public class StopScrollOnEncounter : MonoBehaviour
 	{
-		void OnCollisionEnter2D (Collision2D coll)
+	    private void OnCollisionEnter2D (Collision2D coll)
 		{
-			EventDispatcher.Instance.Dispatch ("movement.enabled", new GenericGameEvent<bool> (false));
-			Damageable target = coll.gameObject.GetComponent<Damageable> ();
+			EventDispatcher.Instance.Dispatch (Events.Movement.ENABLED, new GenericGameEvent<bool> (false));
+			var target = coll.gameObject.GetComponent<Damageable> ();
 			if (target != null) {
 				target.onDeath += OnTargetDeath;
 			}
 		}
 
-		void OnCollisionExit2D (Collision2D coll)
+	    private void OnCollisionExit2D (Collision2D coll)
 		{
-			EventDispatcher.Instance.Dispatch ("movement.enabled", new GenericGameEvent<bool> (true));
+			EventDispatcher.Instance.Dispatch (Events.Movement.ENABLED, new GenericGameEvent<bool> (true));
 		}
 
 		public void OnTargetDeath(){
-			EventDispatcher.Instance.Dispatch ("movement.enabled", new GenericGameEvent<bool> (true));
+			EventDispatcher.Instance.Dispatch (Events.Movement.ENABLED, new GenericGameEvent<bool> (true));
 		}
 	}
 }

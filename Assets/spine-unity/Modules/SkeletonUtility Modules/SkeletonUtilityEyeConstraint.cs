@@ -30,7 +30,6 @@
  *****************************************************************************/
 
 using UnityEngine;
-using System.Collections;
 
 namespace Spine.Unity.Modules {
 	public class SkeletonUtilityEyeConstraint : SkeletonUtilityConstraint {
@@ -39,8 +38,8 @@ namespace Spine.Unity.Modules {
 		public Transform target;
 		public Vector3 targetPosition;
 		public float speed = 10;
-		Vector3[] origins;
-		Vector3 centerPoint;
+	    private Vector3[] origins;
+	    private Vector3 centerPoint;
 
 		protected override void OnEnable () {
 			if (!Application.isPlaying)
@@ -48,9 +47,9 @@ namespace Spine.Unity.Modules {
 
 			base.OnEnable();
 
-			Bounds centerBounds = new Bounds(eyes[0].localPosition, Vector3.zero);
+			var centerBounds = new Bounds(eyes[0].localPosition, Vector3.zero);
 			origins = new Vector3[eyes.Length];
-			for (int i = 0; i < eyes.Length; i++) {
+			for (var i = 0; i < eyes.Length; i++) {
 				origins[i] = eyes[i].localPosition;
 				centerBounds.Encapsulate(origins[i]);
 			}
@@ -70,15 +69,15 @@ namespace Spine.Unity.Modules {
 			if (target != null)
 				targetPosition = target.position;
 
-			Vector3 goal = targetPosition;
+			var goal = targetPosition;
 
-			Vector3 center = transform.TransformPoint(centerPoint);
-			Vector3 dir = goal - center;
+			var center = transform.TransformPoint(centerPoint);
+			var dir = goal - center;
 
 			if (dir.magnitude > 1)
 				dir.Normalize();
 
-			for (int i = 0; i < eyes.Length; i++) {
+			for (var i = 0; i < eyes.Length; i++) {
 				center = transform.TransformPoint(origins[i]);
 				eyes[i].position = Vector3.MoveTowards(eyes[i].position, center + (dir * radius), speed * Time.deltaTime);
 			}

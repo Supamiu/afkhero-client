@@ -2,8 +2,6 @@ using UnityEngine;
 using AFKHero.Core.Database;
 using System;
 using System.IO;
-using AFKHero.Model;
-using System.Collections.Generic;
 using AFKHero.Core.Tools;
 
 namespace AFKHero.Core
@@ -36,7 +34,7 @@ namespace AFKHero.Core
             return consumableDB;
         }
 
-        void Awake()
+        private void Awake()
         {
             worldDB = Load<WorldDatabase>(WORLD_DATABASE_PATH);
             wearableDB = Load<WearableDatabase>(WEARABLE_DATABASE_PATH);
@@ -45,9 +43,9 @@ namespace AFKHero.Core
 
         public static T Load<T>(string path) where T : UnityEngine.Object
         {
-            for(int trys = 0; trys < 10; trys++)
+            for(var trys = 0; trys < 10; trys++)
             {
-                T data = Resources.Load<T>(path);
+                var data = Resources.Load<T>(path);
                 if(data == null && File.Exists(path + ".asset"))
                 {
                     continue;

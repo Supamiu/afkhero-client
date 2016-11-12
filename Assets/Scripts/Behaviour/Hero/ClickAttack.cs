@@ -5,7 +5,6 @@ using AFKHero.EventData;
 using AFKHero.Stat;
 using AFKHero.Tools;
 using AFKHero.Core;
-using System.Collections.Generic;
 
 
 namespace AFKHero.Behaviour.Hero
@@ -20,37 +19,38 @@ namespace AFKHero.Behaviour.Hero
         public int maxTarget;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             cam = Camera.main;
             planes = GeometryUtility.CalculateFrustumPlanes(cam);
             attacker = GetComponent<Agressive>();
             maxTarget = 1;
         }
-        
+
         public void AttackEnnemy()
         {
-            List<Spawnable> spawnables = spawnEngine.getSpawneds();
-            Damageable target;
-            int targetLocked = 0;
+            var spawnables = spawnEngine.getSpawneds();
+            var targetLocked = 0;
 
-            foreach (Spawnable spawnable in spawnables)
+            foreach (var spawnable in spawnables)
             {
                 // Si l'ennemi est visible
-                if (GeometryUtility.TestPlanesAABB(planes, spawnable.gameObject.GetComponent<BoxCollider2D>().bounds))
+                if (!GeometryUtility.TestPlanesAABB(planes, spawnable.gameObject.GetComponent<BoxCollider2D>().bounds))
+                    continue;
+                var target = spawnable.GetComponent<Damageable>();
+                var damage =
+                ((GenericGameEvent<Attack>)
+                    EventDispatcher.Instance.Dispatch(Events.Attack.COMPUTE,
+                        new GenericGameEvent<Attack>(new Attack(attacker, target)))).Data.getDamage();
+                var clickDamage = RatioEngine.Instance.GetClickDamage(damage.damage, GetComponent<Intelligence>().Value);
+
+                damage = new Damage(attacker, target, clickDamage, damage.critical, true);
+                EventDispatcher.Instance.Dispatch(Events.Attack.DAMAGE, new GenericGameEvent<Damage>(damage));
+
+                targetLocked++;
+                if (targetLocked >= maxTarget)
                 {
-                    target = spawnable.GetComponent<Damageable>();
-                    Damage damage = ((GenericGameEvent<Attack>)EventDispatcher.Instance.Dispatch("attack.compute", new GenericGameEvent<Attack>(new Attack(attacker, target)))).Data.getDamage();
-                    double clickDamage = RatioEngine.Instance.GetClickDamage(damage.damage, GetComponent<Intelligence>().Value);
-
-                    damage = new Damage(attacker, target, clickDamage, damage.critical, true);
-                    EventDispatcher.Instance.Dispatch("attack.damage", new GenericGameEvent<Damage>(damage));
-
-                    targetLocked++;
-                    if (targetLocked >= maxTarget)
-                    {
-                        break;
-                    }
+                    break;
                 }
             }
         }

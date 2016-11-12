@@ -1,5 +1,4 @@
-﻿using System;
-using AFKHero.Core.Save;
+﻿using AFKHero.Core.Save;
 
 namespace AFKHero.Stat
 {
@@ -9,9 +8,9 @@ namespace AFKHero.Stat
     public class Luck : AbstractStat
 	{
 
-		public override void Add (int amount)
+		public override void Add (int pAmount)
 		{
-			this.amount += amount;
+			amount += pAmount;
 		}
 
 		public override SaveData Save(SaveData data){
@@ -33,7 +32,7 @@ namespace AFKHero.Stat
             return StatType.PRIMARY;
 		}
 
-		public override string GetAbbreviation() 
+		public override string GetAbreviation() 
 		{
 			return "Lck";
 		}

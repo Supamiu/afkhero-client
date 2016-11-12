@@ -32,7 +32,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 #if WINDOWS_STOREAPP
 using System.Threading.Tasks;
@@ -41,9 +40,9 @@ using Windows.Storage;
 
 namespace Spine {
 	public class Atlas {
-		List<AtlasPage> pages = new List<AtlasPage>();
-		List<AtlasRegion> regions = new List<AtlasRegion>();
-		TextureLoader textureLoader;
+	    private List<AtlasPage> pages = new List<AtlasPage>();
+	    private List<AtlasRegion> regions = new List<AtlasRegion>();
+	    private TextureLoader textureLoader;
 
 		#if !(UNITY_5 || UNITY_4 || UNITY_WSA || UNITY_WP8 || UNITY_WP8_1) // !UNITY
 		#if WINDOWS_STOREAPP
@@ -99,10 +98,10 @@ namespace Spine {
 			if (textureLoader == null) throw new ArgumentNullException("textureLoader cannot be null.");
 			this.textureLoader = textureLoader;
 
-			String[] tuple = new String[4];
+			var tuple = new String[4];
 			AtlasPage page = null;
 			while (true) {
-				String line = reader.ReadLine();
+				var line = reader.ReadLine();
 				if (line == null) break;
 				if (line.Trim().Length == 0)
 					page = null;
@@ -121,7 +120,7 @@ namespace Spine {
 					page.minFilter = (TextureFilter)Enum.Parse(typeof(TextureFilter), tuple[0], false);
 					page.magFilter = (TextureFilter)Enum.Parse(typeof(TextureFilter), tuple[1], false);
 
-					String direction = ReadValue(reader);
+					var direction = ReadValue(reader);
 					page.uWrap = TextureWrap.ClampToEdge;
 					page.vWrap = TextureWrap.ClampToEdge;
 					if (direction == "x")
@@ -136,19 +135,19 @@ namespace Spine {
 					pages.Add(page);
 
 				} else {
-					AtlasRegion region = new AtlasRegion();
+					var region = new AtlasRegion();
 					region.name = line;
 					region.page = page;
 
 					region.rotate = Boolean.Parse(ReadValue(reader));
 
 					ReadTuple(reader, tuple);
-					int x = int.Parse(tuple[0]);
-					int y = int.Parse(tuple[1]);
+					var x = int.Parse(tuple[0]);
+					var y = int.Parse(tuple[1]);
 
 					ReadTuple(reader, tuple);
-					int width = int.Parse(tuple[0]);
-					int height = int.Parse(tuple[1]);
+					var width = int.Parse(tuple[0]);
+					var height = int.Parse(tuple[1]);
 
 					region.u = x / (float)page.width;
 					region.v = y / (float)page.height;
@@ -190,21 +189,21 @@ namespace Spine {
 			}
 		}
 
-		static String ReadValue (TextReader reader) {
-			String line = reader.ReadLine();
-			int colon = line.IndexOf(':');
+	    private static String ReadValue (TextReader reader) {
+			var line = reader.ReadLine();
+			var colon = line.IndexOf(':');
 			if (colon == -1) throw new Exception("Invalid line: " + line);
 			return line.Substring(colon + 1).Trim();
 		}
 
 		/// <summary>Returns the number of tuple values read (1, 2 or 4).</summary>
-		static int ReadTuple (TextReader reader, String[] tuple) {
-			String line = reader.ReadLine();
-			int colon = line.IndexOf(':');
+		private static int ReadTuple (TextReader reader, String[] tuple) {
+			var line = reader.ReadLine();
+			var colon = line.IndexOf(':');
 			if (colon == -1) throw new Exception("Invalid line: " + line);
 			int i = 0, lastMatch = colon + 1;
 			for (; i < 3; i++) {
-				int comma = line.IndexOf(',', lastMatch);
+				var comma = line.IndexOf(',', lastMatch);
 				if (comma == -1) break;
 				tuple[i] = line.Substring(lastMatch, comma - lastMatch).Trim();
 				lastMatch = comma + 1;
@@ -215,7 +214,7 @@ namespace Spine {
 
 		public void FlipV () {
 			for (int i = 0, n = regions.Count; i < n; i++) {
-				AtlasRegion region = regions[i];
+				var region = regions[i];
 				region.v = 1 - region.v;
 				region.v2 = 1 - region.v2;
 			}

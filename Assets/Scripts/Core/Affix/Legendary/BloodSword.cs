@@ -16,20 +16,19 @@ namespace AFKHero.Core.Affix.Legendary
 
         public override string GetEventName()
         {
-            return "attack.damage";
+            return Events.Attack.DAMAGE;
         }
 
         public override IListener GetListener()
         {
             return new Listener<GenericGameEvent<Damage>>((ref GenericGameEvent<Damage> e) =>
             {
-                if (e.Data.attacker.gameObject == gameObject && e.Data.target.gameObject != gameObject)
-                {
-                    double damage = Math.Round(gameObject.GetComponent<Vitality>().Value / 100f * value);
-                    e.Data.damage += damage;
-                    EventDispatcher.Instance.Dispatch("attack.damage",
-                        new GenericGameEvent<Damage>(new Damage(gameObject.GetComponent<Agressive>(), gameObject.GetComponent<Damageable>(), damage, false, true)));
-                }
+                if (e.Data.attacker.gameObject != gameObject || e.Data.target.gameObject == gameObject) return;
+                var damage = Math.Round(gameObject.GetComponent<Vitality>().Value / 100f * value);
+                e.Data.damage += damage;
+                EventDispatcher.Instance.Dispatch(Events.Attack.DAMAGE,
+                    new GenericGameEvent<Damage>(new Damage(gameObject.GetComponent<Agressive>(),
+                        gameObject.GetComponent<Damageable>(), damage, false, true)));
             }, 1500);
         }
     }

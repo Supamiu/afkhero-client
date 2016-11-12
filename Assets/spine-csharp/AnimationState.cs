@@ -30,7 +30,6 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Spine {
@@ -62,13 +61,13 @@ namespace Spine {
 
 		public void Update (float delta) {
 			delta *= timeScale;
-			for (int i = 0; i < tracks.Count; i++) {
-				TrackEntry current = tracks.Items[i];
+			for (var i = 0; i < tracks.Count; i++) {
+				var current = tracks.Items[i];
 				if (current == null) continue;
 
-				float trackDelta = delta * current.timeScale;
-				float time = current.time + trackDelta;
-				float endTime = current.endTime;
+				var trackDelta = delta * current.timeScale;
+				var time = current.time + trackDelta;
+				var endTime = current.endTime;
 
 				current.time = time;
 				if (current.previous != null) {
@@ -78,12 +77,12 @@ namespace Spine {
 
 				// Check if completed the animation or a loop iteration.
 				if (current.loop ? (current.lastTime % endTime > time % endTime) : (current.lastTime < endTime && time >= endTime)) {
-					int count = (int)(time / endTime);
+					var count = (int)(time / endTime);
 					current.OnComplete(this, i, count);
 					if (Complete != null) Complete(this, i, count);
 				}
 
-				TrackEntry next = current.next;
+				var next = current.next;
 				if (next != null) {
 					next.time = current.lastTime - next.delay;
 					if (next.time >= 0) SetCurrent(i, next);
@@ -95,33 +94,33 @@ namespace Spine {
 		}
 
 		public void Apply (Skeleton skeleton) {
-			ExposedList<Event> events = this.events;
+			var events = this.events;
 
-			for (int i = 0; i < tracks.Count; i++) {
-				TrackEntry current = tracks.Items[i];
+			for (var i = 0; i < tracks.Count; i++) {
+				var current = tracks.Items[i];
 				if (current == null) continue;
 
 				events.Clear();
 
-				float time = current.time;
-				bool loop = current.loop;
+				var time = current.time;
+				var loop = current.loop;
 				if (!loop && time > current.endTime) time = current.endTime;
 
-				TrackEntry previous = current.previous;
+				var previous = current.previous;
 				if (previous == null) {
 					if (current.mix == 1)
 						current.animation.Apply(skeleton, current.lastTime, time, loop, events);
 					else
 						current.animation.Mix(skeleton, current.lastTime, time, loop, events, current.mix);
 				} else {
-					float previousTime = previous.time;
+					var previousTime = previous.time;
 					if (!previous.loop && previousTime > previous.endTime) previousTime = previous.endTime;
 					previous.animation.Apply(skeleton, previous.lastTime, previousTime, previous.loop, null);
 					// Remove the line above, and uncomment the line below, to allow previous animations to fire events during mixing.
 					//previous.animation.Apply(skeleton, previous.lastTime, previousTime, previous.loop, events);
 					previous.lastTime = previousTime;
 
-					float alpha = current.mixTime / current.mixDuration * current.mix;
+					var alpha = current.mixTime / current.mixDuration * current.mix;
 					if (alpha >= 1) {
 						alpha = 1;
 						current.previous = null;
@@ -130,7 +129,7 @@ namespace Spine {
 				}
 
 				for (int ii = 0, nn = events.Count; ii < nn; ii++) {
-					Event e = events.Items[ii];
+					var e = events.Items[ii];
 					current.OnEvent(this, i, e);
 					if (Event != null) Event(this, i, e);
 				}
@@ -147,7 +146,7 @@ namespace Spine {
 
 		public void ClearTrack (int trackIndex) {
 			if (trackIndex >= tracks.Count) return;
-			TrackEntry current = tracks.Items[trackIndex];
+			var current = tracks.Items[trackIndex];
 			if (current == null) return;
 
 			current.OnEnd(this, trackIndex);
@@ -164,9 +163,9 @@ namespace Spine {
 		}
 
 		private void SetCurrent (int index, TrackEntry entry) {
-			TrackEntry current = ExpandToIndex(index);
+			var current = ExpandToIndex(index);
 			if (current != null) {
-				TrackEntry previous = current.previous;
+				var previous = current.previous;
 				current.previous = null;
 
 				current.OnEnd(this, index);
@@ -191,7 +190,7 @@ namespace Spine {
 
 		/// <seealso cref="SetAnimation(int, Animation, bool)" />
 		public TrackEntry SetAnimation (int trackIndex, String animationName, bool loop) {
-			Animation animation = data.skeletonData.FindAnimation(animationName);
+			var animation = data.skeletonData.FindAnimation(animationName);
 			if (animation == null) throw new ArgumentException("Animation not found: " + animationName, "animationName");
 			return SetAnimation(trackIndex, animation, loop);
 		}
@@ -199,7 +198,7 @@ namespace Spine {
 		/// <summary>Set the current animation. Any queued animations are cleared.</summary>
 		public TrackEntry SetAnimation (int trackIndex, Animation animation, bool loop) {
 			if (animation == null) throw new ArgumentNullException("animation", "animation cannot be null.");
-			TrackEntry entry = new TrackEntry();
+			var entry = new TrackEntry();
 			entry.animation = animation;
 			entry.loop = loop;
 			entry.time = 0;
@@ -210,7 +209,7 @@ namespace Spine {
 
 		/// <seealso cref="AddAnimation(int, Animation, bool, float)" />
 		public TrackEntry AddAnimation (int trackIndex, String animationName, bool loop, float delay) {
-			Animation animation = data.skeletonData.FindAnimation(animationName);
+			var animation = data.skeletonData.FindAnimation(animationName);
 			if (animation == null) throw new ArgumentException("Animation not found: " + animationName, "animationName");
 			return AddAnimation(trackIndex, animation, loop, delay);
 		}
@@ -219,13 +218,13 @@ namespace Spine {
 		/// <param name="delay">May be &lt;= 0 to use duration of previous animation minus any mix duration plus the negative delay.</param>
 		public TrackEntry AddAnimation (int trackIndex, Animation animation, bool loop, float delay) {
 			if (animation == null) throw new ArgumentNullException("animation", "animation cannot be null.");
-			TrackEntry entry = new TrackEntry();
+			var entry = new TrackEntry();
 			entry.animation = animation;
 			entry.loop = loop;
 			entry.time = 0;
 			entry.endTime = animation.Duration;
 
-			TrackEntry last = ExpandToIndex(trackIndex);
+			var last = ExpandToIndex(trackIndex);
 			if (last != null) {
 				while (last.next != null)
 					last = last.next;
@@ -251,9 +250,9 @@ namespace Spine {
 		}
 
 		override public String ToString () {
-			StringBuilder buffer = new StringBuilder();
+			var buffer = new StringBuilder();
 			for (int i = 0, n = tracks.Count; i < n; i++) {
-				TrackEntry entry = tracks.Items[i];
+				var entry = tracks.Items[i];
 				if (entry == null) continue;
 				if (buffer.Length > 0) buffer.Append(", ");
 				buffer.Append(entry.ToString());

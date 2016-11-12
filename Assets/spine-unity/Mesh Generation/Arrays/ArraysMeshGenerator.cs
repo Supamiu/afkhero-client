@@ -55,12 +55,12 @@ namespace Spine.Unity.MeshGeneration {
 		public void TryAddNormalsTo (Mesh mesh, int targetVertexCount) {
 			#if SPINE_OPTIONAL_NORMALS
 			if (addNormals) {
-				bool verticesWasResized = this.meshNormals == null || meshNormals.Length < targetVertexCount;
+				var verticesWasResized = this.meshNormals == null || meshNormals.Length < targetVertexCount;
 				if (verticesWasResized) {
 					this.meshNormals = new Vector3[targetVertexCount];
-					Vector3 fixedNormal = new Vector3(0, 0, -1f);
-					Vector3[] normals = this.meshNormals;
-					for (int i = 0; i < targetVertexCount; i++)
+					var fixedNormal = new Vector3(0, 0, -1f);
+					var normals = this.meshNormals;
+					for (var i = 0; i < targetVertexCount; i++)
 						normals[i] = fixedNormal;
 				}
 
@@ -72,8 +72,8 @@ namespace Spine.Unity.MeshGeneration {
 		/// <summary>Ensures the sizes of the passed array references. If they are not the correct size, a new array will be assigned to the references.</summary>
 		/// <returns><c>true</c>, if a resize occurred, <c>false</c> otherwise.</returns>
 		public static bool EnsureSize (int targetVertexCount, ref Vector3[] vertices, ref Vector2[] uvs, ref Color32[] colors) {
-			Vector3[] verts = vertices;
-			bool verticesWasResized = verts == null || targetVertexCount > verts.Length;
+			var verts = vertices;
+			var verticesWasResized = verts == null || targetVertexCount > verts.Length;
 			if (verticesWasResized) {
 				// Not enough space, increase size.
 				vertices = new Vector3[targetVertexCount];
@@ -81,7 +81,7 @@ namespace Spine.Unity.MeshGeneration {
 				uvs = new Vector2[targetVertexCount];
 			} else {
 				// Too many vertices, zero the extra.
-				Vector3 zero = Vector3.zero;
+				var zero = Vector3.zero;
 				for (int i = targetVertexCount, n = verts.Length; i < n; i++)
 					verts[i] = zero;
 			}
@@ -89,10 +89,10 @@ namespace Spine.Unity.MeshGeneration {
 		}
 
 		public static bool EnsureTriangleBuffersSize (ExposedList<SubmeshTriangleBuffer> submeshBuffers, int targetSubmeshCount, SubmeshInstruction[] instructionItems) {
-			bool submeshBuffersWasResized = submeshBuffers.Count < targetSubmeshCount;
+			var submeshBuffersWasResized = submeshBuffers.Count < targetSubmeshCount;
 			if (submeshBuffersWasResized) {
 				submeshBuffers.GrowIfNeeded(targetSubmeshCount - submeshBuffers.Count);
-				for (int i = submeshBuffers.Count; submeshBuffers.Count < targetSubmeshCount; i++)
+				for (var i = submeshBuffers.Count; submeshBuffers.Count < targetSubmeshCount; i++)
 					submeshBuffers.Add(new SubmeshTriangleBuffer(instructionItems[i].triangleCount));
 			}
 			return submeshBuffersWasResized;
@@ -117,16 +117,16 @@ namespace Spine.Unity.MeshGeneration {
 			var skeletonDrawOrderItems = skeleton.DrawOrder.Items;
 			float a = skeleton.a * 255, r = skeleton.r, g = skeleton.g, b = skeleton.b;
 
-			int vi = vertexIndex;
+			var vi = vertexIndex;
 			var tempVerts = tempVertBuffer;
-			Vector3 bmin = boundsMin;
-			Vector3 bmax = boundsMax;
+			var bmin = boundsMin;
+			var bmax = boundsMax;
 
 			// drawOrder[endSlot] is excluded
-			for (int slotIndex = startSlot; slotIndex < endSlot; slotIndex++) {
+			for (var slotIndex = startSlot; slotIndex < endSlot; slotIndex++) {
 				var slot = skeletonDrawOrderItems[slotIndex];
 				var attachment = slot.attachment;
-				float z = slotIndex * zSpacing;
+				var z = slotIndex * zSpacing;
 
 				var regionAttachment = attachment as RegionAttachment;
 				if (regionAttachment != null) {
@@ -156,7 +156,7 @@ namespace Spine.Unity.MeshGeneration {
 
 					colors[vi] = color; colors[vi + 1] = color; colors[vi + 2] = color; colors[vi + 3] = color;
 
-					float[] regionUVs = regionAttachment.uvs;
+					var regionUVs = regionAttachment.uvs;
 					uvs[vi].x = regionUVs[RegionAttachment.X1]; uvs[vi].y = regionUVs[RegionAttachment.Y1];
 					uvs[vi + 1].x = regionUVs[RegionAttachment.X4]; uvs[vi + 1].y = regionUVs[RegionAttachment.Y4];
 					uvs[vi + 2].x = regionUVs[RegionAttachment.X2]; uvs[vi + 2].y = regionUVs[RegionAttachment.Y2];
@@ -186,7 +186,7 @@ namespace Spine.Unity.MeshGeneration {
 				} else if (renderMeshes) {
 					var meshAttachment = attachment as MeshAttachment;
 					if (meshAttachment != null) {
-						int meshVertexCount = meshAttachment.worldVerticesLength;
+						var meshVertexCount = meshAttachment.worldVerticesLength;
 						if (tempVerts.Length < meshVertexCount) tempVerts = new float[meshVertexCount];
 						meshAttachment.ComputeWorldVertices(slot, tempVerts);
 
@@ -203,8 +203,8 @@ namespace Spine.Unity.MeshGeneration {
 							color.b = (byte)(b * slot.b * meshAttachment.b * 255);
 						}
 
-						float[] attachmentUVs = meshAttachment.uvs;
-						for (int iii = 0; iii < meshVertexCount; iii += 2) {
+						var attachmentUVs = meshAttachment.uvs;
+						for (var iii = 0; iii < meshVertexCount; iii += 2) {
 							float x = tempVerts[iii], y = tempVerts[iii + 1];
 							verts[vi].x = x; verts[vi].y = y; verts[vi].z = z;
 							colors[vi] = color; uvs[vi].x = attachmentUVs[iii]; uvs[vi].y = attachmentUVs[iii + 1];
@@ -238,12 +238,12 @@ namespace Spine.Unity.MeshGeneration {
 		/// <param name="triangleBuffer">The triangle buffer array to be filled. This reference will be replaced in case the triangle values don't fit.</param>
 		/// <param name="isLastSubmesh">If set to <c>true</c>, the triangle buffer is allowed to be larger than needed.</param>
 		public static void FillTriangles (ref int[] triangleBuffer, Skeleton skeleton, int triangleCount, int firstVertex, int startSlot, int endSlot, bool isLastSubmesh) {
-			int trianglesCapacity = triangleBuffer.Length;
-			int[] tris = triangleBuffer;
+			var trianglesCapacity = triangleBuffer.Length;
+			var tris = triangleBuffer;
 
 			if (isLastSubmesh) {
 				if (trianglesCapacity > triangleCount) {
-					for (int i = triangleCount; i < trianglesCapacity; i++)
+					for (var i = triangleCount; i < trianglesCapacity; i++)
 						tris[i] = 0;
 				} else if (trianglesCapacity < triangleCount) {
 					triangleBuffer = tris = new int[triangleCount];
@@ -272,7 +272,7 @@ namespace Spine.Unity.MeshGeneration {
 				// MeshAttachment
 				var meshAttachment = attachment as MeshAttachment;
 				if (meshAttachment != null) {
-					int[] attachmentTriangles = meshAttachment.triangles;
+					var attachmentTriangles = meshAttachment.triangles;
 					for (int ii = 0, nn = attachmentTriangles.Length; ii < nn; ii++, ti++)
 						tris[ti] = afv + attachmentTriangles[ii];
 
@@ -283,10 +283,10 @@ namespace Spine.Unity.MeshGeneration {
 		}
 
 		public static void FillTrianglesQuads (ref int[] triangleBuffer, ref int storedTriangleCount, ref int storedFirstVertex, int instructionsFirstVertex, int instructionTriangleCount, bool isLastSubmesh) {
-			int trianglesCapacity = triangleBuffer.Length;
+			var trianglesCapacity = triangleBuffer.Length;
 
 			if (isLastSubmesh && trianglesCapacity > instructionTriangleCount) {
-				for (int i = instructionTriangleCount; i < trianglesCapacity; i++)
+				for (var i = instructionTriangleCount; i < trianglesCapacity; i++)
 					triangleBuffer[i] = 0;
 				storedTriangleCount = instructionTriangleCount;
 			} else if (trianglesCapacity != instructionTriangleCount) {
@@ -295,12 +295,12 @@ namespace Spine.Unity.MeshGeneration {
 			}
 
 			// Use stored quad triangles if possible.
-			int[] tris = triangleBuffer;
+			var tris = triangleBuffer;
 			if (storedFirstVertex != instructionsFirstVertex || storedTriangleCount < instructionTriangleCount) { //|| storedTriangleCount == 0
 				storedTriangleCount = instructionTriangleCount;
 				storedFirstVertex = instructionsFirstVertex;
-				int afv = instructionsFirstVertex; // attachment first vertex
-				for (int ti = 0; ti < instructionTriangleCount; ti += 6, afv += 4) {
+				var afv = instructionsFirstVertex; // attachment first vertex
+				for (var ti = 0; ti < instructionTriangleCount; ti += 6, afv += 4) {
 					tris[ti] = afv;
 					tris[ti + 1] = afv + 2;
 					tris[ti + 2] = afv + 1;
@@ -313,8 +313,8 @@ namespace Spine.Unity.MeshGeneration {
 
 		/// <summary>Creates a UnityEngine.Bounds struct from minimum and maximum value vectors.</summary>
 		public static Bounds ToBounds (Vector3 boundsMin, Vector3 boundsMax) {
-			Vector3 size = (boundsMax - boundsMin);
-			Vector3 center = boundsMin + size * 0.5f;
+			var size = (boundsMax - boundsMin);
+			var center = boundsMin + size * 0.5f;
 			return new Bounds(center, size);
 		}
 
@@ -343,31 +343,31 @@ namespace Spine.Unity.MeshGeneration {
 		public static void SolveTangents2DTriangles (Vector2[] tempTanBuffer, int[] triangles, int triangleCount, Vector3[] vertices, Vector2[] uvs, int vertexCount) {
 			Vector2 sdir;
 			Vector2 tdir;
-			for (int t = 0; t < triangleCount; t += 3) {
-				int i1 = triangles[t + 0];
-				int i2 = triangles[t + 1];
-				int i3 = triangles[t + 2];
+			for (var t = 0; t < triangleCount; t += 3) {
+				var i1 = triangles[t + 0];
+				var i2 = triangles[t + 1];
+				var i3 = triangles[t + 2];
 
-				Vector3 v1 = vertices[i1];
-				Vector3 v2 = vertices[i2];
-				Vector3 v3 = vertices[i3];
+				var v1 = vertices[i1];
+				var v2 = vertices[i2];
+				var v3 = vertices[i3];
 
-				Vector2 w1 = uvs[i1];
-				Vector2 w2 = uvs[i2];
-				Vector2 w3 = uvs[i3];
+				var w1 = uvs[i1];
+				var w2 = uvs[i2];
+				var w3 = uvs[i3];
 
-				float x1 = v2.x - v1.x;
-				float x2 = v3.x - v1.x;
-				float y1 = v2.y - v1.y;
-				float y2 = v3.y - v1.y;
+				var x1 = v2.x - v1.x;
+				var x2 = v3.x - v1.x;
+				var y1 = v2.y - v1.y;
+				var y2 = v3.y - v1.y;
 
-				float s1 = w2.x - w1.x;
-				float s2 = w3.x - w1.x;
-				float t1 = w2.y - w1.y;
-				float t2 = w3.y - w1.y;
+				var s1 = w2.x - w1.x;
+				var s2 = w3.x - w1.x;
+				var t1 = w2.y - w1.y;
+				var t2 = w3.y - w1.y;
 
-				float div = s1 * t2 - s2 * t1;
-				float r = (div == 0f) ? 0f : 1f / div;
+				var div = s1 * t2 - s2 * t1;
+				var r = (div == 0f) ? 0f : 1f / div;
 
 				sdir.x = (t2 * x1 - t1 * x2) * r;
 				sdir.y = (t2 * y1 - t1 * y2) * r;
@@ -387,18 +387,18 @@ namespace Spine.Unity.MeshGeneration {
 
 			Vector4 tangent;
 			tangent.z = 0;
-			for (int i = 0; i < vertexCount; ++i) {
-				Vector2 t = tempTanBuffer[i]; 
+			for (var i = 0; i < vertexCount; ++i) {
+				var t = tempTanBuffer[i]; 
 
 				// t.Normalize() (aggressively inlined). Even better if offloaded to GPU via vertex shader.
-				float magnitude = Mathf.Sqrt(t.x * t.x + t.y * t.y);
+				var magnitude = Mathf.Sqrt(t.x * t.x + t.y * t.y);
 				if (magnitude > 1E-05) {
-					float reciprocalMagnitude = 1f/magnitude;
+					var reciprocalMagnitude = 1f/magnitude;
 					t.x *= reciprocalMagnitude;
 					t.y *= reciprocalMagnitude;
 				}
 
-				Vector2 t2 = tempTanBuffer[vertexCount + i];
+				var t2 = tempTanBuffer[vertexCount + i];
 				tangent.x = t.x;
 				tangent.y = t.y;
 				//tangent.z = 0;

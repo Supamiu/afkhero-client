@@ -8,7 +8,7 @@ namespace AFKHero.UI.CombatText
 		public static readonly CombatTextType HEAL = new CombatTextType (Color.green);
 		public static readonly CombatTextType MISS = new CombatTextType (Color.grey);
 
-		Color color;
+	    private readonly Color color;
 
 		public CombatTextType (Color color)
 		{

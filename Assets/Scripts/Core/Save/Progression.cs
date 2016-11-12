@@ -2,6 +2,7 @@ using AFKHero.Core.Tools;
 using AFKHero.Model;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace AFKHero.Core.Save
@@ -13,27 +14,15 @@ namespace AFKHero.Core.Save
 
         protected Progression() { }
 
-        void Awake()
+        private void Awake()
         {
-            //Lazy loading acc�l�r�.
+            //Lazy loading accéléré.
             Instance.IsStageDone(new Stage(), 0);
         }
 
         public bool IsStageDone(Stage stage, float distance)
         {
-            if(stageProgression == null)
-            {
-                return false;
-            }
-            foreach(StageProgression s in stageProgression)
-            {
-                if (Mathf.RoundToInt(distance) / 100 == Mathf.RoundToInt(s.distance) / 100 && 
-                    s.stage.boss.name == s.stage.boss.name)
-                {
-                    return true;
-                }
-            }
-            return false;            
+            return stageProgression != null && stageProgression.Any(s => Mathf.RoundToInt(distance) / 100 == Mathf.RoundToInt(s.distance) / 100 && stage.boss.name == s.stage.boss.name);
         }
         
         public void StageDone(Stage stage, float distance)

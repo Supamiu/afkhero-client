@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Spine.Unity;
 
 public class RaggedySpineboy : MonoBehaviour {
 
@@ -8,16 +7,16 @@ public class RaggedySpineboy : MonoBehaviour {
 	public float restoreDuration = 0.5f;
 	public Vector2 launchVelocity = new Vector2(50,100);
 
-	Spine.Unity.Modules.SkeletonRagdoll2D ragdoll;
-	Collider2D naturalCollider;
+    private Spine.Unity.Modules.SkeletonRagdoll2D ragdoll;
+    private Collider2D naturalCollider;
 
-	void Start () {
+    private void Start () {
 		
 		ragdoll = GetComponent<Spine.Unity.Modules.SkeletonRagdoll2D>();
 		naturalCollider = GetComponent<Collider2D>();
 	}
 
-	void AddRigidbody () {
+    private void AddRigidbody () {
 		var rb = gameObject.AddComponent<Rigidbody2D>();
 		#if UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5
         rb.freezeRotation = true;
@@ -27,34 +26,34 @@ public class RaggedySpineboy : MonoBehaviour {
 		naturalCollider.enabled = true;
 	}
 
-	void RemoveRigidbody () {
+    private void RemoveRigidbody () {
 		Destroy(GetComponent<Rigidbody2D>());
 		naturalCollider.enabled = false;
 	}
 
-	void Update () {
+    private void Update () {
 		
 	}
 
-	void OnMouseUp () {
+    private void OnMouseUp () {
 		if (naturalCollider.enabled) {
 			Launch();
 		}
 	}
 
-	void Launch () {
+    private void Launch () {
 		RemoveRigidbody();
 		ragdoll.Apply();
 		ragdoll.RootRigidbody.velocity = new Vector2(Random.Range(-launchVelocity.x, launchVelocity.x), launchVelocity.y);
 		StartCoroutine(WaitUntilStopped());
 	}
 
-	IEnumerator Restore () {
-		Vector3 estimatedPos = ragdoll.EstimatedSkeletonPosition;
+    private IEnumerator Restore () {
+		var estimatedPos = ragdoll.EstimatedSkeletonPosition;
 		Vector3 rbPosition = ragdoll.RootRigidbody.position;
 
-		Vector3 skeletonPoint = estimatedPos;
-		RaycastHit2D hit = Physics2D.Raycast((Vector2)rbPosition, (Vector2)(estimatedPos - rbPosition), Vector3.Distance(estimatedPos, rbPosition), groundMask);
+		var skeletonPoint = estimatedPos;
+		var hit = Physics2D.Raycast((Vector2)rbPosition, (Vector2)(estimatedPos - rbPosition), Vector3.Distance(estimatedPos, rbPosition), groundMask);
 		if (hit.collider != null)
 			skeletonPoint = hit.point;
 		
@@ -68,7 +67,7 @@ public class RaggedySpineboy : MonoBehaviour {
 		AddRigidbody();
 	}
 
-	IEnumerator WaitUntilStopped () {
+    private IEnumerator WaitUntilStopped () {
 		yield return new WaitForSeconds(0.5f);
 
 		float t = 0;

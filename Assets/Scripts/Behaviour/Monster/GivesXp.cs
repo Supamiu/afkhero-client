@@ -16,7 +16,7 @@ namespace AFKHero.Behaviour.Monster
 		}
 
 		public void OnDeath(){
-			EventDispatcher.Instance.Dispatch ("experience", new GenericGameEvent<double> (GetXp()));
+			EventDispatcher.Instance.Dispatch (Events.EXPERIENCE_GAIN, new GenericGameEvent<double> (GetXp()));
 		}
 	}
 }

@@ -99,13 +99,13 @@ namespace Spine {
 		public void UpdateWorldTransform (float x, float y, float rotation, float scaleX, float scaleY, float shearX, float shearY) {
 			appliedRotation = rotation;
 
-			float rotationY = rotation + 90 + shearY;
+			var rotationY = rotation + 90 + shearY;
 			float la = MathUtils.CosDeg(rotation + shearX) * scaleX, lb = MathUtils.CosDeg(rotationY) * scaleY;
 			float lc = MathUtils.SinDeg(rotation + shearX) * scaleX, ld = MathUtils.SinDeg(rotationY) * scaleY;
 
-			Bone parent = this.parent;
+			var parent = this.parent;
 			if (parent == null) { // Root bone.
-				Skeleton skeleton = this.skeleton;
+				var skeleton = this.skeleton;
 				if (skeleton.flipX) {
 					x = -x;
 					la = -la;
@@ -146,7 +146,7 @@ namespace Spine {
 					pd = 1;
 					do {
 						float cos = MathUtils.CosDeg(parent.appliedRotation), sin = MathUtils.SinDeg(parent.appliedRotation);
-						float temp = pa * cos + pb * sin;
+						var temp = pa * cos + pb * sin;
 						pb = pb * cos - pa * sin;
 						pa = temp;
 						temp = pc * cos + pd * sin;
@@ -169,7 +169,7 @@ namespace Spine {
 						float cos = MathUtils.CosDeg(parent.appliedRotation), sin = MathUtils.SinDeg(parent.appliedRotation);
 						float psx = parent.scaleX, psy = parent.scaleY;
 						float za = cos * psx, zb = sin * psy, zc = sin * psx, zd = cos * psy;
-						float temp = pa * za + pb * zc;
+						var temp = pa * za + pb * zc;
 						pb = pb * zd - pa * zb;
 						pa = temp;
 						temp = pc * za + pd * zc;
@@ -209,7 +209,7 @@ namespace Spine {
 		}
 
 		public void SetToSetupPose () {
-			BoneData data = this.data;
+			var data = this.data;
 			x = data.x;
 			y = data.y;
 			rotation = data.rotation;
@@ -221,7 +221,7 @@ namespace Spine {
 
 		public float WorldToLocalRotationX {
 			get {
-				Bone parent = this.parent;
+				var parent = this.parent;
 				if (parent == null) return rotation;
 				float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d, a = this.a, c = this.c;
 				return MathUtils.Atan2(pa * c - pc * a, pd * a - pb * c) * MathUtils.radDeg;
@@ -230,7 +230,7 @@ namespace Spine {
 
 		public float WorldToLocalRotationY {
 			get {
-				Bone parent = this.parent;
+				var parent = this.parent;
 				if (parent == null) return rotation;
 				float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d, b = this.b, d = this.d;
 				return MathUtils.Atan2(pa * d - pc * b, pd * b - pb * d) * MathUtils.radDeg;
@@ -254,35 +254,35 @@ namespace Spine {
 		/// transform values may differ from the original values but are functionally the same.
 		/// </summary>
 		public void UpdateLocalTransform () {
-			Bone parent = this.parent;
+			var parent = this.parent;
 			if (parent == null) {
 				x = worldX;
 				y = worldY;
 				rotation = MathUtils.Atan2(c, a) * MathUtils.radDeg;
 				scaleX = (float)Math.Sqrt(a * a + c * c);
 				scaleY = (float)Math.Sqrt(b * b + d * d);
-				float det = a * d - b * c;
+				var det = a * d - b * c;
 				shearX = 0;
 				shearY = MathUtils.Atan2(a * b + c * d, det) * MathUtils.radDeg;
 				return;
 			}
 			float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d;
-			float pid = 1 / (pa * pd - pb * pc);
+			var pid = 1 / (pa * pd - pb * pc);
 			float dx = worldX - parent.worldX, dy = worldY - parent.worldY;
 			x = (dx * pd * pid - dy * pb * pid);
 			y = (dy * pa * pid - dx * pc * pid);
-			float ia = pid * pd;
-			float id = pid * pa;
-			float ib = pid * pb;
-			float ic = pid * pc;
-			float ra = ia * a - ib * c;
-			float rb = ia * b - ib * d;
-			float rc = id * c - ic * a;
-			float rd = id * d - ic * b;
+			var ia = pid * pd;
+			var id = pid * pa;
+			var ib = pid * pb;
+			var ic = pid * pc;
+			var ra = ia * a - ib * c;
+			var rb = ia * b - ib * d;
+			var rc = id * c - ic * a;
+			var rd = id * d - ic * b;
 			shearX = 0;
 			scaleX = (float)Math.Sqrt(ra * ra + rc * rc);
 			if (scaleX > 0.0001f) {
-				float det = ra * rd - rb * rc;
+				var det = ra * rd - rb * rc;
 				scaleY = det / scaleX;
 				shearY = MathUtils.Atan2(ra * rb + rc * rd, det) * MathUtils.radDeg;
 				rotation = MathUtils.Atan2(rc, ra) * MathUtils.radDeg;
@@ -297,7 +297,7 @@ namespace Spine {
 
 		public void WorldToLocal (float worldX, float worldY, out float localX, out float localY) {			
 			float a = this.a, b = this.b, c = this.c, d = this.d;
-			float invDet = 1 / (a * d - b * c);
+			var invDet = 1 / (a * d - b * c);
 			float x = worldX - this.worldX, y = worldY - this.worldY;
 			localX = (x * d * invDet - y * b * invDet);
 			localY = (y * a * invDet - x * c * invDet);

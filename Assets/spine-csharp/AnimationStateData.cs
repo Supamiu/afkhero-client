@@ -47,9 +47,9 @@ namespace Spine {
 		}
 
 		public void SetMix (String fromName, String toName, float duration) {
-			Animation from = skeletonData.FindAnimation(fromName);
+			var from = skeletonData.FindAnimation(fromName);
 			if (from == null) throw new ArgumentException("Animation not found: " + fromName);
-			Animation to = skeletonData.FindAnimation(toName);
+			var to = skeletonData.FindAnimation(toName);
 			if (to == null) throw new ArgumentException("Animation not found: " + toName);
 			SetMix(from, to, duration);
 		}
@@ -57,19 +57,19 @@ namespace Spine {
 		public void SetMix (Animation from, Animation to, float duration) {
 			if (from == null) throw new ArgumentNullException("from", "from cannot be null.");
 			if (to == null) throw new ArgumentNullException("to", "to cannot be null.");
-			AnimationPair key = new AnimationPair(from, to);
+			var key = new AnimationPair(from, to);
 			animationToMixTime.Remove(key);
 			animationToMixTime.Add(key, duration);
 		}
 
 		public float GetMix (Animation from, Animation to) {
-			AnimationPair key = new AnimationPair(from, to);
+			var key = new AnimationPair(from, to);
 			float duration;
 			if (animationToMixTime.TryGetValue(key, out duration)) return duration;
 			return defaultMix;
 		}
 
-		struct AnimationPair {
+	    private struct AnimationPair {
 			public readonly Animation a1;
 			public readonly Animation a2;
 
@@ -80,7 +80,7 @@ namespace Spine {
 		}
 
 		// Avoids boxing in the dictionary.
-		class AnimationPairComparer : IEqualityComparer<AnimationPair> {
+	    private class AnimationPairComparer : IEqualityComparer<AnimationPair> {
 			internal static readonly AnimationPairComparer Instance = new AnimationPairComparer();
 
 			bool IEqualityComparer<AnimationPair>.Equals (AnimationPair x, AnimationPair y) {
@@ -89,7 +89,7 @@ namespace Spine {
 
 			int IEqualityComparer<AnimationPair>.GetHashCode (AnimationPair obj) {
 				// from Tuple.CombineHashCodes // return (((h1 << 5) + h1) ^ h2);
-				int h1 = obj.a1.GetHashCode();
+				var h1 = obj.a1.GetHashCode();
 				return (((h1 << 5) + h1) ^ obj.a2.GetHashCode());
 			}
 		}

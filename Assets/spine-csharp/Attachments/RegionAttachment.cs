@@ -78,7 +78,7 @@ namespace Spine {
 		}
 
 		public void SetUVs (float u, float v, float u2, float v2, bool rotate) {
-			float[] uvs = this.uvs;
+			var uvs = this.uvs;
 			if (rotate) {
 				uvs[X2] = u;
 				uvs[Y2] = v2;
@@ -101,30 +101,30 @@ namespace Spine {
 		}
 
 		public void UpdateOffset () {
-			float width = this.width;
-			float height = this.height;
-			float scaleX = this.scaleX;
-			float scaleY = this.scaleY;
-			float regionScaleX = width / regionOriginalWidth * scaleX;
-			float regionScaleY = height / regionOriginalHeight * scaleY;
-			float localX = -width / 2 * scaleX + regionOffsetX * regionScaleX;
-			float localY = -height / 2 * scaleY + regionOffsetY * regionScaleY;
-			float localX2 = localX + regionWidth * regionScaleX;
-			float localY2 = localY + regionHeight * regionScaleY;
-			float rotation = this.rotation;
-			float cos = MathUtils.CosDeg(rotation);
-			float sin = MathUtils.SinDeg(rotation);
-			float x = this.x;
-			float y = this.y;
-			float localXCos = localX * cos + x;
-			float localXSin = localX * sin;
-			float localYCos = localY * cos + y;
-			float localYSin = localY * sin;
-			float localX2Cos = localX2 * cos + x;
-			float localX2Sin = localX2 * sin;
-			float localY2Cos = localY2 * cos + y;
-			float localY2Sin = localY2 * sin;
-			float[] offset = this.offset;
+			var width = this.width;
+			var height = this.height;
+			var scaleX = this.scaleX;
+			var scaleY = this.scaleY;
+			var regionScaleX = width / regionOriginalWidth * scaleX;
+			var regionScaleY = height / regionOriginalHeight * scaleY;
+			var localX = -width / 2 * scaleX + regionOffsetX * regionScaleX;
+			var localY = -height / 2 * scaleY + regionOffsetY * regionScaleY;
+			var localX2 = localX + regionWidth * regionScaleX;
+			var localY2 = localY + regionHeight * regionScaleY;
+			var rotation = this.rotation;
+			var cos = MathUtils.CosDeg(rotation);
+			var sin = MathUtils.SinDeg(rotation);
+			var x = this.x;
+			var y = this.y;
+			var localXCos = localX * cos + x;
+			var localXSin = localX * sin;
+			var localYCos = localY * cos + y;
+			var localYSin = localY * sin;
+			var localX2Cos = localX2 * cos + x;
+			var localX2Sin = localX2 * sin;
+			var localY2Cos = localY2 * cos + y;
+			var localY2Sin = localY2 * sin;
+			var offset = this.offset;
 			offset[X1] = localXCos - localYSin;
 			offset[Y1] = localYCos + localXSin;
 			offset[X2] = localXCos - localY2Sin;
@@ -136,10 +136,10 @@ namespace Spine {
 		}
 
 		public void ComputeWorldVertices (Bone bone, float[] worldVertices) {
-			Skeleton skeleton = bone.skeleton;
+			var skeleton = bone.skeleton;
 			float x = skeleton.x + bone.worldX, y = skeleton.y + bone.worldY;			
 			float a = bone.a, b = bone.b, c = bone.c, d = bone.d;
-			float[] offset = this.offset;
+			var offset = this.offset;
 			worldVertices[X1] = offset[X1] * a + offset[Y1] * b + x;
 			worldVertices[Y1] = offset[X1] * c + offset[Y1] * d + y;
 			worldVertices[X2] = offset[X2] * a + offset[Y2] * b + x;

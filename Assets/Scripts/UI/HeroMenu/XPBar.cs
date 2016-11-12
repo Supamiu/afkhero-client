@@ -11,11 +11,11 @@ namespace AFKHero.UI.HeroMenu
 		private Image image;
 
 		// Use this for initialization
-		void Awake ()
+	    private void Awake ()
 		{
 			image = GetComponent<Image> ();
 
-			EventDispatcher.Instance.Register ("experience.ui", new Listener<GenericGameEvent<XPGain>>((ref GenericGameEvent<XPGain> e) => {
+			EventDispatcher.Instance.Register (Events.UI.EXPERIENCE, new Listener<GenericGameEvent<XPGain>>((ref GenericGameEvent<XPGain> e) => {
 				image.fillAmount = (float) (e.Data.xp / e.Data.xpForNextLevel);
 			}));
 		}

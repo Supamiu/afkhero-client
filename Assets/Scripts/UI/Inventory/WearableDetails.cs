@@ -1,13 +1,13 @@
-using UnityEngine;
-using AFKHero.Model;
-using UnityEngine.UI;
-using AFKHero.Core.Gear;
-using AFKHero.Model.Affix;
 using System.Collections.Generic;
-using AFKHero.Inventory;
-using AFKHero.UI.Tools;
+using System.Globalization;
 using AFKHero.Core.Event;
+using AFKHero.Core.Gear;
+using AFKHero.Inventory;
+using AFKHero.Model;
 using AFKHero.Tools;
+using AFKHero.UI.Tools;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace AFKHero.UI.Inventory
 {
@@ -44,7 +44,7 @@ namespace AFKHero.UI.Inventory
 
         private Image bg;
 
-        private List<GameObject> detailsRows = new List<GameObject>();
+        private readonly List<GameObject> detailsRows = new List<GameObject>();
 
         /// <summary>
         /// Met en place de layout de d�tails.
@@ -66,10 +66,10 @@ namespace AFKHero.UI.Inventory
 
             icon.sprite = w.icon;
             nameText.text = w.itemName;
-            mainStatText.text = (w.type == GearType.WEAPON ? "Attack" : "Defense");
+            mainStatText.text = w.type == GearType.WEAPON ? "Attack" : "Defense";
             mainStatValueText.text = w.mainStat.ToString();
             descriptionText.text = w.description;
-            upgradeText.text = "Upgrade (" + RatioEngine.Instance.GetUpgradeCost(w).ToString() + ")";
+            upgradeText.text = "Upgrade (" + RatioEngine.Instance.GetUpgradeCost(w).ToString(CultureInfo.CurrentCulture) + ")";
 
             if (model.upgrade == 12 || !model.IsUpgradeable())
             {
@@ -90,10 +90,10 @@ namespace AFKHero.UI.Inventory
             }
 
             ClearDetails();
-            foreach (AffixModel affix in w.affixes)
+            foreach (var affix in w.affixes)
             {
-                Text affixDetails = Instantiate(AffixTextPrefab);
-                affixDetails.text = affix.type.ToString() + (affix.value > 0 ? "+ " : "- ") + Mathf.Abs(affix.value) + "% (" + affix.minValue + " - " + affix.maxValue + ")";
+                var affixDetails = Instantiate(AffixTextPrefab);
+                affixDetails.text = affix.type + (affix.value > 0 ? "+ " : "- ") + Mathf.Abs(affix.value) + "% (" + affix.minValue + " - " + affix.maxValue + ")";
                 affixDetails.transform.SetParent(affixZone.transform);
                 affixDetails.transform.localScale = Vector3.one;
                 detailsRows.Add(affixDetails.gameObject);
@@ -101,7 +101,7 @@ namespace AFKHero.UI.Inventory
 
             if (model.rarity == Rarity.LEGENDARY)
             {
-                string affixText = model.legendaryAffix.description.Replace("{value}", model.legendaryAffix.value.ToString());
+                var affixText = model.legendaryAffix.description.Replace("{value}", model.legendaryAffix.value.ToString(CultureInfo.CurrentCulture));
                 legendaryAffixText.text = affixText + "(" + model.legendaryAffix.minValue + " - " + model.legendaryAffix.maxValue + ")";
                 legendaryAffixText.gameObject.SetActive(true);
             }
@@ -127,7 +127,7 @@ namespace AFKHero.UI.Inventory
 
         public void ClearDetails()
         {
-            foreach (GameObject row in detailsRows)
+            foreach (var row in detailsRows)
             {
                 Destroy(row);
             }
@@ -168,7 +168,7 @@ namespace AFKHero.UI.Inventory
         public void Dez()
         {
             inventory.Remove(model);
-            EventDispatcher.Instance.Dispatch("dust", new GenericGameEvent<double>(RatioEngine.Instance.GetDust(model)));
+            EventDispatcher.Instance.Dispatch(Events.DUST, new GenericGameEvent<double>(RatioEngine.Instance.GetDust(model)));
             Hide();
         }
 
@@ -177,7 +177,7 @@ namespace AFKHero.UI.Inventory
         /// </summary>
         public void Upgrade()
         {
-            EventDispatcher.Instance.Dispatch("dust", new GenericGameEvent<double>(-1 * RatioEngine.Instance.GetUpgradeCost(model)));
+            EventDispatcher.Instance.Dispatch(Events.DUST, new GenericGameEvent<double>(-1 * RatioEngine.Instance.GetUpgradeCost(model)));
             if (model.Upgrade())
             {
                 upgradeLevel.text = "+" + model.upgrade;

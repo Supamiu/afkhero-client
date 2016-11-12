@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using AFKHero.Inventory;
 using UnityEngine.UI;
 using AFKHero.Model;
 using AFKHero.UI.Tools;
@@ -18,9 +17,9 @@ namespace AFKHero.UI.Inventory
 
         public Sprite defaultIcon;
 
-        public void UpdateDisplay(Wearable item)
+        public void UpdateDisplay(Wearable pItem)
         {
-            this.item = item;
+            item = pItem;
             if (image == null)
             {
                 image = GetComponent<Image>();

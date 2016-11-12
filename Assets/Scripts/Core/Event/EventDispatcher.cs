@@ -16,7 +16,7 @@ namespace AFKHero.Core.Event
         {
         }
 
-        public delegate void GenericEventHandler<T>(T e) where T : GameEvent;
+        public delegate void GenericEventHandler<in T>(T e) where T : GameEvent;
 
         private Dictionary<string, List<IListener>> registrations = new Dictionary<string, List<IListener>>();
 
@@ -49,10 +49,10 @@ namespace AFKHero.Core.Event
             {
                 return;
             }
-            List<IListener> listeners = registrations[type];
+            var listeners = registrations[type];
             if (listener.GetId() != null)
             {
-                foreach(IListener l in listeners)
+                foreach(var l in listeners)
                 {
                     if(l.GetId() == listener.GetId())
                     {
@@ -75,11 +75,7 @@ namespace AFKHero.Core.Event
         /// <returns></returns>
         public int GetListenerCount(string type)
         {
-            if (!registrations.ContainsKey(type))
-            {
-                return 0;
-            }
-            return registrations[type].Count;
+            return !registrations.ContainsKey(type) ? 0 : registrations[type].Count;
         }
 
         /// <summary>
@@ -88,11 +84,12 @@ namespace AFKHero.Core.Event
         /// <param name="subscriber">Subscriber.</param>
         public void Subscribe(Subscriber subscriber)
         {
-            foreach (string key in subscriber.getSubscribedEvents().Keys)
+            foreach (var key in subscriber.getSubscribedEvents().Keys)
             {
                 List<IListener> ls;
                 subscriber.getSubscribedEvents().TryGetValue(key, out ls);
-                foreach (IListener l in ls)
+                if (ls == null) continue;
+                foreach (var l in ls)
                 {
                     Register(key, l);
                 }
@@ -110,24 +107,18 @@ namespace AFKHero.Core.Event
         public GameEvent Dispatch(string type, GameEvent eventData)
         {
             List<IListener> ls;
-            object e = (object)eventData;
+            object e = eventData;
             registrations.TryGetValue(type, out ls);
-            if (ls != null)
+            if (ls == null) return eventData;
+            var tmp = new List<IListener>(ls);
+            ls.Sort((x, y) => y.getPriority() - x.getPriority());
+            foreach (var l in tmp)
             {
-                List<IListener> tmp = new List<IListener>(ls);
-                ls.Sort((x, y) => y.getPriority() - x.getPriority());
-                foreach (IListener l in tmp)
+                l.Call(ref e);
+                if (eventData.isPropagationStopped())
                 {
-                    l.Call(ref e);
-                    if (eventData.isPropagationStopped())
-                    {
-                        break;
-                    }
+                    break;
                 }
-            }
-            else
-            {
-                //Debug.LogWarning ("Event "+type+" called with no listeners.");
             }
             return eventData;
         }
@@ -138,15 +129,15 @@ namespace AFKHero.Core.Event
         /// <param name="type">Type.</param>
         public GameEvent Dispatch(string type)
         {
-            GameEvent eventData = new GameEvent();
+            var eventData = new GameEvent();
             List<IListener> ls;
-            object e = (object)eventData;
+            object e = eventData;
             registrations.TryGetValue(type, out ls);
             if (ls != null)
             {
-                List<IListener> tmp = new List<IListener>(ls);
+                var tmp = new List<IListener>(ls);
                 ls.Sort((x, y) => y.getPriority() - x.getPriority());
-                foreach (IListener l in tmp)
+                foreach (var l in tmp)
                 {
                     l.Call(ref e);
                     if (eventData.isPropagationStopped())
@@ -154,10 +145,6 @@ namespace AFKHero.Core.Event
                         break;
                     }
                 }
-            }
-            else
-            {
-                //Debug.LogWarning ("Event "+type+" called with no listeners.");
             }
             return eventData;
         }

@@ -9,9 +9,9 @@ namespace AFKHero.UI
 
 		public Text distance;
 
-		public void Init (float distance)
+		public void Init (float pDistance)
 		{
-			this.distance.text = Formatter.ToDistanceString (distance);
+			distance.text = Formatter.ToDistanceString (pDistance);
 		}
 	}
 }

@@ -40,31 +40,31 @@ namespace AFKHero.Core.Affix
             }
         }
 
-        private static List<AffixModel> weapon = new List<AffixModel>() {
+        private static readonly List<AffixModel> weapon = new List<AffixModel> {
             new AffixModel(AffixType.DAMAGE_BONUS, 0, 10),
              new AffixModel(AffixType.CRIT_DAMAGE_BONUS, 10, 50),
              new AffixModel(AffixType.CRIT_CHANCES_BONUS,1,5)
         };
 
-        private static List<AffixModel> chest = new List<AffixModel>() {
+        private static readonly List<AffixModel> chest = new List<AffixModel> {
             new AffixModel(AffixType.HP_BONUS, 5,20),
             new AffixModel(AffixType.REGEN_BONUS, 10,30),
             new AffixModel(AffixType.DAMAGE_BONUS, 5,10)
     };
 
-        private static List<AffixModel> secondaryArmor = new List<AffixModel>() {
+        private static readonly List<AffixModel> secondaryArmor = new List<AffixModel> {
             new AffixModel(AffixType.HP_BONUS,1,10),
             new AffixModel(AffixType.CRIT_DAMAGE_BONUS,10,30),
             new AffixModel(AffixType.CRIT_CHANCES_BONUS, 1,5)
         };
 
-        private static List<AffixModel> accessories = new List<AffixModel>() {
+        private static readonly List<AffixModel> accessories = new List<AffixModel> {
             new AffixModel(AffixType.HP_BONUS,1,10),
             new AffixModel(AffixType.CRIT_DAMAGE_BONUS,10,30),
             new AffixModel(AffixType.CRIT_CHANCES_BONUS,1,5)
         };
 
-        private static List<AffixModel> boots = new List<AffixModel>() {
+        private static readonly List<AffixModel> boots = new List<AffixModel> {
             new AffixModel(AffixType.HP_BONUS,1,10),
             new AffixModel(AffixType.CRIT_DAMAGE_BONUS,10,30),
             new AffixModel(AffixType.CRIT_CHANCES_BONUS, 1,5),

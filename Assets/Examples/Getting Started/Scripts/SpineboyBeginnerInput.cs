@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SpineboyBeginnerInput : MonoBehaviour {
 
@@ -10,16 +9,16 @@ public class SpineboyBeginnerInput : MonoBehaviour {
 
 	public SpineboyBeginnerModel model;
 
-	void OnValidate () {
+    private void OnValidate () {
 		if (model == null)
 			model = GetComponent<SpineboyBeginnerModel>();
 	}
 	#endregion
 
-	void Update () {
+    private void Update () {
 		if (model == null) return;
 
-		float currentHorizontal = Input.GetAxisRaw(horizontalAxis);
+		var currentHorizontal = Input.GetAxisRaw(horizontalAxis);
 		model.TryMove(currentHorizontal);
 
 		if (Input.GetButton(attackButton))

@@ -9,12 +9,12 @@ namespace AFKHero.Tools
     {
 		// Ratio des attaque au click sur l'écran
 		public double GetClickDamage(double baseDamage, double intelligence) {
-			return baseDamage * 0.1 + (baseDamage * 0.002 * intelligence);
+			return baseDamage * 0.1 + baseDamage * 0.002 * intelligence;
 		}
 
         public double GetEnemyDamage(float damageRatio, float distance)
         {
-            return (int)(damageRatio * (Mathf.Pow(distance - 10 / 2, 1.2f)) / 10);
+            return (int)(damageRatio * Mathf.Pow(distance - 5, 1.2f) / 10);
         }
 
         public double GetEnemyHealth(float healthRatio, float distance)
@@ -48,8 +48,8 @@ namespace AFKHero.Tools
 
         public int GetMainStat(Wearable wearable)
         {
-            float ratio = Editor.GetMainStatRatio(wearable);
-            float baseValue = 10 + ratio * AFKHero.GetDistance() * wearable.mainStatRatio;
+            var ratio = Editor.GetMainStatRatio(wearable);
+            var baseValue = 10 + ratio * AFKHero.GetDistance() * wearable.mainStatRatio;
             return Mathf.CeilToInt(Random.Range(baseValue * .90f, baseValue * 1.10f));
         }
 			

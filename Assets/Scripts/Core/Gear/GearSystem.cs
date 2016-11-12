@@ -1,4 +1,3 @@
-using AFKHero.Core.Database;
 using AFKHero.Core.Event;
 using AFKHero.Core.Save;
 using AFKHero.Inventory;
@@ -8,6 +7,7 @@ using Spine.Unity;
 using Spine.Unity.Modules;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AFKHero.Core.Gear
@@ -24,7 +24,7 @@ namespace AFKHero.Core.Gear
 
         private InventorySystem inventory;
 
-        private bool defaultWeaponAdded = false;
+        private bool defaultWeaponAdded;
 
         //Slots Spine
         [SpineSlot]
@@ -33,19 +33,19 @@ namespace AFKHero.Core.Gear
         public Wearable defaultWeapon;
         //Fin slots Spine.
 
-        void Start()
+        private void Start()
         {
             //TODO gérer les slots un par un pour mettre à jour leur spineSlot.
             //Si le stuff est inexistant, on créé sa structure.
             InitGear();
         }
 
-        void InitGear()
+        private void InitGear()
         {
             if (currentGear == null)
             {
                 currentGear = new Dictionary<GearSlot, Wearable>();
-                foreach (GearSlot slot in GearSlot.Slots)
+                foreach (var slot in GearSlot.Slots)
                 {
                     if (slot == GearSlot.WEAPON)
                     {
@@ -56,11 +56,9 @@ namespace AFKHero.Core.Gear
             }
             inventory = GetComponent<InventorySystem>();
             skeleton = GetComponent<SkeletonRenderer>().skeleton;
-            if (!defaultWeaponAdded)
-            {
-                Equip(defaultWeapon);
-                defaultWeaponAdded = true;
-            }
+            if (defaultWeaponAdded) return;
+            Equip(defaultWeapon);
+            defaultWeaponAdded = true;
         }
 
         /// <summary>
@@ -81,11 +79,7 @@ namespace AFKHero.Core.Gear
         /// <returns></returns>
         public Wearable GetWearableAtSlot(GearSlot slot)
         {
-            if (currentGear.ContainsKey(slot))
-            {
-                return currentGear[slot];
-            }
-            return null;
+            return currentGear.ContainsKey(slot) ? currentGear[slot] : null;
         }
 
         /// <summary>
@@ -94,8 +88,8 @@ namespace AFKHero.Core.Gear
         /// <param name="wearable"></param>
         public void Equip(Wearable wearable)
         {
-            List<GearSlot> slots = GetSlotsForType(wearable.type);
-            foreach (GearSlot slot in slots)
+            var slots = GetSlotsForType(wearable.type);
+            foreach (var slot in slots)
             {
                 if (currentGear[slot] != null)
                 {
@@ -134,32 +128,25 @@ namespace AFKHero.Core.Gear
         /// <param name="slot"></param>
         public bool UnEquip(GearSlot slot)
         {
-            if (inventory.HasFreeSlot())
-            {
-                currentGear[slot].Detach();
-                inventory.AddItem(currentGear[slot]);
-                currentGear[slot] = null;
-                NotifyGearChange();
-                return true;
-            }
-            return false;
+            if (!inventory.HasFreeSlot()) return false;
+            currentGear[slot].Detach();
+            inventory.AddItem(currentGear[slot]);
+            currentGear[slot] = null;
+            NotifyGearChange();
+            return true;
         }
 
         public bool UnEquip(Wearable item)
         {
-            if (inventory.HasFreeSlot())
+            if (!inventory.HasFreeSlot()) return false;
+            foreach (var slot in GetSlotsForType(item.type))
             {
-                foreach (GearSlot slot in GetSlotsForType(item.type))
-                {
-                    if (currentGear[slot] == item)
-                    {
-                        item.Detach();
-                        inventory.AddItem(item);
-                        currentGear[slot] = null;
-                        NotifyGearChange();
-                        return true;
-                    }
-                }
+                if (currentGear[slot] != item) continue;
+                item.Detach();
+                inventory.AddItem(item);
+                currentGear[slot] = null;
+                NotifyGearChange();
+                return true;
             }
             return false;
         }
@@ -171,15 +158,7 @@ namespace AFKHero.Core.Gear
         /// <returns></returns>
         private List<GearSlot> GetSlotsForType(GearType type)
         {
-            List<GearSlot> slots = new List<GearSlot>();
-            foreach (KeyValuePair<GearSlot, Wearable> slot in currentGear)
-            {
-                if (slot.Key.type == type)
-                {
-                    slots.Add(slot.Key);
-                }
-            }
-            return slots;
+            return (from slot in currentGear where slot.Key.type == type select slot.Key).ToList();
         }
 
         /// <summary>
@@ -197,7 +176,7 @@ namespace AFKHero.Core.Gear
         public SaveData Save(SaveData save)
         {
             save.defaultWeaponAdded = defaultWeaponAdded;
-            Wearable[] gear = new Wearable[currentGear.Values.Count];
+            var gear = new Wearable[currentGear.Values.Count];
             currentGear.Values.CopyTo(gear, 0);
             save.gear = gear;
             return save;
@@ -207,7 +186,7 @@ namespace AFKHero.Core.Gear
         {
             defaultWeaponAdded = true;
             InitGear();
-            foreach (Wearable item in data.gear)
+            foreach (var item in data.gear)
             {
                 if (item != null && item.itemName.Length > 0 && item.mainStat > 0)
                 {

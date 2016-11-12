@@ -15,7 +15,7 @@ namespace AFKHero.UI.CombatText
 
 		private IListener healListener;
 
-		void Start ()
+	    private void Start ()
 		{
             damageListener = new Listener<GenericGameEvent<Damage>> ((ref GenericGameEvent<Damage> gameEvent) => {
 				if (gameEvent.Data.hits) {
@@ -33,13 +33,13 @@ namespace AFKHero.UI.CombatText
                 CreateCombatText(Formatter.Format (e.Data.amount), e.Data.target.transform, CombatTextType.HEAL);
 			});
 
-			EventDispatcher.Instance.Register ("attack.damage", damageListener);
-			EventDispatcher.Instance.Register ("heal", healListener);
+			EventDispatcher.Instance.Register (Events.Attack.DAMAGE, damageListener);
+			EventDispatcher.Instance.Register (Events.HEAL, healListener);
 		}
 
 		private void CreateCombatText (string text, Transform location, CombatTextType type)
 		{
-			CombatText instance = Instantiate(prefab);
+			var instance = Instantiate(prefab);
 			instance.transform.SetParent (parent.transform, false);
 			instance.transform.position = location.position;
 			instance.SetColor (type.GetColor ());

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Spine.Unity;
 
 [ExecuteInEditMode]
@@ -14,15 +13,15 @@ public class SpineGauge : MonoBehaviour {
 	public string fillAnimationName;
 	#endregion
 
-	SkeletonRenderer skeletonRenderer;
-	Spine.Animation fillAnimation;
+    private SkeletonRenderer skeletonRenderer;
+    private Spine.Animation fillAnimation;
 
-	void Awake () {
+    private void Awake () {
 		skeletonRenderer = GetComponent<SkeletonRenderer>();
 
 	}
 
-	void Update () {
+    private void Update () {
 		SetGaugePercent(fillPercent);
 	}
 

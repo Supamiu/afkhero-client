@@ -42,13 +42,13 @@ namespace Spine.Unity {
 		public bool isTrigger;
 		#endregion
 
-		Slot slot;
-		BoundingBoxAttachment currentAttachment;
-		string currentAttachmentName;
-		PolygonCollider2D currentCollider;
+	    private Slot slot;
+	    private BoundingBoxAttachment currentAttachment;
+	    private string currentAttachmentName;
+	    private PolygonCollider2D currentCollider;
 
-		bool valid = false;
-		bool hasReset;
+	    private bool valid = false;
+	    private bool hasReset;
 
 		public readonly Dictionary<BoundingBoxAttachment, PolygonCollider2D> colliderTable = new Dictionary<BoundingBoxAttachment, PolygonCollider2D>();
 		public readonly Dictionary<BoundingBoxAttachment, string> attachmentNameTable = new Dictionary<BoundingBoxAttachment, string>();
@@ -59,7 +59,7 @@ namespace Spine.Unity {
 		public PolygonCollider2D CurrentCollider { get { return currentCollider; } }
 		public bool IsTrigger { get { return isTrigger; } }
 
-		void OnEnable () {
+	    private void OnEnable () {
 			ClearColliders();
 
 			if (skeletonRenderer == null)
@@ -74,11 +74,11 @@ namespace Spine.Unity {
 			}
 		}
 
-		void OnDisable () {
+	    private void OnDisable () {
 			skeletonRenderer.OnRebuild -= HandleRebuild;
 		}
 
-		void Start () {
+	    private void Start () {
 			if (!hasReset && skeletonRenderer != null)
 				HandleRebuild(skeletonRenderer);
 		}
@@ -99,7 +99,7 @@ namespace Spine.Unity {
 
 			var skeleton = skeletonRenderer.skeleton;
 			slot = skeleton.FindSlot(slotName);
-			int slotIndex = skeleton.FindSlotIndex(slotName);
+			var slotIndex = skeleton.FindSlotIndex(slotName);
 
 			if (this.gameObject.activeInHierarchy) {
 				foreach (var skin in skeleton.Data.Skins) {
@@ -138,7 +138,7 @@ namespace Spine.Unity {
 #endif
 		}
 
-		void ClearColliders () {
+	    private void ClearColliders () {
 			var colliders = GetComponents<PolygonCollider2D>();
 			if (colliders.Length == 0) return;
 
@@ -162,7 +162,7 @@ namespace Spine.Unity {
 			attachmentNameTable.Clear();
 		}
 
-		void LateUpdate () {
+	    private void LateUpdate () {
 			if (!skeletonRenderer.valid)
 				return;
 
@@ -172,7 +172,7 @@ namespace Spine.Unity {
 
 		/// <summary>Sets the current collider to match attachment.</summary>
 		/// <param name="attachment">If the attachment is not a bounding box, it will be treated as null.</param>
-		void MatchAttachment (Attachment attachment) {
+		private void MatchAttachment (Attachment attachment) {
 			var bbAttachment = attachment as BoundingBoxAttachment;
 
 #if UNITY_EDITOR

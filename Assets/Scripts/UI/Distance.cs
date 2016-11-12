@@ -10,12 +10,12 @@ namespace AFKHero.UI
 	{
 		private Text text;
 
-		private float distance = 0;
+		private float distance;
 		// Use this for initialization
-		void Start ()
+	    private void Start ()
 		{
             text = GetComponent<Text> ();
-			EventDispatcher.Instance.Register ("movement.moved", new Listener<GenericGameEvent<float>> ((ref GenericGameEvent<float> e) => {
+			EventDispatcher.Instance.Register (Events.Movement.MOVED, new Listener<GenericGameEvent<float>> ((ref GenericGameEvent<float> e) => {
                 distance = AFKHero.GetDistance();
                 text.text = Formatter.ToDistanceString (distance);
 			}));

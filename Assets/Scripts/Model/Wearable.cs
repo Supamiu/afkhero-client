@@ -33,7 +33,7 @@ namespace AFKHero.Model
         public bool customAffixPool;
 
         [NonSerialized]
-        private GameObject go = null;
+        private GameObject go;
 
         public void Roll()
         {
@@ -43,11 +43,11 @@ namespace AFKHero.Model
                 return;
             }
             affixes = new List<AffixModel>();
-            for (int i = 0; i < GetAffixNumber(rarity); i++)
+            for (var i = 0; i < GetAffixNumber(rarity); i++)
             {
                 AddAffix();
             }
-            foreach (AffixModel affix in affixes)
+            foreach (var affix in affixes)
             {
                 affix.Roll();
             }
@@ -59,42 +59,35 @@ namespace AFKHero.Model
 
         public bool Upgrade()
         {
-            if (upgrade < 12)
+            if (upgrade >= 12) return false;
+            if (!PercentageUtils.Instance.GetResult(RatioEngine.Instance.GetUpgradeChances(this))) return false;
+            mainStat = RatioEngine.Instance.GetUpgradedStat(this);
+            upgrade++;
+            //Si c'est un multiple de 3, on change de qualité :)
+            if (upgrade % 3 != 0 || rarity >= Rarity.EPIC) return true;
+            rarity++;
+            var affix = AddAffix();
+            affix.Roll();
+            if (go != null)
             {
-                if (PercentageUtils.Instance.GetResult(RatioEngine.Instance.GetUpgradeChances(this)))
-                {
-                    mainStat = RatioEngine.Instance.GetUpgradedStat(this);
-                    upgrade++;
-                    //Si c'est un multiple de 3, on change de qualit� :)
-                    if (upgrade % 3 == 0 && rarity < Rarity.EPIC)
-                    {
-                        rarity++;
-                        AffixModel affix = AddAffix();
-                        affix.Roll();
-                        if (go != null)
-                        {
-                            affix.OnAttach(go);
-                        }
-                    }
-                    return true;
-                }
+                affix.OnAttach(go);
             }
-            return false;
+            return true;
         }
 
         private AffixModel AddAffix()
         {
-            AffixModel affix = PercentageUtils.Instance.GetRandomItem(affixPool);
+            var affix = PercentageUtils.Instance.GetRandomItem(affixPool);
             affixPool.Remove(affix);
             affixes.Add(affix);
             return affix;
         }
 
-        public void Attach(GameObject go)
+        public void Attach(GameObject pGo)
         {
-            this.go = go;
+            go = pGo;
             UpdateGearStat(true);
-            foreach (AffixModel affix in affixes)
+            foreach (var affix in affixes)
             {
                 affix.OnAttach(go);
             }
@@ -111,7 +104,7 @@ namespace AFKHero.Model
             {
                 return;
             }
-            foreach (AffixModel affix in affixes)
+            foreach (var affix in affixes)
             {
                 affix.OnDetach();
             }
@@ -128,20 +121,14 @@ namespace AFKHero.Model
 
         private void UpdateGearStat(bool equipped)
         {
-            int value = equipped ? mainStat : -1 * mainStat;
-            if (type == GearType.WEAPON)
-            {
-                EventDispatcher.Instance.Dispatch("gearstat.attack", new GenericGameEvent<GearStat>(new GearStat(value, go)));
-            }
-            else
-            {
-                EventDispatcher.Instance.Dispatch("gearstat.defense", new GenericGameEvent<GearStat>(new GearStat(value, go)));
-            }
+            var value = equipped ? mainStat : -1 * mainStat;
+            EventDispatcher.Instance.Dispatch(type == GearType.WEAPON ? Events.GearStat.ATTACK : Events.GearStat.DEFENSE,
+                new GenericGameEvent<GearStat>(new GearStat(value, go)));
         }
 
-        private int GetAffixNumber(Rarity rarity)
+        private static int GetAffixNumber(Rarity pRarity)
         {
-            switch (rarity)
+            switch (pRarity)
             {
                 case Rarity.COMMON:
                     return 0;

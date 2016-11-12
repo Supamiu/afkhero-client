@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Spine.Unity;
 
 public class SpineboyBeginnerView : MonoBehaviour {
@@ -22,21 +21,21 @@ public class SpineboyBeginnerView : MonoBehaviour {
 	public ParticleSystem gunParticles;
 	#endregion
 
-	SpineBeginnerBodyState previousViewState;
+    private SpineBeginnerBodyState previousViewState;
 
-	void Start () {
+    private void Start () {
 		if (skeletonAnimation == null) return;
 		model.ShootEvent += PlayShoot;
 		skeletonAnimation.state.Event += HandleEvent;
 	}
 
-	void HandleEvent (Spine.AnimationState state, int trackIndex, Spine.Event e) {
+    private void HandleEvent (Spine.AnimationState state, int trackIndex, Spine.Event e) {
 		if (e.Data.Name == footstepEventName) {
 			PlayFootstepSound();
 		}
 	}
 
-	void Update () {
+    private void Update () {
 		if (skeletonAnimation == null) return;
 		if (model == null) return;
 
@@ -54,7 +53,7 @@ public class SpineboyBeginnerView : MonoBehaviour {
 		previousViewState = currentModelState;
 	}
 
-	void PlayNewStableAnimation () {
+    private void PlayNewStableAnimation () {
 		var newModelState = model.state;
 		string nextAnimation;
 
@@ -78,7 +77,7 @@ public class SpineboyBeginnerView : MonoBehaviour {
 		skeletonAnimation.state.SetAnimation(0, nextAnimation, true);
 	}
 
-	void PlayFootstepSound () {
+    private void PlayFootstepSound () {
 		footstepSource.Play();
 		footstepSource.pitch = GetRandomPitch(footstepPitchOffset);
 	}

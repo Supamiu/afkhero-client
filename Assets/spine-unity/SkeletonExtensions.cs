@@ -4,12 +4,10 @@
 *****************************************************************************/
 
 using UnityEngine;
-using Spine;
 
 namespace Spine.Unity {
 	public static class SkeletonExtensions {
-
-		const float ByteToFloat = 1f / 255f;
+	    private const float ByteToFloat = 1f / 255f;
 
 		#region Colors
 		public static Color GetColor (this Skeleton s) { return new Color(s.r, s.g, s.b, s.a); }
@@ -116,7 +114,7 @@ namespace Spine {
 		/// <param name = "loop">Wraps the time around if it is longer than the duration of the animation.</param>
 		public static void PoseWithAnimation (this Skeleton skeleton, string animationName, float time, bool loop) {
 			// Fail loud when skeleton.data is null.
-			Spine.Animation animation = skeleton.data.FindAnimation(animationName);
+			var animation = skeleton.data.FindAnimation(animationName);
 			if (animation == null) return;
 			animation.Apply(skeleton, 0, time, loop, null);
 		}
@@ -124,7 +122,7 @@ namespace Spine {
 		/// <summary>Resets the DrawOrder to the Setup Pose's draw order</summary>
 		public static void SetDrawOrderToSetupPose (this Skeleton skeleton) {
 			var slotsItems = skeleton.slots.Items;
-			int n = skeleton.slots.Count;
+			var n = skeleton.slots.Count;
 
 			var drawOrder = skeleton.drawOrder;
 			drawOrder.Clear(false);

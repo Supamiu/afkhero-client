@@ -17,7 +17,7 @@ public class Chimera : MonoBehaviour {
 	[SpineSlot]
 	public string targetSlot;
 
-	void Start() {
+    private void Start() {
 		GetComponent<SkeletonRenderer>().skeleton.FindSlot(targetSlot).Attachment = SpineAttachment.GetAttachment(attachmentPath, skeletonDataSource);
 	}
 }

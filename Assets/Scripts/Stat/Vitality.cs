@@ -9,19 +9,19 @@ namespace AFKHero.Stat
 
 		public override void Add (int points)
 		{
-			float ratio = (float)currentHp / (float)Value;
+			var currentRatio = (float)currentHp / (float)Value;
             amount += points;
-            currentHp = ratio * Value;
+            currentHp = currentRatio * Value;
 			if (OnVitalityUpdated != null) {
                 OnVitalityUpdated.Invoke();
 			}
 		}
 
-		public double heal (double amount)
+		public double heal (double pAmount)
 		{
-			double healed = amount;
-			if (currentHp + amount <= Value) {
-                currentHp += amount;
+			var healed = pAmount;
+			if (currentHp + pAmount <= Value) {
+                currentHp += pAmount;
 			} else {
 				healed = Value - currentHp;
                 currentHp = Value;
@@ -36,10 +36,10 @@ namespace AFKHero.Stat
 
 		public event UpdateEvent OnVitalityUpdated;
 
-		void Start ()
+	    private void Start ()
         {
             currentHp = Value;
-            EventDispatcher.Instance.Register("health.fullHeal", new Listener<GameEvent>((ref GameEvent e) =>
+            EventDispatcher.Instance.Register(Events.Stat.Health.FULL_HEAL, new Listener<GameEvent>((ref GameEvent e) =>
             {
                 currentHp = Value;
                 if (OnVitalityUpdated != null)
@@ -48,7 +48,7 @@ namespace AFKHero.Stat
                 }
             }));
 
-            EventDispatcher.Instance.Register("gear.modified", new Listener<GameEvent>((ref GameEvent e) =>
+            EventDispatcher.Instance.Register(Events.Gear.MODIFIED, new Listener<GameEvent>((ref GameEvent e) =>
             {
                 if (OnVitalityUpdated != null)
                 {
@@ -86,7 +86,7 @@ namespace AFKHero.Stat
             return StatType.PRIMARY;
         }
 
-		public override string GetAbbreviation() 
+		public override string GetAbreviation() 
 		{
 			return "Vit";
 		}

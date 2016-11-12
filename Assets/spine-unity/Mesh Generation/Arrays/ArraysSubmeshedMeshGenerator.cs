@@ -37,42 +37,41 @@ namespace Spine.Unity.MeshGeneration {
 	/// Arrays submeshed mesh generator.
 	/// </summary>
 	public class ArraysSubmeshedMeshGenerator : ArraysMeshGenerator, ISubmeshedMeshGenerator {
-
-		readonly List<Slot> separators = new List<Slot>();
+	    private readonly List<Slot> separators = new List<Slot>();
 		public List<Slot> Separators { get { return this.separators; } }
 
 		#region Settings
 		public float ZSpacing { get; set; }
 		#endregion
 
-		readonly DoubleBuffered<SmartMesh> doubleBufferedSmartMesh = new DoubleBuffered<SmartMesh>();
-		readonly SubmeshedMeshInstruction currentInstructions = new SubmeshedMeshInstruction();
-		readonly ExposedList<SubmeshTriangleBuffer> submeshBuffers = new ExposedList<SubmeshTriangleBuffer>();
-		Material[] sharedMaterials = new Material[0];
+	    private readonly DoubleBuffered<SmartMesh> doubleBufferedSmartMesh = new DoubleBuffered<SmartMesh>();
+	    private readonly SubmeshedMeshInstruction currentInstructions = new SubmeshedMeshInstruction();
+	    private readonly ExposedList<SubmeshTriangleBuffer> submeshBuffers = new ExposedList<SubmeshTriangleBuffer>();
+	    private Material[] sharedMaterials = new Material[0];
 
 		public SubmeshedMeshInstruction GenerateInstruction (Skeleton skeleton) {
 			if (skeleton == null) throw new System.ArgumentNullException("skeleton");
 
 			// Count vertices and submesh triangles.
-			int runningVertexCount = 0;
+			var runningVertexCount = 0;
 
-			int submeshTriangleCount = 0;
-			int submeshFirstVertex = 0;
-			int submeshVertexCount = 0;
-			int submeshStartSlotIndex = 0;
+			var submeshTriangleCount = 0;
+			var submeshFirstVertex = 0;
+			var submeshVertexCount = 0;
+			var submeshStartSlotIndex = 0;
 			Material lastMaterial = null;
 
 			var drawOrder = skeleton.drawOrder;
 			var drawOrderItems = drawOrder.Items;
-			int drawOrderCount = drawOrder.Count;
-			int separatorCount = separators.Count;
+			var drawOrderCount = drawOrder.Count;
+			var separatorCount = separators.Count;
 
 			var instructionList = this.currentInstructions.submeshInstructions;
 			instructionList.Clear(false);
 
 			currentInstructions.attachmentList.Clear(false);
 
-			for (int i = 0; i < drawOrderCount; i++) {
+			for (var i = 0; i < drawOrderCount; i++) {
 				var slot = drawOrderItems[i];
 				var attachment = slot.attachment;
 
@@ -98,7 +97,7 @@ namespace Spine.Unity.MeshGeneration {
 				var attachmentMaterial = (Material)((AtlasRegion)rendererObject).page.rendererObject;
 
 				// Populate submesh when material changes. (or when forced to separate by a submeshSeparator)
-				bool separatedBySlot  = ( separatorCount > 0 && separators.Contains(slot) );
+				var separatedBySlot  = ( separatorCount > 0 && separators.Contains(slot) );
 				if (( runningVertexCount > 0 && lastMaterial.GetInstanceID() != attachmentMaterial.GetInstanceID() ) ||	separatedBySlot) {
 
 					instructionList.Add(
@@ -151,20 +150,20 @@ namespace Spine.Unity.MeshGeneration {
 		public MeshAndMaterials GenerateMesh (SubmeshedMeshInstruction meshInstructions) {
 			var smartMesh = doubleBufferedSmartMesh.GetNext();
 			var mesh = smartMesh.mesh;
-			int submeshCount = meshInstructions.submeshInstructions.Count;
+			var submeshCount = meshInstructions.submeshInstructions.Count;
 			var instructionList = meshInstructions.submeshInstructions;
 
 			// STEP 1: Ensure correct buffer sizes.
-			int vertexCount = meshInstructions.vertexCount;
-			bool submeshBuffersResized = ArraysMeshGenerator.EnsureTriangleBuffersSize(submeshBuffers, submeshCount, instructionList.Items);
-			bool vertBufferResized = ArraysMeshGenerator.EnsureSize(vertexCount, ref this.meshVertices, ref this.meshUVs, ref this.meshColors32);
-			Vector3[] vertices = this.meshVertices;
+			var vertexCount = meshInstructions.vertexCount;
+			var submeshBuffersResized = ArraysMeshGenerator.EnsureTriangleBuffersSize(submeshBuffers, submeshCount, instructionList.Items);
+			var vertBufferResized = ArraysMeshGenerator.EnsureSize(vertexCount, ref this.meshVertices, ref this.meshUVs, ref this.meshColors32);
+			var vertices = this.meshVertices;
 
 			// STEP 2: Update buffers based on Skeleton.
-			float zSpacing = this.ZSpacing;
+			var zSpacing = this.ZSpacing;
 			Vector3 meshBoundsMin;
 			Vector3 meshBoundsMax;
-			int attachmentCount = meshInstructions.attachmentList.Count;
+			var attachmentCount = meshInstructions.attachmentList.Count;
 			if (attachmentCount <= 0) {
 				meshBoundsMin = new Vector3(0, 0, 0);
 				meshBoundsMax = new Vector3(0, 0, 0);
@@ -182,18 +181,18 @@ namespace Spine.Unity.MeshGeneration {
 					meshBoundsMax.z = 0f;
 				}
 			}
-			bool structureDoesntMatch = vertBufferResized || submeshBuffersResized || smartMesh.StructureDoesntMatch(meshInstructions);
+			var structureDoesntMatch = vertBufferResized || submeshBuffersResized || smartMesh.StructureDoesntMatch(meshInstructions);
 			// For each submesh, add vertex data from attachments. Also triangles, but only if needed.
-			int vertexIndex = 0; // modified by FillVerts
-			for (int submeshIndex = 0; submeshIndex < submeshCount; submeshIndex++) {
+			var vertexIndex = 0; // modified by FillVerts
+			for (var submeshIndex = 0; submeshIndex < submeshCount; submeshIndex++) {
 				var submeshInstruction = instructionList.Items[submeshIndex];
-				int start = submeshInstruction.startSlot;
-				int end = submeshInstruction.endSlot;
+				var start = submeshInstruction.startSlot;
+				var end = submeshInstruction.endSlot;
 				var skeleton = submeshInstruction.skeleton;
 				ArraysMeshGenerator.FillVerts(skeleton, start, end, zSpacing, this.PremultiplyVertexColors, vertices, this.meshUVs, this.meshColors32, ref vertexIndex, ref this.attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
 				if (structureDoesntMatch) {
 					var currentBuffer = submeshBuffers.Items[submeshIndex];
-					bool isLastSubmesh = (submeshIndex == submeshCount - 1);
+					var isLastSubmesh = (submeshIndex == submeshCount - 1);
 					ArraysMeshGenerator.FillTriangles(ref currentBuffer.triangles, skeleton, submeshInstruction.triangleCount, submeshInstruction.firstVertexIndex, start, end, isLastSubmesh);
 					currentBuffer.triangleCount = submeshInstruction.triangleCount;
 					currentBuffer.firstVertex = submeshInstruction.firstVertexIndex;
@@ -212,7 +211,7 @@ namespace Spine.Unity.MeshGeneration {
 			if (structureDoesntMatch) {
 				// Push new triangles if doesn't match.
 				mesh.subMeshCount = submeshCount;
-				for (int i = 0; i < submeshCount; i++)
+				for (var i = 0; i < submeshCount; i++)
 					mesh.SetTriangles(submeshBuffers.Items[i].triangles, i);			
 
 				TryAddNormalsTo(mesh, vertexCount);
@@ -232,10 +231,10 @@ namespace Spine.Unity.MeshGeneration {
 
 		#region Types
 		// A SmartMesh is a Mesh (with submeshes) that knows what attachments and instructions were used to generate it.
-		class SmartMesh {
+	    private class SmartMesh {
 			public readonly Mesh mesh = SpineMesh.NewMesh();
-			readonly ExposedList<Attachment> attachmentsUsed = new ExposedList<Attachment>();
-			readonly ExposedList<SubmeshInstruction> instructionsUsed = new ExposedList<SubmeshInstruction>();
+		    private readonly ExposedList<Attachment> attachmentsUsed = new ExposedList<Attachment>();
+		    private readonly ExposedList<SubmeshInstruction> instructionsUsed = new ExposedList<SubmeshInstruction>();
 
 			public void Set (Vector3[] verts, Vector2[] uvs, Color32[] colors, SubmeshedMeshInstruction instruction) {
 				mesh.vertices = verts;

@@ -29,8 +29,6 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 using UnityEngine;
-using System.Collections;
-using Spine;
 
 namespace Spine.Unity.Modules {
 	public class AtlasRegionAttacher : MonoBehaviour {
@@ -47,19 +45,19 @@ namespace Spine.Unity.Modules {
 		public AtlasAsset atlasAsset;
 		public SlotRegionPair[] attachments;
 
-		Atlas atlas;
+	    private Atlas atlas;
 
-		void Awake () {
+	    private void Awake () {
 			GetComponent<SkeletonRenderer>().OnRebuild += Apply;
 		}
 
 
-		void Apply (SkeletonRenderer skeletonRenderer) {
+	    private void Apply (SkeletonRenderer skeletonRenderer) {
 			atlas = atlasAsset.GetAtlas();
 
-			AtlasAttachmentLoader loader = new AtlasAttachmentLoader(atlas);
+			var loader = new AtlasAttachmentLoader(atlas);
 
-			float scaleMultiplier = skeletonRenderer.skeletonDataAsset.scale;
+			var scaleMultiplier = skeletonRenderer.skeletonDataAsset.scale;
 
 			var enumerator = attachments.GetEnumerator();
 			while (enumerator.MoveNext()) {

@@ -35,23 +35,22 @@
 
 using UnityEngine;
 using System.Collections;
-using Spine;
 
 namespace Spine.Unity {
 	/// <summary>
 	/// Use this as a condition-blocking yield instruction for Unity Coroutines. 
 	/// The routine will pause until the AnimationState fires an event matching the given event name or EventData reference.</summary>
 	public class WaitForSpineEvent : IEnumerator {
+	    private Spine.EventData m_TargetEvent;
+	    private string m_EventName;
+	    private Spine.AnimationState m_AnimationState;
 
-		Spine.EventData m_TargetEvent;
-		string m_EventName;
-		Spine.AnimationState m_AnimationState;
-
-		bool m_WasFired = false;
-		bool m_unsubscribeAfterFiring = false;
+	    private bool m_WasFired = false;
+	    private bool m_unsubscribeAfterFiring = false;
 
 		#region Constructors
-		void Subscribe (Spine.AnimationState state, Spine.EventData eventDataReference, bool unsubscribe) {
+
+	    private void Subscribe (Spine.AnimationState state, Spine.EventData eventDataReference, bool unsubscribe) {
 			#if PREUNITY_5_3
 			Debug.LogWarning("Unity 5.3 or later is required for Spine Unity custom yield instructions to function correctly.");
 			#endif
@@ -74,7 +73,7 @@ namespace Spine.Unity {
 
 		}
 
-		void SubscribeByName (Spine.AnimationState state, string eventName, bool unsubscribe) {
+	    private void SubscribeByName (Spine.AnimationState state, string eventName, bool unsubscribe) {
 			#if PREUNITY_5_3
 			Debug.LogWarning("Unity 5.3 or later is required for Spine Unity custom yield instructions to function correctly.");
 			#endif
@@ -116,7 +115,8 @@ namespace Spine.Unity {
 		#endregion
 
 		#region Event Handlers
-		void HandleAnimationStateEventByName (AnimationState state, int trackIndex, Spine.Event e) {
+
+	    private void HandleAnimationStateEventByName (AnimationState state, int trackIndex, Spine.Event e) {
 			if (state != m_AnimationState) return;
 
 			m_WasFired |= (e.Data.Name == m_EventName);			// Check event name string match.
@@ -124,7 +124,7 @@ namespace Spine.Unity {
 				state.Event -= HandleAnimationStateEventByName;	// Unsubscribe after correct event fires.
 		}
 
-		void HandleAnimationStateEvent (AnimationState state, int trackIndex, Spine.Event e) {
+	    private void HandleAnimationStateEvent (AnimationState state, int trackIndex, Spine.Event e) {
 			if (state != m_AnimationState) return;
 
 			m_WasFired |= (e.Data == m_TargetEvent);			// Check event data reference match.
@@ -155,7 +155,7 @@ namespace Spine.Unity {
 			return this;
 		}
 
-		void Clear (Spine.AnimationState state) {
+	    private void Clear (Spine.AnimationState state) {
 			state.Event -= HandleAnimationStateEvent;
 			state.Event -= HandleAnimationStateEventByName;
 		}

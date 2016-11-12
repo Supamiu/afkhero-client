@@ -30,7 +30,6 @@
  *****************************************************************************/
 
 using UnityEngine;
-using System.Collections;
 
 namespace Spine.Unity.Modules {
 	[RequireComponent(typeof(SkeletonUtilityBone)), ExecuteInEditMode]
@@ -65,10 +64,10 @@ namespace Spine.Unity.Modules {
 		#endif
 
 
-		Vector3 rayOrigin;
-		Vector3 rayDir = new Vector3(0, -1, 0);
-		float hitY;
-		float lastHitY;
+	    private Vector3 rayOrigin;
+	    private Vector3 rayDir = new Vector3(0, -1, 0);
+	    private float hitY;
+	    private float lastHitY;
 
 		protected override void OnEnable () {
 			base.OnEnable();
@@ -108,7 +107,7 @@ namespace Spine.Unity.Modules {
 				}
 			} else {
 				RaycastHit hit;
-				bool validHit = false;
+				var validHit = false;
 
 				if (useRadius) {
 					validHit = Physics.SphereCast(rayOrigin, castRadius, rayDir, out hit, castDistance + groundOffset, groundMask);
@@ -127,7 +126,7 @@ namespace Spine.Unity.Modules {
 				}
 			}
 
-			Vector3 v = transform.position;
+			var v = transform.position;
 			v.y = Mathf.Clamp(v.y, Mathf.Min(lastHitY, hitY), float.MaxValue);
 			transform.position = v;
 
@@ -137,9 +136,9 @@ namespace Spine.Unity.Modules {
 			lastHitY = hitY;
 		}
 
-		void OnDrawGizmos () {
-			Vector3 hitEnd = rayOrigin + (rayDir * Mathf.Min(castDistance, rayOrigin.y - hitY));
-			Vector3 clearEnd = rayOrigin + (rayDir * castDistance);
+	    private void OnDrawGizmos () {
+			var hitEnd = rayOrigin + (rayDir * Mathf.Min(castDistance, rayOrigin.y - hitY));
+			var clearEnd = rayOrigin + (rayDir * castDistance);
 			Gizmos.DrawLine(rayOrigin, hitEnd);
 
 			if (useRadius) {

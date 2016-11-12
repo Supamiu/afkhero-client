@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using AFKHero.Stat;
 using AFKHero.Core.Event;
@@ -15,28 +14,23 @@ namespace AFKHero.UI.StatsBar
 		public Text text;
 		public Text value;
 
-		void Start()
+	    private void Start()
 		{
-			text.text = stat.GetAbbreviation ();	
+			text.text = stat.GetAbreviation ();	
 		}
 
-		public void SetStat(AbstractStat stat)
+		public void SetStat(AbstractStat pStat)
 		{
-			this.stat = stat;
+			stat = pStat;
 		}
 
-		public void SetIncrementSelect(StatIncrementSelect incrementSelect)
+		public void SetIncrementSelect(StatIncrementSelect pIncrementSelect)
 		{
-			this.incrementSelect = incrementSelect;
-		}
-
-		void UpdateValue()
-		{
-			value.text = Formatter.Format (stat.amount);
+			incrementSelect = pIncrementSelect;
 		}
 	
 		// Update is called once per frame
-		void Update ()
+	    private void Update ()
 		{
 			value.text = Formatter.Format(stat.amount);		
 		}

@@ -41,19 +41,19 @@ namespace Spine.Unity.MeshGeneration {
 		protected Mesh lastGeneratedMesh;
 		public Mesh LastGeneratedMesh {	get { return lastGeneratedMesh; } }
 
-		readonly DoubleBufferedMesh doubleBufferedMesh = new DoubleBufferedMesh();
-		int[] triangles;
+	    private readonly DoubleBufferedMesh doubleBufferedMesh = new DoubleBufferedMesh();
+	    private int[] triangles;
 
 		public Mesh GenerateMesh (Skeleton skeleton) {
-			int totalVertexCount = 0; // size of vertex arrays
-			int totalTriangleCount = 0; // size of index array
+			var totalVertexCount = 0; // size of vertex arrays
+			var totalTriangleCount = 0; // size of index array
 
 			// STEP 1 : GenerateInstruction(). Count verts and tris to determine array sizes.
 			var drawOrderItems = skeleton.drawOrder.Items;
-			int drawOrderCount = skeleton.drawOrder.Count;
-			for (int i = 0; i < drawOrderCount; i++) {
-				Slot slot = drawOrderItems[i];
-				Attachment attachment = slot.attachment;
+			var drawOrderCount = skeleton.drawOrder.Count;
+			for (var i = 0; i < drawOrderCount; i++) {
+				var slot = drawOrderItems[i];
+				var attachment = slot.attachment;
 				int attachmentVertexCount, attachmentTriangleCount;
 				var regionAttachment = attachment as RegionAttachment;
 				if (regionAttachment != null) {					
@@ -91,15 +91,15 @@ namespace Spine.Unity.MeshGeneration {
 				meshBoundsMin.z = -zFauxHalfThickness * scale;
 				meshBoundsMax.z = zFauxHalfThickness * scale;
 
-				int vertexIndex = 0;
+				var vertexIndex = 0;
 				ArraysMeshGenerator.FillVerts(skeleton, 0, drawOrderCount, this.ZSpacing, this.PremultiplyVertexColors, this.meshVertices, this.meshUVs, this.meshColors32, ref vertexIndex, ref this.attachmentVertexBuffer, ref meshBoundsMin, ref meshBoundsMax);
 
 				// Apply scale to vertices
 				meshBoundsMax.x *= scale; meshBoundsMax.y *= scale;
 				meshBoundsMin.x *= scale; meshBoundsMax.y *= scale;
 				var vertices = this.meshVertices;
-				for (int i = 0; i < totalVertexCount; i++) {
-					Vector3 p = vertices[i];
+				for (var i = 0; i < totalVertexCount; i++) {
+					var p = vertices[i];
 					p.x *= scale;
 					p.y *= scale;
 					vertices[i] = p;

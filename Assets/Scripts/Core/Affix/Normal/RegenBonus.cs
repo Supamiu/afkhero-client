@@ -12,7 +12,7 @@ namespace AFKHero.Core.Affix.Normal
 
         public override string GetEventName()
         {
-            return "regen.bonus";
+            return Events.Stat.Regen.BONUS;
         }
 
         public override IListener GetListener()

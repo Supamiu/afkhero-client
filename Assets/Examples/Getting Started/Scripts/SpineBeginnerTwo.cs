@@ -19,13 +19,13 @@ public class SpineBeginnerTwo : MonoBehaviour {
 	public string shootAnimationName;
 	#endregion
 
-	SkeletonAnimation skeletonAnimation;
+    private SkeletonAnimation skeletonAnimation;
 
 	// Spine.AnimationState and Spine.Skeleton are not Unity-serialized objects. You will not see them as fields in the inspector.
 	public Spine.AnimationState spineAnimationState;
 	public Spine.Skeleton skeleton;
 
-	void Start () {
+    private void Start () {
 		// Make sure you get these AnimationState and Skeleton references in Start or Later. Getting and using them in Awake is not guaranteed by default execution order.
 		skeletonAnimation = GetComponent<SkeletonAnimation>();
 		spineAnimationState = skeletonAnimation.state;
@@ -35,7 +35,7 @@ public class SpineBeginnerTwo : MonoBehaviour {
 	}
 		
 	/// <summary>This is an infinitely repeating Unity Coroutine. Read the Unity documentation on Coroutines to learn more.</summary>
-	IEnumerator DoDemoRoutine () {
+	private IEnumerator DoDemoRoutine () {
 		
 		while (true) {
 			// SetAnimation is the basic way to set an animation.

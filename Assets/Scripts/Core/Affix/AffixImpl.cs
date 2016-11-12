@@ -13,11 +13,8 @@ namespace AFKHero.Core.Affix
             {
                 throw new System.Exception("Trying to attach affix with wrong impl !");
             }
-            else
-            {
-                model = affix;
-                DoAttach(go);
-            }
+            model = affix;
+            DoAttach(go);
         }
 
         public abstract void DoAttach(GameObject go);

@@ -7,13 +7,11 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Spine.Unity;
-using UnityEngine.Assertions;
 
 namespace Spine.Unity.Modules {
 	[RequireComponent(typeof(SkeletonRenderer))]
 	public class SkeletonRagdoll2D : MonoBehaviour {
-		static Transform parentSpaceHelper;
+	    private static Transform parentSpaceHelper;
 
 		#region Inspector
 		#if FLIPDEBUG
@@ -54,18 +52,18 @@ namespace Spine.Unity.Modules {
 		public float mix = 1;
 		#endregion
 
-		ISkeletonAnimation targetSkeletonComponent;
-		Skeleton skeleton;
-		Dictionary<Bone, Transform> boneTable = new Dictionary<Bone, Transform>();
-		Transform ragdollRoot;
+	    private ISkeletonAnimation targetSkeletonComponent;
+	    private Skeleton skeleton;
+	    private Dictionary<Bone, Transform> boneTable = new Dictionary<Bone, Transform>();
+	    private Transform ragdollRoot;
 		public Rigidbody2D RootRigidbody { get; private set; }
 		public Bone StartingBone { get; private set; }
-		Vector2 rootOffset;
+	    private Vector2 rootOffset;
 		public Vector3 RootOffset { get { return this.rootOffset; } }
-		bool isActive;
+	    private bool isActive;
 		public bool IsActive { get { return this.isActive; } }
 
-		IEnumerator Start () {
+	    private IEnumerator Start () {
 			if (parentSpaceHelper == null) {
 				parentSpaceHelper = (new GameObject("Parent Space Helper")).transform;
 				#if !FLIPDEBUG
@@ -95,8 +93,8 @@ namespace Spine.Unity.Modules {
 					return new Rigidbody2D[0];
 
 				var rigidBodies = new Rigidbody2D[boneTable.Count];
-				int i = 0;
-				foreach (Transform t in boneTable.Values) {
+				var i = 0;
+				foreach (var t in boneTable.Values) {
 					rigidBodies[i] = t.GetComponent<Rigidbody2D>();
 					i++;
 				}
@@ -114,7 +112,7 @@ namespace Spine.Unity.Modules {
 			isActive = true;
 			mix = 1;
 
-			Bone startingBone = this.StartingBone = skeleton.FindBone(startingBoneName);
+			var startingBone = this.StartingBone = skeleton.FindBone(startingBoneName);
 			RecursivelyCreateBoneProxies(startingBone);
 
 			RootRigidbody = boneTable[startingBone].GetComponent<Rigidbody2D>();
@@ -150,7 +148,7 @@ namespace Spine.Unity.Modules {
 				if (rbParent != null) {
 					var joint = t.gameObject.AddComponent<HingeJoint2D>();
 					joint.connectedBody = rbParent;
-					Vector3 localPos = parentTransform.InverseTransformPoint(t.position);
+					var localPos = parentTransform.InverseTransformPoint(t.position);
 					joint.connectedAnchor = localPos;
 
 					joint.GetComponent<Rigidbody2D>().mass = joint.connectedBody.mass * massFalloffFactor;
@@ -163,8 +161,8 @@ namespace Spine.Unity.Modules {
 			}
 
 			// Ignore collisions among bones.
-			for (int x = 0; x < boneColliders.Count; x++) {
-				for (int y = 0; y < boneColliders.Count; y++) {
+			for (var x = 0; x < boneColliders.Count; x++) {
+				for (var y = 0; y < boneColliders.Count; y++) {
 					if (x == y) continue;
 					Physics2D.IgnoreCollision(boneColliders[x], boneColliders[y]);
 				}
@@ -181,8 +179,8 @@ namespace Spine.Unity.Modules {
 					}
 				}
 				if (destroyedUtilityBoneNames.Count > 0) {
-					string msg = "Destroyed Utility Bones: ";
-					for (int i = 0; i < destroyedUtilityBoneNames.Count; i++) {
+					var msg = "Destroyed Utility Bones: ";
+					for (var i = 0; i < destroyedUtilityBoneNames.Count; i++) {
 						msg += destroyedUtilityBoneNames[i];
 						if (i != destroyedUtilityBoneNames.Count - 1) {
 							msg += ",";
@@ -223,9 +221,9 @@ namespace Spine.Unity.Modules {
 			return StartCoroutine(SmoothMixCoroutine(target, duration));
 		}
 
-		IEnumerator SmoothMixCoroutine (float target, float duration) {
-			float startTime = Time.time;
-			float startMix = mix;
+	    private IEnumerator SmoothMixCoroutine (float target, float duration) {
+			var startTime = Time.time;
+			var startMix = mix;
 			while (mix > 0) {
 				mix = Mathf.SmoothStep(startMix, target, (Time.time - startTime) / duration);
 				yield return null;
@@ -239,9 +237,9 @@ namespace Spine.Unity.Modules {
 				return;
 			}
 
-			Vector3 offset = worldPosition - transform.position;
+			var offset = worldPosition - transform.position;
 			transform.position = worldPosition;
-			foreach (Transform t in boneTable.Values)
+			foreach (var t in boneTable.Values)
 				t.position -= offset;
 
 			UpdateSpineSkeleton(null);
@@ -266,14 +264,14 @@ namespace Spine.Unity.Modules {
 		#endregion
 
 		/// <summary>Generates the ragdoll simulation's Transform and joint setup.</summary>
-		void RecursivelyCreateBoneProxies (Bone b) {
-			string boneName = b.data.name;
+		private void RecursivelyCreateBoneProxies (Bone b) {
+			var boneName = b.data.name;
 			if (stopBoneNames.Contains(boneName))
 				return;
 
 			var boneGameObject = new GameObject(boneName);
 			boneGameObject.layer = this.colliderLayer;
-			Transform t = boneGameObject.transform;
+			var t = boneGameObject.transform;
 			boneTable.Add(b, t);
 
 			t.parent = transform;
@@ -284,7 +282,7 @@ namespace Spine.Unity.Modules {
 			// MITCH: You left "todo: proper ragdoll branching"
 			var colliders = AttachBoundingBoxRagdollColliders(b, boneGameObject, skeleton);
 			if (colliders.Count == 0) {
-				float length = b.data.length;
+				var length = b.data.length;
 				if (length == 0) {
 					var circle = boneGameObject.AddComponent<CircleCollider2D>();
 					circle.radius = thickness * 0.5f;
@@ -301,39 +299,39 @@ namespace Spine.Unity.Modules {
 			rb.isKinematic = spawnKinematic;
 			#endif
 
-			foreach (Bone child in b.Children)
+			foreach (var child in b.Children)
 				RecursivelyCreateBoneProxies(child);
 		}
 
 		/// <summary>Performed every skeleton animation update to translate Unity Transforms positions into Spine bone transforms.</summary>
-		void UpdateSpineSkeleton (ISkeletonAnimation animatedSkeleton) {
+		private void UpdateSpineSkeleton (ISkeletonAnimation animatedSkeleton) {
 			#if FLIPDEBUG
 			if (disableUpdateBones) return;
 			#endif
 
-			bool flipX = skeleton.flipX;
-			bool flipY = skeleton.flipY;
-			bool flipXOR = flipX ^ flipY;
-			bool flipOR = flipX || flipY;
+			var flipX = skeleton.flipX;
+			var flipY = skeleton.flipY;
+			var flipXOR = flipX ^ flipY;
+			var flipOR = flipX || flipY;
 			var startingBone = this.StartingBone;
 
 			foreach (var pair in boneTable) {
 				var b = pair.Key;
 				var t = pair.Value;
-				bool isStartingBone = (b == startingBone);
-				Transform parentTransform = isStartingBone ? ragdollRoot : boneTable[b.Parent];
-				Vector3 parentTransformWorldPosition = parentTransform.position;
-				Quaternion parentTransformWorldRotation = parentTransform.rotation;
+				var isStartingBone = (b == startingBone);
+				var parentTransform = isStartingBone ? ragdollRoot : boneTable[b.Parent];
+				var parentTransformWorldPosition = parentTransform.position;
+				var parentTransformWorldRotation = parentTransform.rotation;
 
 				parentSpaceHelper.position = parentTransformWorldPosition;
 				parentSpaceHelper.rotation = parentTransformWorldRotation;
 				parentSpaceHelper.localScale = parentTransform.localScale;
 
-				Vector3 boneWorldPosition = t.position;
-				Vector3 right = parentSpaceHelper.InverseTransformDirection(t.right);
+				var boneWorldPosition = t.position;
+				var right = parentSpaceHelper.InverseTransformDirection(t.right);
 
-				Vector3 boneLocalPosition = parentSpaceHelper.InverseTransformPoint(boneWorldPosition);
-				float boneLocalRotation = Mathf.Atan2(right.y, right.x) * Mathf.Rad2Deg;
+				var boneLocalPosition = parentSpaceHelper.InverseTransformPoint(boneWorldPosition);
+				var boneLocalRotation = Mathf.Atan2(right.y, right.x) * Mathf.Rad2Deg;
 				if (flipOR) {
 					if (isStartingBone) {
 						if (flipX) boneLocalPosition.x *= -1f;
@@ -356,13 +354,13 @@ namespace Spine.Unity.Modules {
 			}
 		}
 
-		static List<Collider2D> AttachBoundingBoxRagdollColliders (Bone b, GameObject go, Skeleton skeleton) {
+	    private static List<Collider2D> AttachBoundingBoxRagdollColliders (Bone b, GameObject go, Skeleton skeleton) {
 			const string AttachmentNameMarker = "ragdoll";
 			var colliders = new List<Collider2D>();
 			var skin = skeleton.Skin ?? skeleton.Data.DefaultSkin;
 
 			var attachments = new List<Attachment>();
-			foreach (Slot s in skeleton.Slots) {
+			foreach (var s in skeleton.Slots) {
 				if (s.bone == b) {
 					skin.FindAttachmentsForSlot(skeleton.Slots.IndexOf(s), attachments);
 					foreach (var a in attachments) {
@@ -380,10 +378,10 @@ namespace Spine.Unity.Modules {
 
 			return colliders;
 		}
-			
-		static float GetPropagatedRotation (Bone b) {
-			Bone parent = b.Parent;
-			float a = b.AppliedRotation;
+
+	    private static float GetPropagatedRotation (Bone b) {
+			var parent = b.Parent;
+			var a = b.AppliedRotation;
 			while (parent != null) {
 				a += parent.AppliedRotation;
 				parent = parent.parent;
@@ -391,12 +389,12 @@ namespace Spine.Unity.Modules {
 			return a;
 		}
 
-		static Vector3 FlipScale (bool flipX, bool flipY) {
+	    private static Vector3 FlipScale (bool flipX, bool flipY) {
 			return new Vector3(flipX ? -1f : 1f, flipY ? -1f : 1f, 1f);
 		}
 
 		#if UNITY_EDITOR
-		void OnDrawGizmosSelected () {
+	    private void OnDrawGizmosSelected () {
 			if (isActive) {
 				Gizmos.DrawWireSphere(transform.position, thickness * 1.2f);
 				Vector3 newTransformPos = RootRigidbody.position - rootOffset;

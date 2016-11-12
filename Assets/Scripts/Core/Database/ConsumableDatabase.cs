@@ -1,6 +1,7 @@
 using UnityEngine;
 using AFKHero.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AFKHero.Core.Database
 {
@@ -12,26 +13,12 @@ namespace AFKHero.Core.Database
 
         public bool HasItem(int id)
         {
-            foreach (Consumable c in consumables)
-            {
-                if (c.GetId() == id)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return consumables.Any(c => c.GetId() == id);
         }
 
         public Consumable GetItem(int id)
         {
-            foreach (Consumable w in consumables)
-            {
-                if (w.GetId() == id)
-                {
-                    return w;
-                }
-            }
-            return null;
+            return consumables.FirstOrDefault(w => w.GetId() == id);
         }
     }
 }

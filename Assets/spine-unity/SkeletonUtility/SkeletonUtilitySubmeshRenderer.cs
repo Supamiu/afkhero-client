@@ -37,11 +37,11 @@ namespace Spine.Unity.Modules {
 		public Mesh mesh;
 		public int submeshIndex = 0;
 		public Material hiddenPassMaterial;
-		Renderer cachedRenderer;
-		MeshFilter filter;
-		Material[] sharedMaterials;
+	    private Renderer cachedRenderer;
+	    private MeshFilter filter;
+	    private Material[] sharedMaterials;
 
-		void Awake () {
+	    private void Awake () {
 			cachedRenderer = GetComponent<Renderer>();
 			filter = GetComponent<MeshFilter>();
 			sharedMaterials = new Material[0];
@@ -57,7 +57,7 @@ namespace Spine.Unity.Modules {
 				sharedMaterials = parentRenderer.sharedMaterials;
 			}
 
-			for (int i = 0; i < sharedMaterials.Length; i++) {
+			for (var i = 0; i < sharedMaterials.Length; i++) {
 				if (i == submeshIndex)
 					sharedMaterials[i] = mat;
 				else

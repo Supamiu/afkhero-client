@@ -11,13 +11,13 @@ namespace AFKHero.Core.Save
 {
     public class SaveEngine : MonoBehaviour
 	{
-		List<Saveable> saveables;
+	    private List<Saveable> saveables;
 
-		static SaveData save;
+	    private static SaveData save;
 
-		void Awake ()
+	    private void Awake ()
 		{
-			SaveEngine[] instances = FindObjectsOfType<SaveEngine>();
+			var instances = FindObjectsOfType<SaveEngine>();
 			if (instances.Length > 1)
 			{
 				Destroy(instances[instances.Length - 1].gameObject);
@@ -37,21 +37,20 @@ namespace AFKHero.Core.Save
 		}
 
 		// Use this for initialization
-		void Start ()
+	    private void Start ()
 		{
             SceneManager.sceneLoaded += SceneManager_sceneLoaded;
             saveables = new List<Saveable> ();
-			GameObject[] allGO = FindObjectsOfType<GameObject> ();
-			foreach (GameObject go in allGO) {
+			var allGO = FindObjectsOfType<GameObject> ();
+			foreach (var go in allGO) {
 				saveables.AddRange (go.GetComponents<Saveable> ());
 			}
-			if (File.Exists (Application.persistentDataPath + "/AFKHero.save")) {
-                BinaryFormatter bf = new BinaryFormatter();
-                FileStream file = File.Open(Application.persistentDataPath + "/AFKHero.save", FileMode.Open);
-                save = JsonUtility.FromJson<SaveData>(CryptoService.Xor(bf.Deserialize(file).ToString()));
-                file.Close();
-                Load();
-            }
+		    if (!File.Exists(Application.persistentDataPath + "/AFKHero.save")) return;
+		    var bf = new BinaryFormatter();
+		    var file = File.Open(Application.persistentDataPath + "/AFKHero.save", FileMode.Open);
+		    save = JsonUtility.FromJson<SaveData>(CryptoService.Xor(bf.Deserialize(file).ToString()));
+		    file.Close();
+		    Load();
 		}
 
         private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -66,14 +65,12 @@ namespace AFKHero.Core.Save
 		public void Save ()
 		{
             save = new SaveData ();
-            if (saveables != null)
-            {
-                foreach (Saveable s in saveables)
-                {
-                    save = s.Save(save);
-                }
-                Persist();
-            }
+		    if (saveables == null) return;
+		    foreach (var s in saveables)
+		    {
+		        save = s.Save(save);
+		    }
+		    Persist();
 		}
 
 		/// <summary>
@@ -81,15 +78,15 @@ namespace AFKHero.Core.Save
 		/// </summary>
 		public void Load ()
         {
-            foreach (Saveable s in saveables) {
+            foreach (var s in saveables) {
 				s.Load (save);
 			}
 		}
 
 		public void Persist ()
 		{
-			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Create (Application.persistentDataPath + "/AFKHero.save");
+			var bf = new BinaryFormatter ();
+			var file = File.Create (Application.persistentDataPath + "/AFKHero.save");
 			bf.Serialize (file, CryptoService.Xor (JsonUtility.ToJson (save)));
 			file.Close ();
 		}

@@ -18,19 +18,20 @@ namespace AFKHero.UI.Inventory
 
 		public Text dustValue;
 
-		private GameObject[] currentSlots = new GameObject[0];
+		private readonly GameObject[] currentSlots = new GameObject[0];
 
 		private Action OnContentChanged;
 
-		void Awake()
+	    private void Awake()
 		{
 			OnContentChanged = () =>
 			{
 				if (inventorySystem.slots.Length != currentSlots.Length)
 				{
-					SetCapacity(inventorySystem.slots.Length);
+					SetCapacity();
 				}
-				for (int i = 0; i < inventorySystem.capacity - 1; i++)
+			    // ReSharper disable once EmptyForStatement
+				for (var i = 0; i < inventorySystem.capacity - 1; i++)
 				{
 					
 					//currentSlots[i].Show(inventorySystem.slots[i].item);
@@ -46,16 +47,15 @@ namespace AFKHero.UI.Inventory
 			inventorySystem.OnContentChanged += OnContentChanged;
 		}
 
-		void OnEnable()
+	    private void OnEnable()
 		{
 			OnContentChanged.Invoke();
 		}
 
-		/// <summary>
-		/// Met � jout la capacit� de l'inventaire.
-		/// </summary>
-		/// <param name="capacity"></param>
-		private void SetCapacity(int capacity)
+	    /// <summary>
+	    /// Met � jout la capacit� de l'inventaire.
+	    /// </summary>
+	    private static void SetCapacity()
 		{
 			/*
 			GameObject[] newSlots = new GameObject[capacity];

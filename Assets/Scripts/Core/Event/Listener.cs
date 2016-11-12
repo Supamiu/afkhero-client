@@ -12,7 +12,7 @@ namespace AFKHero.Core.Event
         /// <summary>
         /// L'id unique du listener, peut servir.
         /// </summary>
-        private string id;
+        private readonly string id;
 
 		/// <summary>
 		/// La delegate à implémenter 
@@ -51,12 +51,13 @@ namespace AFKHero.Core.Event
             Priority = priority;
 		}
 
-        /// <summary>
-		/// Créé une instance à partir d'un callback, d'une priorité et d'un id.
-		/// </summary>
-		/// <param name="callback">Callback.</param>
-		/// <param name="priority">Priority.</param>
-		public Listener(GameEventAction callback, int priority, string id)
+	    /// <summary>
+	    /// Créé une instance à partir d'un callback, d'une priorité et d'un id.
+	    /// </summary>
+	    /// <param name="callback">Callback.</param>
+	    /// <param name="priority">Priority.</param>
+	    /// <param name="id">Id.</param>
+	    public Listener(GameEventAction callback, int priority, string id)
         {
             Callback = callback;
             Priority = priority;
@@ -71,10 +72,10 @@ namespace AFKHero.Core.Event
 		public void Call (ref object e)
 		{
 			try {
-				T eventData = (T)e;
+				var eventData = (T)e;
                 Callback(ref eventData);
 			} catch (InvalidCastException ex) {
-				Debug.LogError (ex.ToString () + " -> " + e.ToString () + " could not be casted to destination type.");
+				Debug.LogError (ex + " -> " + e + " could not be casted to destination type.");
 			}
 		}
 
@@ -85,7 +86,7 @@ namespace AFKHero.Core.Event
 
         public string GetId()
         {
-            return this.id;
+            return id;
         }
     }
 }

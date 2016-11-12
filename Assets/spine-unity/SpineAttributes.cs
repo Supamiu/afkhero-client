@@ -5,7 +5,6 @@
  * Full irrevocable rights and permissions granted to Esoteric Software
 *****************************************************************************/
 using UnityEngine;
-using System.Collections;
 
 namespace Spine.Unity {
 	public abstract class SpineAttributeBase : PropertyAttribute {
@@ -125,7 +124,7 @@ namespace Spine.Unity {
 			public string name;
 
 			public Hierarchy (string fullPath) {
-				string[] chunks = fullPath.Split(new char[]{'/'}, System.StringSplitOptions.RemoveEmptyEntries);
+				var chunks = fullPath.Split(new char[]{'/'}, System.StringSplitOptions.RemoveEmptyEntries);
 				if (chunks.Length == 0) {
 					skin = "";
 					slot = "";
@@ -138,7 +137,7 @@ namespace Spine.Unity {
 				skin = chunks[0];
 				slot = chunks[1];
 				name = "";
-				for (int i = 2; i < chunks.Length; i++) {
+				for (var i = 2; i < chunks.Length; i++) {
 					name += chunks[i];
 				}
 			}

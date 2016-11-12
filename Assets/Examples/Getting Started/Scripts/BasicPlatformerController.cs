@@ -6,7 +6,6 @@
 *****************************************************************************/
 
 using UnityEngine;
-using System.Collections;
 using Spine.Unity;
 
 [RequireComponent(typeof(CharacterController))]
@@ -65,25 +64,26 @@ public class BasicPlatformerController : MonoBehaviour {
 	public AudioSource footstepAudioSource;
 	[SpineEvent]
 	public string footstepEventName = "Footstep";
-	CharacterController controller;
-	Vector2 velocity = Vector2.zero;
-	Vector2 lastVelocity = Vector2.zero;
-	bool lastGrounded = false;
-	float jumpEndTime = 0;
-	bool jumpInterrupt = false;
-	float forceCrouchEndTime;
-	Quaternion flippedRotation = Quaternion.Euler(0, 180, 0);
 
-	void Awake () {
+    private CharacterController controller;
+    private Vector2 velocity = Vector2.zero;
+    private Vector2 lastVelocity = Vector2.zero;
+    private bool lastGrounded = false;
+    private float jumpEndTime = 0;
+    private bool jumpInterrupt = false;
+    private float forceCrouchEndTime;
+    private Quaternion flippedRotation = Quaternion.Euler(0, 180, 0);
+
+    private void Awake () {
 		controller = GetComponent<CharacterController>();
 	}
 
-	void Start () {
+    private void Start () {
 		//register a callback for Spine Events (in this case, Footstep)
 		skeletonAnimation.state.Event += HandleEvent;
 	}
 
-	void HandleEvent (Spine.AnimationState state, int trackIndex, Spine.Event e) {
+    private void HandleEvent (Spine.AnimationState state, int trackIndex, Spine.Event e) {
 		//play some sound if footstep event fired
 		if (e.Data.Name == footstepEventName) {
 			footstepAudioSource.Stop();
@@ -92,12 +92,12 @@ public class BasicPlatformerController : MonoBehaviour {
 		}
 	}
 
-	void Update () {
+    private void Update () {
 		//control inputs
-		float x = Input.GetAxis(XAxis);
-		float y = Input.GetAxis(YAxis);
+		var x = Input.GetAxis(XAxis);
+		var y = Input.GetAxis(YAxis);
 		//check for force crouch
-		bool crouching = (controller.isGrounded && y < -0.5f) || (forceCrouchEndTime > Time.time);
+		var crouching = (controller.isGrounded && y < -0.5f) || (forceCrouchEndTime > Time.time);
 		velocity.x = 0;
 
 		//Calculate control velocity
@@ -142,7 +142,7 @@ public class BasicPlatformerController : MonoBehaviour {
 		}
 
         
-		Vector2 deltaVelocity = lastVelocity - velocity;
+		var deltaVelocity = lastVelocity - velocity;
 
 		if (!lastGrounded && controller.isGrounded) {
 			//detect hard fall
@@ -186,7 +186,8 @@ public class BasicPlatformerController : MonoBehaviour {
 	}
 
 	#region Utility
-	static float GetRandomPitch (float maxOffset) {
+
+    private static float GetRandomPitch (float maxOffset) {
 		return 1f + Random.Range(-maxOffset, maxOffset);
 	}
 	#endregion

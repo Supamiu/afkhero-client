@@ -18,7 +18,7 @@ namespace AFKHero.UI.DropNotification
 
         public event Action OnRemove;
 
-        void OnEnable()
+        private void OnEnable()
         {
             Invoke("Disappear", 1f);
         }
@@ -30,7 +30,7 @@ namespace AFKHero.UI.DropNotification
             border.color = UITools.GetItemColor(w.rarity);
         }
 
-        void Disappear()
+        private void Disappear()
         {
             animator.SetTrigger("Remove");
         }

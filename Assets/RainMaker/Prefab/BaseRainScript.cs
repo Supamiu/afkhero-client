@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DigitalRuby.RainMaker
 {
@@ -83,7 +79,7 @@ namespace DigitalRuby.RainMaker
                     WindZone.windTurbulence = UnityEngine.Random.Range(WindSpeedRange.x, WindSpeedRange.y);
                     if (Camera.orthographic)
                     {
-                        int val = UnityEngine.Random.Range(0, 2);
+                        var val = UnityEngine.Random.Range(0, 2);
                         WindZone.transform.rotation = Quaternion.Euler(0.0f, (val == 0 ? 90.0f : -90.0f), 0.0f);
                     }
                     else
@@ -120,13 +116,13 @@ namespace DigitalRuby.RainMaker
                     }
                     if (RainFallParticleSystem != null)
                     {
-                        ParticleSystem.EmissionModule e = RainFallParticleSystem.emission;
+                        var e = RainFallParticleSystem.emission;
                         e.enabled = false;
                         RainFallParticleSystem.Stop();
                     }
                     if (RainMistParticleSystem != null)
                     {
-                        ParticleSystem.EmissionModule e = RainMistParticleSystem.emission;
+                        var e = RainMistParticleSystem.emission;
                         e.enabled = false;
                         RainMistParticleSystem.Stop();
                     }
@@ -157,17 +153,17 @@ namespace DigitalRuby.RainMaker
                     }
                     if (RainFallParticleSystem != null)
                     {
-                        ParticleSystem.EmissionModule e = RainFallParticleSystem.emission;
+                        var e = RainFallParticleSystem.emission;
                         e.enabled = RainFallParticleSystem.GetComponent<Renderer>().enabled = true;
                         RainFallParticleSystem.Play();
-                        ParticleSystem.MinMaxCurve rate = e.rate;
+                        var rate = e.rate;
                         rate.mode = ParticleSystemCurveMode.Constant;
                         rate.constantMin = rate.constantMax = RainFallEmissionRate();
                         e.rate = rate;
                     }
                     if (RainMistParticleSystem != null)
                     {
-                        ParticleSystem.EmissionModule e = RainMistParticleSystem.emission;
+                        var e = RainMistParticleSystem.emission;
                         e.enabled = RainMistParticleSystem.GetComponent<Renderer>().enabled = true;
                         RainMistParticleSystem.Play();
                         float emissionRate;
@@ -180,7 +176,7 @@ namespace DigitalRuby.RainMaker
                             // must have RainMistThreshold or higher rain intensity to start seeing mist
                             emissionRate = MistEmissionRate();
                         }
-                        ParticleSystem.MinMaxCurve rate = e.rate;
+                        var rate = e.rate;
                         rate.mode = ParticleSystemCurveMode.Constant;
                         rate.constantMin = rate.constantMax = emissionRate;
                         e.rate = rate;
@@ -214,9 +210,9 @@ namespace DigitalRuby.RainMaker
 
             if (RainFallParticleSystem != null)
             {
-                ParticleSystem.EmissionModule e = RainFallParticleSystem.emission;
+                var e = RainFallParticleSystem.emission;
                 e.enabled = false;
-                Renderer rainRenderer = RainFallParticleSystem.GetComponent<Renderer>();
+                var rainRenderer = RainFallParticleSystem.GetComponent<Renderer>();
                 rainRenderer.enabled = false;
                 rainMaterial = new Material(rainRenderer.material);
                 rainMaterial.EnableKeyword("SOFTPARTICLES_OFF");
@@ -224,18 +220,18 @@ namespace DigitalRuby.RainMaker
             }
             if (RainExplosionParticleSystem != null)
             {
-                ParticleSystem.EmissionModule e = RainExplosionParticleSystem.emission;
+                var e = RainExplosionParticleSystem.emission;
                 e.enabled = false;
-                Renderer rainRenderer = RainExplosionParticleSystem.GetComponent<Renderer>();
+                var rainRenderer = RainExplosionParticleSystem.GetComponent<Renderer>();
                 rainExplosionMaterial = new Material(rainRenderer.material);
                 rainExplosionMaterial.EnableKeyword("SOFTPARTICLES_OFF");
                 rainRenderer.material = rainExplosionMaterial;
             }
             if (RainMistParticleSystem != null)
             {
-                ParticleSystem.EmissionModule e = RainMistParticleSystem.emission;
+                var e = RainMistParticleSystem.emission;
                 e.enabled = false;
-                Renderer rainRenderer = RainMistParticleSystem.GetComponent<Renderer>();
+                var rainRenderer = RainMistParticleSystem.GetComponent<Renderer>();
                 rainRenderer.enabled = false;
                 rainMistMaterial = new Material(rainRenderer.material);
                 if (UseRainMistSoftParticles)

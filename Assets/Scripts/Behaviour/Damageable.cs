@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using AFKHero.Stat;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
@@ -34,22 +33,20 @@ namespace AFKHero.Behaviour
         [Header("Doit-on détruire le gameObject à sa mort physique?")]
         public bool destroyOnDeath = true;
 
-        void Start()
+        private void Start()
         {
             anim = GetComponent<SkeletonAnimation>();
             vitality = GetComponent<Vitality>();
             listener = new Listener<GenericGameEvent<Damage>>((ref GenericGameEvent<Damage> gameEvent) =>
             {
-                if (gameEvent.Data.target == this)
+                if (gameEvent.Data.target != this) return;
+                if (gameEvent.Data.hits)
                 {
-                    if (gameEvent.Data.hits)
-                    {
-                        Damage(gameEvent.Data.damage);
-                    }
+                    Damage(gameEvent.Data.damage);
                 }
             }, 0);
-            EventDispatcher.Instance.Register("attack.damage", listener);
-            anim.state.Complete += (Spine.AnimationState state, int trackIndex, int loopCount) =>
+            EventDispatcher.Instance.Register(Events.Attack.DAMAGE, listener);
+            anim.state.Complete += (state, trackIndex, loopCount) =>
             {
                 if (state.GetCurrent(trackIndex).Animation.Name == deathAnimation)
                 {
@@ -58,7 +55,7 @@ namespace AFKHero.Behaviour
             };
         }
 
-        void Damage(double amount)
+        private void Damage(double amount)
         {
             amount = Math.Round(amount);
             vitality.currentHp -= amount;
@@ -79,14 +76,14 @@ namespace AFKHero.Behaviour
             }
         }
 
-        void Die()
+        private void Die()
         {
-            IEnumerable<IOnDeath> deathListeners = gameObject.GetComponents<Component>().OfType<IOnDeath>();
-            foreach (IOnDeath dlistener in deathListeners)
+            var deathListeners = gameObject.GetComponents<Component>().OfType<IOnDeath>();
+            foreach (var dlistener in deathListeners)
             {
                 dlistener.OnDeath();
             }
-            EventDispatcher.Instance.Unregister("attack.damage", listener);
+            EventDispatcher.Instance.Unregister(Events.Attack.DAMAGE, listener);
             if (onDeath != null)
             {
                 onDeath.Invoke();

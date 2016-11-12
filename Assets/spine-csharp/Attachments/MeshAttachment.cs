@@ -97,9 +97,9 @@ namespace Spine {
 
 		public void UpdateUVs () {
 			float u = RegionU, v = RegionV, width = RegionU2 - RegionU, height = RegionV2 - RegionV;
-			float[] regionUVs = this.regionUVs;
+			var regionUVs = this.regionUVs;
 			if (this.uvs == null || this.uvs.Length != regionUVs.Length) this.uvs = new float[regionUVs.Length];
-			float[] uvs = this.uvs;
+			var uvs = this.uvs;
 			if (RegionRotate) {
 				for (int i = 0, n = uvs.Length; i < n; i += 2) {
 					uvs[i] = u + regionUVs[i + 1] * width;

@@ -33,7 +33,7 @@ namespace AFKHero.Behaviour.Monster
         public double baseDefenseValue;
 
         [Header("Si c'est un boss")]
-        public bool isBoss = false;
+        public bool isBoss;
 
         public List<Drop> dropList;
 
@@ -59,7 +59,7 @@ namespace AFKHero.Behaviour.Monster
             DropEngine.Instance.Drop(dropList);
             if (isBoss)
             {
-                EventDispatcher.Instance.Dispatch("boss.killed", new GenericGameEvent<Spawnable>(this));
+                EventDispatcher.Instance.Dispatch(Events.Boss.KILLED, new GenericGameEvent<Spawnable>(this));
             }
         }
     }

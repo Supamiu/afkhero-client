@@ -6,9 +6,7 @@
 *****************************************************************************/
 
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using Spine;
 
 namespace Spine.Unity {
 	[RequireComponent(typeof(ISkeletonAnimation))]
@@ -46,7 +44,7 @@ namespace Spine.Unity {
 
 			var attachment = skin.GetAttachment(skeleton.FindSlotIndex(slotName), attachmentName);
 			if (attachment is BoundingBoxAttachment) {
-				GameObject go = new GameObject("[BoundingBox]" + attachmentName);
+				var go = new GameObject("[BoundingBox]" + attachmentName);
 				go.transform.parent = parent;
 				go.transform.localPosition = Vector3.zero;
 				go.transform.localRotation = Quaternion.identity;
@@ -54,13 +52,13 @@ namespace Spine.Unity {
 				var collider = go.AddComponent<PolygonCollider2D>();
 				collider.isTrigger = isTrigger;
 				var boundingBox = (BoundingBoxAttachment)attachment;
-				float[] floats = boundingBox.Vertices;
-				int floatCount = floats.Length;
-				int vertCount = floatCount / 2;
+				var floats = boundingBox.Vertices;
+				var floatCount = floats.Length;
+				var vertCount = floatCount / 2;
 
-				Vector2[] verts = new Vector2[vertCount];
-				int v = 0;
-				for (int i = 0; i < floatCount; i += 2, v++) {
+				var verts = new Vector2[vertCount];
+				var v = 0;
+				for (var i = 0; i < floatCount; i += 2, v++) {
 					verts[v].x = floats[i];
 					verts[v].y = floats[i + 1];
 				}
@@ -80,13 +78,13 @@ namespace Spine.Unity {
 
 			var collider = gameObject.AddComponent<PolygonCollider2D>();
 			collider.isTrigger = isTrigger;
-			float[] floats = boundingBox.Vertices;
-			int floatCount = floats.Length;
-			int vertCount = floatCount / 2;
+			var floats = boundingBox.Vertices;
+			var floatCount = floats.Length;
+			var vertCount = floatCount / 2;
 
-			Vector2[] verts = new Vector2[vertCount];
-			int v = 0;
-			for (int i = 0; i < floatCount; i += 2, v++) {
+			var verts = new Vector2[vertCount];
+			var v = 0;
+			for (var i = 0; i < floatCount; i += 2, v++) {
 				verts[v].x = floats[i];
 				verts[v].y = floats[i + 1];
 			}
@@ -97,16 +95,16 @@ namespace Spine.Unity {
 		}
 
 		public static Bounds GetBoundingBoxBounds (BoundingBoxAttachment boundingBox, float depth = 0) {
-			float[] floats = boundingBox.Vertices;
-			int floatCount = floats.Length;
+			var floats = boundingBox.Vertices;
+			var floatCount = floats.Length;
 
-			Bounds bounds = new Bounds();
+			var bounds = new Bounds();
 
 			bounds.center = new Vector3(floats[0], floats[1], 0);
-			for (int i = 2; i < floatCount; i += 2) {
+			for (var i = 2; i < floatCount; i += 2) {
 				bounds.Encapsulate(new Vector3(floats[i], floats[i + 1], 0));
 			}
-			Vector3 size = bounds.size;
+			var size = bounds.size;
 			size.z = depth;
 			bounds.size = size;
 
@@ -119,9 +117,9 @@ namespace Spine.Unity {
 
 		public Transform boneRoot;
 
-		void Update () {
+	    private void Update () {
 			if (boneRoot != null && skeletonRenderer.skeleton != null) {
-				Vector3 flipScale = Vector3.one;
+				var flipScale = Vector3.one;
 				if (skeletonRenderer.skeleton.FlipX)
 					flipScale.x = -1;
 
@@ -146,7 +144,7 @@ namespace Spine.Unity {
 		protected bool hasUtilityConstraints;
 		protected bool needToReprocessBones;
 
-		void OnEnable () {
+	    private void OnEnable () {
 			if (skeletonRenderer == null) {
 				skeletonRenderer = GetComponent<SkeletonRenderer>();
 			}
@@ -169,12 +167,12 @@ namespace Spine.Unity {
 			CollectBones();
 		}
 
-		void Start () {
+	    private void Start () {
 			//recollect because order of operations failure when switching between game mode and edit mode...
 			//		CollectBones();
 		}
 
-		void OnDisable () {
+	    private void OnDisable () {
 			skeletonRenderer.OnRebuild -= HandleRendererReset;
 
 			if (skeletonAnimation != null) {
@@ -184,7 +182,7 @@ namespace Spine.Unity {
 			}
 		}
 
-		void HandleRendererReset (SkeletonRenderer r) {
+	    private void HandleRendererReset (SkeletonRenderer r) {
 			if (OnReset != null)
 				OnReset();
 
@@ -223,9 +221,9 @@ namespace Spine.Unity {
 				return;
 
 			if (boneRoot != null) {
-				List<string> constraintTargetNames = new List<string>();
+				var constraintTargetNames = new List<string>();
 
-				ExposedList<IkConstraint> ikConstraints = skeletonRenderer.skeleton.IkConstraints;
+				var ikConstraints = skeletonRenderer.skeleton.IkConstraints;
 				for (int i = 0, n = ikConstraints.Count; i < n; i++)
 					constraintTargetNames.Add(ikConstraints.Items[i].Target.Data.Name);
 
@@ -264,7 +262,7 @@ namespace Spine.Unity {
 
 		}
 
-		void UpdateLocal (ISkeletonAnimation anim) {
+	    private void UpdateLocal (ISkeletonAnimation anim) {
 			if (needToReprocessBones)
 				CollectBones();
 
@@ -276,17 +274,17 @@ namespace Spine.Unity {
 			UpdateAllBones();
 		}
 
-		void UpdateWorld (ISkeletonAnimation anim) {
+	    private void UpdateWorld (ISkeletonAnimation anim) {
 			UpdateAllBones();
 			for (int i = 0, n = utilityConstraints.Count; i < n; i++)
 				utilityConstraints[i].DoUpdate();
 		}
 
-		void UpdateComplete (ISkeletonAnimation anim) {
+	    private void UpdateComplete (ISkeletonAnimation anim) {
 			UpdateAllBones();
 		}
 
-		void UpdateAllBones () {
+	    private void UpdateAllBones () {
 			if (boneRoot == null)
 				CollectBones();
 				
@@ -311,9 +309,9 @@ namespace Spine.Unity {
 
 		public GameObject SpawnRoot (SkeletonUtilityBone.Mode mode, bool pos, bool rot, bool sca) {
 			GetBoneRoot();
-			Skeleton skeleton = this.skeletonRenderer.skeleton;
+			var skeleton = this.skeletonRenderer.skeleton;
 
-			GameObject go = SpawnBone(skeleton.RootBone, boneRoot, mode, pos, rot, sca);
+			var go = SpawnBone(skeleton.RootBone, boneRoot, mode, pos, rot, sca);
 
 			CollectBones();
 
@@ -323,9 +321,9 @@ namespace Spine.Unity {
 		public GameObject SpawnHierarchy (SkeletonUtilityBone.Mode mode, bool pos, bool rot, bool sca) {
 			GetBoneRoot();
 
-			Skeleton skeleton = this.skeletonRenderer.skeleton;
+			var skeleton = this.skeletonRenderer.skeleton;
 
-			GameObject go = SpawnBoneRecursively(skeleton.RootBone, boneRoot, mode, pos, rot, sca);
+			var go = SpawnBoneRecursively(skeleton.RootBone, boneRoot, mode, pos, rot, sca);
 
 			CollectBones();
 
@@ -333,11 +331,11 @@ namespace Spine.Unity {
 		}
 
 		public GameObject SpawnBoneRecursively (Bone bone, Transform parent, SkeletonUtilityBone.Mode mode, bool pos, bool rot, bool sca) {
-			GameObject go = SpawnBone(bone, parent, mode, pos, rot, sca);
+			var go = SpawnBone(bone, parent, mode, pos, rot, sca);
 
-			ExposedList<Bone> childrenBones = bone.Children;
+			var childrenBones = bone.Children;
 			for (int i = 0, n = childrenBones.Count; i < n; i++) {
-				Bone child = childrenBones.Items[i];
+				var child = childrenBones.Items[i];
 				SpawnBoneRecursively(child, go.transform, mode, pos, rot, sca);
 			}
 
@@ -345,10 +343,10 @@ namespace Spine.Unity {
 		}
 
 		public GameObject SpawnBone (Bone bone, Transform parent, SkeletonUtilityBone.Mode mode, bool pos, bool rot, bool sca) {
-			GameObject go = new GameObject(bone.Data.Name);
+			var go = new GameObject(bone.Data.Name);
 			go.transform.parent = parent;
 
-			SkeletonUtilityBone b = go.AddComponent<SkeletonUtilityBone>();
+			var b = go.AddComponent<SkeletonUtilityBone>();
 			b.skeletonUtility = this;
 			b.position = pos;
 			b.rotation = rot;

@@ -61,13 +61,13 @@ namespace Spine {
 
 		public void FindNamesForSlot (int slotIndex, List<String> names) {
 			if (names == null) throw new ArgumentNullException("names", "names cannot be null.");
-			foreach (AttachmentKeyTuple key in attachments.Keys)
+			foreach (var key in attachments.Keys)
 				if (key.slotIndex == slotIndex) names.Add(key.name);
 		}
 
 		public void FindAttachmentsForSlot (int slotIndex, List<Attachment> attachments) {
 			if (attachments == null) throw new ArgumentNullException("attachments", "attachments cannot be null.");
-			foreach (KeyValuePair<AttachmentKeyTuple, Attachment> entry in this.attachments)
+			foreach (var entry in this.attachments)
 				if (entry.Key.slotIndex == slotIndex) attachments.Add(entry.Value);
 		}
 
@@ -77,11 +77,11 @@ namespace Spine {
 
 		/// <summary>Attach all attachments from this skin if the corresponding attachment from the old skin is currently attached.</summary>
 		internal void AttachAll (Skeleton skeleton, Skin oldSkin) {
-			foreach (KeyValuePair<AttachmentKeyTuple, Attachment> entry in oldSkin.attachments) {
-				int slotIndex = entry.Key.slotIndex;
-				Slot slot = skeleton.slots.Items[slotIndex];
+			foreach (var entry in oldSkin.attachments) {
+				var slotIndex = entry.Key.slotIndex;
+				var slot = skeleton.slots.Items[slotIndex];
 				if (slot.attachment == entry.Value) {
-					Attachment attachment = GetAttachment(slotIndex, entry.Key.name);
+					var attachment = GetAttachment(slotIndex, entry.Key.name);
 					if (attachment != null) slot.Attachment = attachment;
 				}
 			}
@@ -100,7 +100,7 @@ namespace Spine {
 		}
 
 		// Avoids boxing in the dictionary.
-		class AttachmentKeyTupleComparer : IEqualityComparer<AttachmentKeyTuple> {
+	    private class AttachmentKeyTupleComparer : IEqualityComparer<AttachmentKeyTuple> {
 			internal static readonly AttachmentKeyTupleComparer Instance = new AttachmentKeyTupleComparer();
 
 			bool IEqualityComparer<AttachmentKeyTuple>.Equals (AttachmentKeyTuple o1, AttachmentKeyTuple o2) {

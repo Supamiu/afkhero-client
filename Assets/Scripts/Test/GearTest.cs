@@ -1,8 +1,6 @@
 using UnityEngine;
 using AFKHero.Core.Gear;
-using AFKHero.Model;
 using AFKHero.Core.Database;
-using AFKHero.Tools;
 
 public class GearTest : MonoBehaviour
 {
@@ -10,9 +8,9 @@ public class GearTest : MonoBehaviour
 
     public int weaponId;
 
-    void Start()
+    private void Start()
     {
-        Wearable mockWeapon = ItemDatabaseConnector.Instance.GetWearable(weaponId);
+        var mockWeapon = ItemDatabaseConnector.Instance.GetWearable(weaponId);
         mockWeapon.Roll();
         mockWeapon.mainStat = 10;
         if (gear.IsSlotFree(GearSlot.WEAPON))

@@ -55,7 +55,7 @@ namespace Spine {
 			bendDirection = data.bendDirection;
 
 			bones = new ExposedList<Bone>(data.bones.Count);
-			foreach (BoneData boneData in data.bones)
+			foreach (var boneData in data.bones)
 				bones.Add(skeleton.FindBone(boneData.name));
 			target = skeleton.FindBone(data.target.name);
 		}
@@ -65,8 +65,8 @@ namespace Spine {
 		}
 
 		public void Apply () {
-			Bone target = this.target;
-			ExposedList<Bone> bones = this.bones;
+			var target = this.target;
+			var bones = this.bones;
 			switch (bones.Count) {
 			case 1:
 				Apply(bones.Items[0], target.worldX, target.worldY, mix);
@@ -84,11 +84,11 @@ namespace Spine {
 		/// <summary>Adjusts the bone rotation so the tip is as close to the target position as possible. The target is specified
 		/// in the world coordinate system.</summary>
 		static public void Apply (Bone bone, float targetX, float targetY, float alpha) {
-			Bone pp = bone.parent;
-			float id = 1 / (pp.a * pp.d - pp.b * pp.c);
+			var pp = bone.parent;
+			var id = 1 / (pp.a * pp.d - pp.b * pp.c);
 			float x = targetX - pp.worldX, y = targetY - pp.worldY;
 			float tx = (x * pp.d - y * pp.b) * id - bone.x, ty = (y * pp.a - x * pp.c) * id - bone.y;
-			float rotationIK = MathUtils.Atan2(ty, tx) * MathUtils.radDeg - bone.shearX - bone.rotation;
+			var rotationIK = MathUtils.Atan2(ty, tx) * MathUtils.radDeg - bone.shearX - bone.rotation;
 			if (bone.scaleX < 0) rotationIK += 180;
 			if (rotationIK > 180)
 				rotationIK -= 360;
@@ -125,7 +125,7 @@ namespace Spine {
 			} else
 				os2 = 0;
 			float cx = child.x, cy, cwx, cwy, a = parent.a, b = parent.b, c = parent.c, d = parent.d;
-			bool u = Math.Abs(psx - psy) <= 0.0001f;
+			var u = Math.Abs(psx - psy) <= 0.0001f;
 			if (!u) {
 				cy = 0;
 				cwx = a * cx + parent.worldX;
@@ -135,7 +135,7 @@ namespace Spine {
 				cwx = a * cx + b * cy + parent.worldX;
 				cwy = c * cx + d * cy + parent.worldY;
 			}
-			Bone pp = parent.parent;
+			var pp = parent.parent;
 			a = pp.a;
 			b = pp.b;
 			c = pp.c;
@@ -148,7 +148,7 @@ namespace Spine {
 			float l1 = (float)Math.Sqrt(dx * dx + dy * dy), l2 = child.data.length * csx, a1, a2;
 			if (u) {
 				l2 *= psx;
-				float cos = (tx * tx + ty * ty - l1 * l1 - l2 * l2) / (2 * l1 * l2);
+				var cos = (tx * tx + ty * ty - l1 * l1 - l2 * l2) / (2 * l1 * l2);
 				if (cos < -1)
 					cos = -1;
 				else if (cos > 1) cos = 1;
@@ -164,11 +164,11 @@ namespace Spine {
 				float c1 = -2 * bb * l1, c2 = bb - aa;
 				d = c1 * c1 - 4 * c2 * c;
 				if (d >= 0) {
-					float q = (float)Math.Sqrt(d);
+					var q = (float)Math.Sqrt(d);
 					if (c1 < 0) q = -q;
 					q = -(c1 + q) / 2;
 					float r0 = q / c2, r1 = c / q;
-					float r = Math.Abs(r0) < Math.Abs(r1) ? r0 : r1;
+					var r = Math.Abs(r0) < Math.Abs(r1) ? r0 : r1;
 					if (r * r <= dd) {
 						y = (float)Math.Sqrt(dd - r * r) * bendDir;
 						a1 = ta - MathUtils.Atan2(y, r);
@@ -192,7 +192,7 @@ namespace Spine {
 					minDist = d;
 					minX = x;
 				}
-				float angle = (float)Math.Acos(-a * l1 / (aa - bb));
+				var angle = (float)Math.Acos(-a * l1 / (aa - bb));
 				x = a * MathUtils.Cos(angle) + l1;
 				y = b * MathUtils.Sin(angle);
 				d = x * x + y * y;
@@ -217,8 +217,8 @@ namespace Spine {
 				}
 			}
 			outer:
-			float os = MathUtils.Atan2(cy, cx) * s2;
-			float rotation = parent.rotation;
+			var os = MathUtils.Atan2(cy, cx) * s2;
+			var rotation = parent.rotation;
 			a1 = (a1 - os) * MathUtils.radDeg + os1 - rotation;
 			if (a1 > 180)
 				a1 -= 360;

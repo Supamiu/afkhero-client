@@ -11,12 +11,12 @@ namespace Spine.Unity.Modules {
 
 		public float fadeSpeed = 10;
 
-		Color32[] colors;
-		Color32 black = new Color32(0, 0, 0, 0);
-		MeshFilter meshFilter;
-		MeshRenderer meshRenderer;
+	    private Color32[] colors;
+	    private Color32 black = new Color32(0, 0, 0, 0);
+	    private MeshFilter meshFilter;
+	    private MeshRenderer meshRenderer;
 
-		void Awake () {
+	    private void Awake () {
 			meshRenderer = gameObject.AddComponent<MeshRenderer>();
 			meshFilter = gameObject.AddComponent<MeshFilter>();
 		}
@@ -32,7 +32,7 @@ namespace Spine.Unity.Modules {
 			colors = meshFilter.sharedMesh.colors32;
 
 			if ((color.a + color.r + color.g + color.b) > 0) {
-				for (int i = 0; i < colors.Length; i++)
+				for (var i = 0; i < colors.Length; i++)
 					colors[i] = color;
 			}
 
@@ -44,11 +44,11 @@ namespace Spine.Unity.Modules {
 				StartCoroutine(Fade());
 		}
 
-		IEnumerator Fade () {
+	    private IEnumerator Fade () {
 			Color32 c;
-			for (int t = 0; t < 500; t++) {
-				bool breakout = true;
-				for (int i = 0; i < colors.Length; i++) {
+			for (var t = 0; t < 500; t++) {
+				var breakout = true;
+				for (var i = 0; i < colors.Length; i++) {
 					c = colors[i];
 					if (c.a > 0)
 						breakout = false;
@@ -67,14 +67,14 @@ namespace Spine.Unity.Modules {
 			gameObject.SetActive(false);
 		}
 
-		IEnumerator FadeAdditive () {
+	    private IEnumerator FadeAdditive () {
 			Color32 c;
-			Color32 black = this.black;
+			var black = this.black;
 
-			for (int t = 0; t < 500; t++) {
+			for (var t = 0; t < 500; t++) {
 
-				bool breakout = true;
-				for (int i = 0; i < colors.Length; i++) {
+				var breakout = true;
+				for (var i = 0; i < colors.Length; i++) {
 					c = colors[i];
 					black.a = c.a;
 					if (c.r > 0 || c.g > 0 || c.b > 0)

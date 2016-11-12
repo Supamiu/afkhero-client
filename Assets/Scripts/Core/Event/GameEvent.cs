@@ -8,7 +8,7 @@
 		/// <summary>
 		/// Indique si la propagation a été stoppée ou non, utile pour le dispatcher.
 		/// </summary>
-		private bool propagationStopped = false;
+		private bool propagationStopped;
 
 		/// <summary>
 		/// Indique si la propagation a été stoppée ou non.

@@ -30,7 +30,6 @@
  *****************************************************************************/
 using UnityEngine;
 using System.Collections.Generic;
-using Spine.Unity;
 
 namespace Spine.Unity.Modules {
 	
@@ -53,21 +52,21 @@ namespace Spine.Unity.Modules {
 			}
 		}
 
-		MeshRenderer mainMeshRenderer;
+	    private MeshRenderer mainMeshRenderer;
 		public bool copyPropertyBlock = false;
 		[Tooltip("Copies MeshRenderer flags into ")]
 		public bool copyMeshRendererFlags = false;
 		public List<Spine.Unity.Modules.SkeletonPartsRenderer> partsRenderers = new List<SkeletonPartsRenderer>();
 
 		#if UNITY_EDITOR
-		void Reset () {
+	    private void Reset () {
 			if (skeletonRenderer == null)
 				skeletonRenderer = GetComponent<SkeletonRenderer>();
 		}
 		#endif
 		#endregion
 
-		void OnEnable () {
+	    private void OnEnable () {
 			if (skeletonRenderer == null) return;
 			if (copiedBlock == null) copiedBlock = new MaterialPropertyBlock();	
 			mainMeshRenderer = skeletonRenderer.GetComponent<MeshRenderer>();
@@ -78,9 +77,9 @@ namespace Spine.Unity.Modules {
 			#if UNITY_5_4_OR_NEWER
 			if (copyMeshRendererFlags) {
 				var lightProbeUsage = mainMeshRenderer.lightProbeUsage;
-				bool receiveShadows = mainMeshRenderer.receiveShadows;
+				var receiveShadows = mainMeshRenderer.receiveShadows;
 
-				for (int i = 0; i < partsRenderers.Count; i++) {
+				for (var i = 0; i < partsRenderers.Count; i++) {
 					var currentRenderer = partsRenderers[i];
 					if (currentRenderer == null) continue; // skip null items.
 
@@ -107,7 +106,7 @@ namespace Spine.Unity.Modules {
 
 		}
 
-		void OnDisable () {
+	    private void OnDisable () {
 			if (skeletonRenderer == null) return;
 			skeletonRenderer.GenerateMeshOverride -= HandleRender;
 
@@ -119,24 +118,24 @@ namespace Spine.Unity.Modules {
 				s.ClearMesh();		
 		}
 
-		MaterialPropertyBlock copiedBlock;
+	    private MaterialPropertyBlock copiedBlock;
 
-		void HandleRender (SkeletonRenderer.SmartMesh.Instruction instruction) {
-			int rendererCount = partsRenderers.Count;
+	    private void HandleRender (SkeletonRenderer.SmartMesh.Instruction instruction) {
+			var rendererCount = partsRenderers.Count;
 			if (rendererCount <= 0) return;
 
-			int rendererIndex = 0;
+			var rendererIndex = 0;
 
 			if (copyPropertyBlock)
 				mainMeshRenderer.GetPropertyBlock(copiedBlock);
 
 			var submeshInstructions = instruction.submeshInstructions;
 			var submeshInstructionsItems = submeshInstructions.Items;
-			int lastSubmeshInstruction = submeshInstructions.Count - 1;
+			var lastSubmeshInstruction = submeshInstructions.Count - 1;
 
 			var currentRenderer = partsRenderers[rendererIndex];
-			bool addNormals = skeletonRenderer.calculateNormals;
-			bool addTangents = skeletonRenderer.calculateTangents;
+			var addNormals = skeletonRenderer.calculateNormals;
+			var addTangents = skeletonRenderer.calculateTangents;
 				
 			for (int si = 0, start = 0; si <= lastSubmeshInstruction; si++) {
 				if (submeshInstructionsItems[si].forceSeparate || si == lastSubmeshInstruction) {

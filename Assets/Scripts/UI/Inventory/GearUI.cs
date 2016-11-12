@@ -1,6 +1,5 @@
 using UnityEngine;
 using AFKHero.Core.Gear;
-using System;
 
 namespace AFKHero.UI.Inventory
 {
@@ -23,12 +22,12 @@ namespace AFKHero.UI.Inventory
         public GearSlotUI ring2;
         public GearSlotUI belt;
 
-        void Awake()
+        private void Awake()
         {
             gear.GearChangeEvent += OnContentChanged;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             OnContentChanged();
         }

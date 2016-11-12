@@ -2,6 +2,7 @@ using UnityEngine;
 using AFKHero.Model;
 using AFKHero.Common;
 using System.Collections.Generic;
+using System.Linq;
 using AFKHero.Behaviour.Monster;
 using AFKHero.Core.Event;
 using AFKHero.Core.Save;
@@ -23,7 +24,7 @@ namespace AFKHero.Core
         [Header("Mondes existants")]
         private List<World> worlds;
 
-        void Start()
+        private void Start()
         {
             worlds = new List<World>(ResourceLoader.Instance.LoadWorldDatabase().worlds);
             if (worlds.Count == 0)
@@ -34,7 +35,7 @@ namespace AFKHero.Core
             SetWorld(GetCurrentWorld());
             EventDispatcher.Instance.Register("boss.killed", new Listener<GenericGameEvent<Spawnable>>((ref GenericGameEvent<Spawnable> e) =>
             {
-                foreach(Stage s in GetAllStages())
+                foreach(var s in GetAllStages())
                 {
                     if(GetStageEnd(s) <= e.Data.Distance)
                     {
@@ -46,10 +47,10 @@ namespace AFKHero.Core
 
         public float GetCheckpoint()
         {
-            World w = GetCurrentWorld();
-            float stageDistance = AFKHero.WORLD_LENGTH / w.stages.Length;
-            float distance = 0f;
-            foreach (Stage s in w.stages)
+            var w = GetCurrentWorld();
+            var stageDistance = AFKHero.WORLD_LENGTH / w.stages.Length;
+            var distance = 0f;
+            foreach (var s in w.stages)
             {
                 if (Progression.Instance.IsStageDone(s, distance))
                 {
@@ -70,15 +71,11 @@ namespace AFKHero.Core
 
         public World GetCurrentWorld()
         {
-            foreach (World w in worlds)
+            foreach (var w in worlds)
             {
-                foreach (Stage s in w.stages)
+                if (w.stages.Any(s => !Progression.Instance.IsStageDone(s, GetStageEnd(s))))
                 {
-                    //Si on a dépassé ce stage, on vérifie qu'il a bien été fait.
-                    if (!Progression.Instance.IsStageDone(s, GetStageEnd(s)))
-                    {
-                        return w;
-                    }
+                    return w;
                 }
             }
             throw new System.Exception("Empty worlds or Game finished.");
@@ -91,23 +88,17 @@ namespace AFKHero.Core
         /// <returns></returns>
         public List<Spawnable> GetSpawnList(float distance)
         {
-            foreach (Stage s in GetAllStages())
+            foreach (var s in GetAllStages())
             {
                 if (GetStageEnd(s) > distance)
                 {
                     //Si on est dans ce stage.
                     return s.bestiary;
                 }
-                else
-                {
-                    //Si on a dépassé ce stage, on vérifie qu'il a bien été fait.
-                    if (!Progression.Instance.IsStageDone(s, GetStageEnd(s)))
-                    {
-                        List<Spawnable> bossSpawn = new List<Spawnable>();
-                        bossSpawn.Add(s.boss);
-                        return bossSpawn;
-                    }
-                }
+                //Si on a dépassé ce stage, on vérifie qu'il a bien été fait.
+                if (Progression.Instance.IsStageDone(s, GetStageEnd(s))) continue;
+                var bossSpawn = new List<Spawnable> {s.boss};
+                return bossSpawn;
             }
             throw new System.Exception("Empty world or Game finished.");
         }
@@ -119,20 +110,17 @@ namespace AFKHero.Core
         /// <returns></returns>
         public float GetStageStart(Stage stage)
         {
-            float distance = 0f;
-            foreach (World w in worlds)
+            var distance = 0f;
+            foreach (var w in worlds)
             {
-                float stageDistance = AFKHero.WORLD_LENGTH / w.stages.Length;
-                foreach (Stage s in w.stages)
+                var stageDistance = AFKHero.WORLD_LENGTH / w.stages.Length;
+                foreach (var s in w.stages)
                 {
                     if (stage.Equals(s))
                     {
                         return distance;
                     }
-                    else
-                    {
-                        distance += stageDistance;
-                    }
+                    distance += stageDistance;
                 }
             }
             return distance;
@@ -145,11 +133,11 @@ namespace AFKHero.Core
         /// <returns></returns>
         public float GetStageEnd(Stage stage)
         {
-            float distance = 0f;
-            foreach (World w in worlds)
+            var distance = 0f;
+            foreach (var w in worlds)
             {
-                float stageDistance = AFKHero.WORLD_LENGTH / w.stages.Length;
-                foreach (Stage s in w.stages)
+                var stageDistance = AFKHero.WORLD_LENGTH / w.stages.Length;
+                foreach (var s in w.stages)
                 {
                     distance += stageDistance;
                     if (stage.Equals(s))
@@ -167,15 +155,7 @@ namespace AFKHero.Core
         /// <returns></returns>
         public List<Stage> GetAllStages()
         {
-            List<Stage> stages = new List<Stage>();
-            foreach (World w in worlds)
-            {
-                foreach (Stage s in w.stages)
-                {
-                    stages.Add(s);
-                }
-            }
-            return stages;
+            return worlds.SelectMany(w => w.stages).ToList();
         }
 
         /// <summary>
@@ -184,18 +164,18 @@ namespace AFKHero.Core
         /// <param name="world"></param>
         private void SetWorld(World world)
         {
-            SpriteRenderer[] firstPlanSprites = parallaxFirstPlan.GetComponentsInChildren<SpriteRenderer>();
-            SpriteRenderer[] secondPlanSprites = parallaxSecondPlan.GetComponentsInChildren<SpriteRenderer>();
-            SpriteRenderer[] thirdPlanSprites = parallaxThirdPlan.GetComponentsInChildren<SpriteRenderer>();
-            foreach (SpriteRenderer s in firstPlanSprites)
+            var firstPlanSprites = parallaxFirstPlan.GetComponentsInChildren<SpriteRenderer>();
+            var secondPlanSprites = parallaxSecondPlan.GetComponentsInChildren<SpriteRenderer>();
+            var thirdPlanSprites = parallaxThirdPlan.GetComponentsInChildren<SpriteRenderer>();
+            foreach (var s in firstPlanSprites)
             {
                 s.sprite = world.parallaxFirstPlan;
             }
-            foreach (SpriteRenderer s in secondPlanSprites)
+            foreach (var s in secondPlanSprites)
             {
                 s.sprite = world.parallaxSecondPlan;
             }
-            foreach (SpriteRenderer s in thirdPlanSprites)
+            foreach (var s in thirdPlanSprites)
             {
                 s.sprite = world.parallaxThirdPlan;
             }

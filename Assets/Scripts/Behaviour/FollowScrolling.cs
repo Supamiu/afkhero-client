@@ -8,17 +8,17 @@ namespace AFKHero.Behaviour
     [RequireComponent(typeof(AutoMoveAndRotate))]
     public class FollowScrolling : MonoBehaviour, IOnDeath
     {
-        AutoMoveAndRotate movement;
+        private AutoMoveAndRotate movement;
 
-        public float relativeSpeed = 0f;
+        public float relativeSpeed;
 
-        IListener listener;
-        IListener speedBonusListener;
+        private IListener listener;
+        private IListener speedBonusListener;
 
-        ScrollingScript scrolling;
+        private ScrollingScript scrolling;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             scrolling = GameObject.FindGameObjectsWithTag("Ground")[0].GetComponent<ScrollingScript>();
             movement = GetComponent<AutoMoveAndRotate>();
@@ -33,14 +33,14 @@ namespace AFKHero.Behaviour
             {
                 movement.moveUnitsPerSecond.value.x = -1 * (scrolling.Speed + relativeSpeed);
             }, 10);
-            EventDispatcher.Instance.Register("movement.enabled", listener);
-            EventDispatcher.Instance.Register("movespeed.bonus", speedBonusListener);
+            EventDispatcher.Instance.Register(Events.Movement.ENABLED, listener);
+            EventDispatcher.Instance.Register(Events.Stat.Movespeed.BONUS, speedBonusListener);
         }
 
         public void OnDeath()
         {
-            EventDispatcher.Instance.Unregister("movement.enabled", listener);
-            EventDispatcher.Instance.Unregister("movespeed.bonus", speedBonusListener);
+            EventDispatcher.Instance.Unregister(Events.Movement.ENABLED, listener);
+            EventDispatcher.Instance.Unregister(Events.Stat.Movespeed.BONUS, speedBonusListener);
         }
     }
 }

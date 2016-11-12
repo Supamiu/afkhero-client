@@ -32,7 +32,6 @@
 using System;
 using System.IO;
 using UnityEngine;
-using Spine;
 
 namespace Spine.Unity {
 	public class SkeletonDataAsset : ScriptableObject {
@@ -52,7 +51,7 @@ namespace Spine.Unity {
 		private SkeletonData skeletonData;
 		private AnimationStateData stateData;
 
-		void OnEnable () {
+	    private void OnEnable () {
 			if (atlasAssets == null)
 				atlasAssets = new AtlasAsset[0];
 		}
@@ -90,8 +89,8 @@ namespace Spine.Unity {
 			}
 			#endif
 
-			Atlas[] atlasArr = new Atlas[atlasAssets.Length];
-			for (int i = 0; i < atlasAssets.Length; i++) {
+			var atlasArr = new Atlas[atlasAssets.Length];
+			for (var i = 0; i < atlasAssets.Length; i++) {
 				if (atlasAssets[i] == null) {
 					Reset();
 					return null;

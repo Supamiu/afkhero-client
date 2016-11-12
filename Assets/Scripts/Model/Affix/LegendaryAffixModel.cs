@@ -1,6 +1,3 @@
-using UnityEngine;
-using System.Collections;
-
 namespace AFKHero.Model.Affix
 {
     [System.Serializable]

@@ -6,10 +6,7 @@
 *****************************************************************************/
 
 using System;
-using System.IO;
-using System.Collections.Generic;
 using UnityEngine;
-using Spine;
 
 namespace Spine.Unity {
 	/// <summary>Sets a GameObject's transform to match a bone on a Spine skeleton.</summary>
@@ -73,7 +70,7 @@ namespace Spine.Unity {
 			DoUpdate();
 		}
 
-		void OnEnable () {
+	    private void OnEnable () {
 			skeletonUtility = SkeletonUtility.GetInParent<SkeletonUtility>(transform);
 
 			if (skeletonUtility == null)
@@ -83,11 +80,11 @@ namespace Spine.Unity {
 			skeletonUtility.OnReset += HandleOnReset;
 		}
 
-		void HandleOnReset () {
+	    private void HandleOnReset () {
 			Reset();
 		}
 
-		void OnDisable () {
+	    private void OnDisable () {
 			if (skeletonUtility != null) {
 				skeletonUtility.OnReset -= HandleOnReset;
 				skeletonUtility.UnregisterBone(this);
@@ -100,7 +97,7 @@ namespace Spine.Unity {
 				return;
 			}
 
-			Spine.Skeleton skeleton = skeletonUtility.skeletonRenderer.skeleton;
+			var skeleton = skeletonUtility.skeletonRenderer.skeleton;
 
 			if (bone == null) {
 				if (boneName == null || boneName.Length == 0)
@@ -114,7 +111,7 @@ namespace Spine.Unity {
 				}
 			}
 
-			float skeletonFlipRotation = (skeleton.flipX ^ skeleton.flipY) ? -1f : 1f;
+			var skeletonFlipRotation = (skeleton.flipX ^ skeleton.flipY) ? -1f : 1f;
 
 			// MITCH : remove flipX
 			//		float flipCompensation = 0;
@@ -139,7 +136,7 @@ namespace Spine.Unity {
 						cachedTransform.localRotation = Quaternion.Euler(0, 0, bone.AppliedRotation);
 						//}
 					} else {
-						Vector3 euler = skeletonTransform.rotation.eulerAngles;
+						var euler = skeletonTransform.rotation.eulerAngles;
 						cachedTransform.rotation = Quaternion.Euler(euler.x, euler.y, euler.z + (bone.WorldRotationX * skeletonFlipRotation));
 					}
 				}
@@ -162,7 +159,7 @@ namespace Spine.Unity {
 					}
 
 					if (rotation) {
-						float angle = Mathf.LerpAngle(bone.Rotation, cachedTransform.localRotation.eulerAngles.z, overrideAlpha);
+						var angle = Mathf.LerpAngle(bone.Rotation, cachedTransform.localRotation.eulerAngles.z, overrideAlpha);
 
 						// MITCH : remove flipX
 						//					float angle = Mathf.LerpAngle(bone.Rotation, cachedTransform.localRotation.eulerAngles.z, overrideAlpha) + flipCompensation;
@@ -197,14 +194,14 @@ namespace Spine.Unity {
 						return;
 
 					if (position) {
-						Vector3 pos = parentReference.InverseTransformPoint(cachedTransform.position);
+						var pos = parentReference.InverseTransformPoint(cachedTransform.position);
 						bone.x = Mathf.Lerp(bone.x, pos.x, overrideAlpha);
 						bone.y = Mathf.Lerp(bone.y, pos.y, overrideAlpha);
 					}
 
 					// MITCH
 					if (rotation) {
-						float angle = Mathf.LerpAngle(bone.Rotation, Quaternion.LookRotation(flipX ? Vector3.forward * -1 : Vector3.forward, parentReference.InverseTransformDirection(cachedTransform.up)).eulerAngles.z, overrideAlpha);
+						var angle = Mathf.LerpAngle(bone.Rotation, Quaternion.LookRotation(flipX ? Vector3.forward * -1 : Vector3.forward, parentReference.InverseTransformDirection(cachedTransform.up)).eulerAngles.z, overrideAlpha);
 
 						// MITCH : remove flipX
 						//					float angle = Mathf.LerpAngle(bone.Rotation, Quaternion.LookRotation(flipX ? Vector3.forward * -1 : Vector3.forward, parentReference.InverseTransformDirection(cachedTransform.up)).eulerAngles.z, overrideAlpha) + flipCompensation;
@@ -272,7 +269,7 @@ namespace Spine.Unity {
 
 
 		#if UNITY_EDITOR
-		void OnDrawGizmos () {
+	    private void OnDrawGizmos () {
 			// MITCH : nonuniform scale
 			//		if (NonUniformScaleWarning) {
 			//			Gizmos.DrawIcon(transform.position + new Vector3(0, 0.128f, 0), "icon-warning");

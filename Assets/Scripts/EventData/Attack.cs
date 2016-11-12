@@ -1,5 +1,4 @@
 using AFKHero.Behaviour;
-using UnityEngine;
 
 namespace AFKHero.EventData
 {

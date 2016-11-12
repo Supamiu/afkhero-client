@@ -3,7 +3,6 @@ using AFKHero.EventData;
 using AFKHero.Behaviour;
 using AFKHero.Tools;
 using AFKHero.Core.Save;
-using System;
 
 namespace AFKHero.Stat
 {
@@ -14,26 +13,23 @@ namespace AFKHero.Stat
 	{
 		private Damageable damageable;
 
-		void Start ()
+	    private void Start ()
 		{
             damageable = GetComponent<Damageable> ();
-			EventDispatcher.Instance.Register ("attack.compute", new Listener<GenericGameEvent<Attack>> ((ref GenericGameEvent<Attack> e) => {
-				if (e.Data.target == damageable) {
-					double precision = e.Data.attacker.GetComponent<Agility> ().Value;
-					bool hits = GetHits(precision);
-					e.Data.hits = hits;
-					if (precision > Value) {
-						float bonus = RatioEngine.Instance.GetCritBonus (precision, Value);
-						e.Data.critChances += bonus;
-					}
-				}
-
+			EventDispatcher.Instance.Register (Events.Attack.COMPUTE, new Listener<GenericGameEvent<Attack>> ((ref GenericGameEvent<Attack> e) => {
+			    if (e.Data.target != damageable) return;
+			    var precision = e.Data.attacker.GetComponent<Agility> ().Value;
+			    var hits = GetHits(precision);
+			    e.Data.hits = hits;
+			    if (!(precision > Value)) return;
+			    var bonus = RatioEngine.Instance.GetCritBonus (precision, Value);
+			    e.Data.critChances += bonus;
 			}, 3000));
 		}
 
-		public override void Add (int amount)
+		public override void Add (int pAmount)
 		{
-			this.amount += amount;
+			amount += pAmount;
 		}
 
 		private bool GetHits (double precision)
@@ -58,7 +54,7 @@ namespace AFKHero.Stat
             return StatType.PRIMARY;
 		}
 
-		public override string GetAbbreviation() 
+		public override string GetAbreviation() 
 		{
 			return "Esq";
 		}

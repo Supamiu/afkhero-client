@@ -7,30 +7,28 @@ namespace AFKHero.Behaviour
     [RequireComponent(typeof(ScrollingScript))]
 	public class Ground : MonoBehaviour
 	{
+	    private ScrollingScript scrolling;
 
-		ScrollingScript scrolling;
+	    private float time;
 
-		float time = 0f;
+	    private const float tickInterval = 0.5f;
 
-		float tickInterval = 0.5f;
-
-		// Use this for initialization
-		void Start ()
+	    // Use this for initialization
+	    private void Start ()
 		{
             scrolling = GetComponent<ScrollingScript> ();
 		}
 
-		void FixedUpdate(){
+	    private void FixedUpdate(){
             time += Time.fixedDeltaTime;
-			if (time >= tickInterval) {
-                Tick();
-                time = 0f;
-			}
-		}
+	        if (!(time >= tickInterval)) return;
+	        Tick();
+	        time = 0f;
+	    }
 
-		void Tick() {
+	    private void Tick() {
 			if (scrolling.moving) {
-				EventDispatcher.Instance.Dispatch("movement.moved", new GenericGameEvent<float>(scrolling.Speed/4f));
+				EventDispatcher.Instance.Dispatch(Events.Movement.MOVED, new GenericGameEvent<float>(scrolling.Speed/4f));
 			}
 		}
 	}

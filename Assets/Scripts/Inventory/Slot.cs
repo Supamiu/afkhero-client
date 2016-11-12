@@ -24,19 +24,16 @@ namespace AFKHero.Inventory
             stack--;
         }
 
-        public bool Store(Item item)
+        public bool Store(Item pItem)
         {
             if (IsFree())
             {
-                this.item = item;
+                item = pItem;
                 return true;
             }
-            else if (item.GetId() == this.item.GetId() && GetMaxStack() < stack)
-            {
-                stack++;
-                return true;
-            }
-            return false;
+            if (pItem.GetId() != item.GetId() || GetMaxStack() >= stack) return false;
+            stack++;
+            return true;
         }
 
         public int GetMaxStack()

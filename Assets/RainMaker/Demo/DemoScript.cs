@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace DigitalRuby.RainMaker
 {
@@ -48,7 +47,7 @@ namespace DigitalRuby.RainMaker
 
         private void UpdateMovement()
         {
-            float speed = 5.0f * Time.deltaTime;
+            var speed = 5.0f * Time.deltaTime;
 
             if (Input.GetKey(KeyCode.W))
             {
@@ -92,8 +91,8 @@ namespace DigitalRuby.RainMaker
                 rotationX = ClampAngle(rotationX, minimumX, maximumX);
                 rotationY = ClampAngle(rotationY, minimumY, maximumY);
 
-                Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
-                Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
+                var xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
+                var yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
 
                 transform.localRotation = originalRotation * xQuaternion * yQuaternion;
             }
@@ -102,7 +101,7 @@ namespace DigitalRuby.RainMaker
                 rotationX += Input.GetAxis("Mouse X") * sensitivityX;
                 rotationX = ClampAngle(rotationX, minimumX, maximumX);
 
-                Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
+                var xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
                 transform.localRotation = originalRotation * xQuaternion;
             }
             else
@@ -110,7 +109,7 @@ namespace DigitalRuby.RainMaker
                 rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
                 rotationY = ClampAngle(rotationY, minimumY, maximumY);
 
-                Quaternion yQuaternion = Quaternion.AngleAxis(-rotationY, Vector3.right);
+                var yQuaternion = Quaternion.AngleAxis(-rotationY, Vector3.right);
                 transform.localRotation = originalRotation * yQuaternion;
             }
         }

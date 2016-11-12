@@ -15,7 +15,7 @@ public class WeaponUI : MonoBehaviour {
 
     private Wearable weapon;
 
-    void Awake()
+    private void Awake()
     {
         gear.GearChangeEvent += () =>
         {

@@ -31,7 +31,6 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using Spine;
 
 namespace Spine.Unity.Modules {
 	public class SpriteAttacher : MonoBehaviour {
@@ -46,7 +45,7 @@ namespace Spine.Unity.Modules {
 		private SpriteAttachmentLoader loader;
 		private RegionAttachment attachment;
 
-		void Start () {
+	    private void Start () {
 			if (attachOnStart)
 				Attach();
 		}
@@ -78,8 +77,8 @@ namespace Spine.Unity.Modules {
 		//Shouldn't need to clear this, should just prevent redoing premultiply alpha pass on packed atlases
 		public static List<int> premultipliedAtlasIds = new List<int>();
 
-		Sprite sprite;
-		Shader shader;
+	    private Sprite sprite;
+	    private Shader shader;
 
 		public SpriteAttachmentLoader (Sprite sprite, Shader shader) {
 
@@ -91,15 +90,15 @@ namespace Spine.Unity.Modules {
 			this.sprite = sprite;
 			this.shader = shader;
 
-			Texture2D tex = sprite.texture;
+			var tex = sprite.texture;
 			//premultiply texture if it hasn't been yet
-			int instanceId = tex.GetInstanceID();
+			var instanceId = tex.GetInstanceID();
 			if (!premultipliedAtlasIds.Contains(instanceId)) {
 				try {
 					var colors = tex.GetPixels();
 					Color c;
 					float a;
-					for (int i = 0; i < colors.Length; i++) {
+					for (var i = 0; i < colors.Length; i++) {
 						c = colors[i];
 						a = c.a;
 						c.r *= a;
@@ -119,10 +118,10 @@ namespace Spine.Unity.Modules {
 		}
 
 		public RegionAttachment NewRegionAttachment (Skin skin, string name, string path) {
-			RegionAttachment attachment = new RegionAttachment(name);
+			var attachment = new RegionAttachment(name);
 
-			Texture2D tex = sprite.texture;
-			int instanceId = tex.GetInstanceID();
+			var tex = sprite.texture;
+			var instanceId = tex.GetInstanceID();
 			AtlasRegion atlasRegion;
 
 			// Check cache first
@@ -139,7 +138,7 @@ namespace Spine.Unity.Modules {
 
 				// Create faux-region to play nice with SkeletonRenderer.
 				atlasRegion = new AtlasRegion();
-				AtlasPage page = new AtlasPage();
+				var page = new AtlasPage();
 				page.rendererObject = material;
 				atlasRegion.page = page;
 
@@ -147,7 +146,7 @@ namespace Spine.Unity.Modules {
 				atlasTable[instanceId] = atlasRegion;
 			}
 
-			Rect texRect = sprite.textureRect;
+			var texRect = sprite.textureRect;
 
 			//normalize rect to UV space of packed atlas
 			texRect.x = Mathf.InverseLerp(0, tex.width, texRect.x);
@@ -155,11 +154,11 @@ namespace Spine.Unity.Modules {
 			texRect.width = Mathf.InverseLerp(0, tex.width, texRect.width);
 			texRect.height = Mathf.InverseLerp(0, tex.height, texRect.height);
 
-			Bounds bounds = sprite.bounds;
-			Vector3 size = bounds.size;
+			var bounds = sprite.bounds;
+			var size = bounds.size;
 
 			//MITCH: left todo: make sure this rotation thing actually works
-			bool rotated = false;
+			var rotated = false;
 			if (sprite.packed)
 				rotated = sprite.packingRotation == SpritePackingRotation.Any;
 
@@ -211,7 +210,7 @@ namespace Spine.Unity.Modules {
 			var att = sprite.ToRegionAttachment(shaderName);
 
 			var slotIndex = skeletonData.FindSlotIndex(slotName);
-			Skin skin = skeletonData.defaultSkin;
+			var skin = skeletonData.defaultSkin;
 			if (skinName != "")
 				skin = skeletonData.FindSkin(skinName);
 

@@ -24,7 +24,7 @@ namespace AFKHero.UI.HeroMenu
 
 		private float percent = 1f;
 
-		void Start ()
+	    private void Start ()
 		{
 			barImage = bar.GetComponent<Image> ();
 
@@ -32,16 +32,12 @@ namespace AFKHero.UI.HeroMenu
             //maxWidth = barRect.sizeDelta.x;
 
             hp = hero.GetComponent <Vitality> ();
-            hero.OnDamaged += () => {
-                UpdateBar();
-			};
-            hp.OnVitalityUpdated += () => {
-                UpdateBar();
-			};
+            hero.OnDamaged += UpdateBar;
+            hp.OnVitalityUpdated += UpdateBar;
             UpdateBar();
 		}
 
-		void UpdateBar ()
+	    private void UpdateBar ()
 		{
             percent = (float)(hp.currentHp / hp.Value);
 			if (percent <= 0.33f) {
@@ -49,15 +45,15 @@ namespace AFKHero.UI.HeroMenu
 			} else if (percent <= 0.66f) {
                 bar.color = Color.yellow;
 			} else {
-				Color color = new Color ();
+				Color color;
 				ColorUtility.TryParseHtmlString("#51C304FF", out color);
 				bar.color = color;
 			}
-			double hpValue = hp.currentHp > 0 ? hp.currentHp : 0;
+			var hpValue = hp.currentHp > 0 ? hp.currentHp : 0;
             innerText.text = Formatter.Format (Math.Round (hpValue)) + "/" + Formatter.Format (Math.Round (hp.Value));
 		}
 
-		void Update ()
+	    private void Update ()
 		{
 			barImage.fillAmount -= (barImage.fillAmount - percent) * Time.deltaTime;
             //barRect.sizeDelta = Vector2.Lerp (barRect.sizeDelta, new Vector2 (maxWidth * percent, barRect.sizeDelta.y), Time.deltaTime);

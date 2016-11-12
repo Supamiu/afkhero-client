@@ -34,7 +34,6 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using Spine;
 
 namespace Spine.Unity {
 	[ExecuteInEditMode, RequireComponent(typeof(CanvasRenderer), typeof(RectTransform)), DisallowMultipleComponent]

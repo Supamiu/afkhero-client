@@ -16,10 +16,10 @@ public class SpineboyPole : MonoBehaviour {
 	public float startX;
 	public float endX;
 
-	const float Speed = 18f;
-	const float RunTimeScale = 1.5f;
+    private const float Speed = 18f;
+    private const float RunTimeScale = 1.5f;
 
-	IEnumerator Start () {
+    private IEnumerator Start () {
 		var state = skeletonAnimation.state;
 
 		while (true) {
@@ -43,7 +43,7 @@ public class SpineboyPole : MonoBehaviour {
 		}
 	}
 
-	void SetXPosition (float x) {
+    private void SetXPosition (float x) {
 		var tp = transform.localPosition;
 		tp.x = x;
 		transform.localPosition = tp;

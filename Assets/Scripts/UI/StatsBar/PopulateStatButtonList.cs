@@ -11,19 +11,17 @@ namespace AFKHero.UI.StatsBar
 		public StatIncrementSelect incrementSelect;
 
 		// Use this for initialization
-		void Start()
+	    private void Start()
 		{
-			AbstractStat[] stats = hero.GetComponents<AbstractStat>();
+			var stats = hero.GetComponents<AbstractStat>();
 
-			foreach (AbstractStat stat in stats)
+			foreach (var stat in stats)
 			{
-				if (stat.GetStatType() == StatType.PRIMARY)
-				{
-					StatButton instance = Instantiate(prefab);
-					instance.SetStat (stat);
-					instance.SetIncrementSelect (incrementSelect);
-					instance.transform.SetParent(gameObject.transform, false);
-				}
+			    if (stat.GetStatType() != StatType.PRIMARY) continue;
+			    var instance = Instantiate(prefab);
+			    instance.SetStat (stat);
+			    instance.SetIncrementSelect (incrementSelect);
+			    instance.transform.SetParent(gameObject.transform, false);
 			}
 		}
 	}

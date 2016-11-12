@@ -44,13 +44,14 @@ namespace Spine.Unity.Modules {
 		public bool hideShadow = true;
 		#endregion
 
-		GameObject shadowRoot;
-		readonly List<TransformPair> shadowTable = new List<TransformPair>();
-		struct TransformPair {
+	    private GameObject shadowRoot;
+	    private readonly List<TransformPair> shadowTable = new List<TransformPair>();
+
+	    private struct TransformPair {
 			public Transform dest, src;
 		}
 
-		void Start () {
+	    private void Start () {
 			// Duplicate this gameObject as the "shadow" with a different parent.
 			shadowRoot = Instantiate<GameObject>(this.gameObject);
 			Destroy(shadowRoot.GetComponent<SkeletonUtilityKinematicShadow>());
@@ -60,8 +61,8 @@ namespace Spine.Unity.Modules {
 			shadowRootTransform.position = transform.position;
 			shadowRootTransform.rotation = transform.rotation;
 
-			Vector3 scaleRef = transform.TransformPoint(Vector3.right);
-			float scale = Vector3.Distance(transform.position, scaleRef);
+			var scaleRef = transform.TransformPoint(Vector3.right);
+			var scale = Vector3.Distance(transform.position, scaleRef);
 			shadowRootTransform.localScale = Vector3.one;
 
 			if (!detachedShadow) {
@@ -76,7 +77,7 @@ namespace Spine.Unity.Modules {
 				shadowRoot.hideFlags = HideFlags.HideInHierarchy;
 			
 			var shadowJoints = shadowRoot.GetComponentsInChildren<Joint>();
-			foreach (Joint j in shadowJoints)
+			foreach (var j in shadowJoints)
 				j.connectedAnchor *= scale;
 
 			// Build list of bone pairs (matches shadow transforms with bone transforms)
@@ -106,12 +107,12 @@ namespace Spine.Unity.Modules {
 			DestroyComponents(GetComponentsInChildren<Collider>());
 		}
 
-		static void DestroyComponents (Component[] components) {
+	    private static void DestroyComponents (Component[] components) {
 			for (int i = 0, n = components.Length; i < n; i++)
 				Destroy(components[i]);
 		}
 
-		void FixedUpdate () {
+	    private void FixedUpdate () {
 			var shadowRootRigidbody = shadowRoot.GetComponent<Rigidbody>();
 			shadowRootRigidbody.MovePosition(transform.position);
 			shadowRootRigidbody.MoveRotation(transform.rotation);

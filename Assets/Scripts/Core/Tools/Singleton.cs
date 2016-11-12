@@ -13,7 +13,7 @@ namespace AFKHero.Core.Tools{
 	{
 		private static T _instance;
 
-		private static object _lock = new object();
+	    private static readonly object _lock = new object();
 
 		public static T Instance
 		{
@@ -28,41 +28,39 @@ namespace AFKHero.Core.Tools{
 
 				lock(_lock)
 				{
-					if (_instance == null)
-					{
-						_instance = (T) FindObjectOfType(typeof(T));
+				    if (_instance != null) return _instance;
+				    _instance = (T) FindObjectOfType(typeof(T));
 
-						if ( FindObjectsOfType(typeof(T)).Length > 1 )
-						{
-							Debug.LogError("[Singleton] Something went really wrong " +
-								" - there should never be more than 1 singleton!" +
-								" Reopening the scene might fix it.");
-							return _instance;
-						}
+				    if ( FindObjectsOfType(typeof(T)).Length > 1 )
+				    {
+				        Debug.LogError("[Singleton] Something went really wrong " +
+				                       " - there should never be more than 1 singleton!" +
+				                       " Reopening the scene might fix it.");
+				        return _instance;
+				    }
 
-						if (_instance == null)
-						{
-							GameObject singleton = new GameObject();
-							_instance = singleton.AddComponent<T>();
-							singleton.name = "(singleton) "+ typeof(T).ToString();
+				    if (_instance == null)
+				    {
+				        var singleton = new GameObject();
+				        _instance = singleton.AddComponent<T>();
+				        singleton.name = "(singleton) "+ typeof(T);
 
-							DontDestroyOnLoad(singleton);
+				        DontDestroyOnLoad(singleton);
 
-							Debug.Log("[Singleton] An instance of " + typeof(T) + 
-								" is needed in the scene, so '" + singleton +
-								"' was created with DontDestroyOnLoad.");
-						} else {
-							Debug.Log("[Singleton] Using instance already created: " +
-								_instance.gameObject.name);
-						}
-					}
+				        Debug.Log("[Singleton] An instance of " + typeof(T) +
+				                  " is needed in the scene, so '" + singleton +
+				                  "' was created with DontDestroyOnLoad.");
+				    } else {
+				        Debug.Log("[Singleton] Using instance already created: " +
+				                  _instance.gameObject.name);
+				    }
 
-					return _instance;
+				    return _instance;
 				}
 			}
 		}
 
-		private static bool applicationIsQuitting = false;
+		private static bool applicationIsQuitting;
 		/// <summary>
 		/// When Unity quits, it destroys objects in a random order.
 		/// In principle, a Singleton is only destroyed when application quits.

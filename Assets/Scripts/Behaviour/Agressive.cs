@@ -34,19 +34,19 @@ namespace AFKHero.Behaviour
         [SpineAnimation(dataField: "skeletonAnimation")]
         public string afterKillName = "Idle";
 
-        void Start()
+        private void Start()
         {
             Strength = GetComponent<Strength>();
             anim = GetComponent<SkeletonAnimation>();
-            anim.state.Event += (Spine.AnimationState state, int trackIndex, Spine.Event e) =>
+            anim.state.Event += (state, trackIndex, e) =>
             {
                 if (target != null && e.Data.Name == hitEvent && state.GetCurrent(trackIndex).Animation.Name == attackName)
                 {
-                    EventDispatcher.Instance.Dispatch("attack.damage", new GenericGameEvent<Damage>(nextDamage));
+                    EventDispatcher.Instance.Dispatch(Events.Attack.DAMAGE, new GenericGameEvent<Damage>(nextDamage));
                 }
             };
             //Avant le premier coup, on compute.
-            anim.state.Start += (Spine.AnimationState state, int trackIndex) =>
+            anim.state.Start += (state, trackIndex) =>
             {
                 if (state.GetCurrent(trackIndex).Animation.Name == attackName)
                 {
@@ -54,7 +54,7 @@ namespace AFKHero.Behaviour
                 }
             };
             //Après chaque coup, on compute le coup suivant.
-            anim.state.Complete += (Spine.AnimationState state, int trackIndex, int loopCount) =>
+            anim.state.Complete += (state, trackIndex, loopCount) =>
             {
                 if (state.GetCurrent(trackIndex).Animation.Name == attackName)
                 {
@@ -63,19 +63,17 @@ namespace AFKHero.Behaviour
             };
         }
 
-        void OnCollisionEnter2D(Collision2D coll)
+        private void OnCollisionEnter2D(Collision2D coll)
         {
-            Damageable collider = coll.gameObject.GetComponent<Damageable>();
-            if (collider != null)
-            {
-                target = collider;
-                target.onDeath += OnTargetDeath;
-                anim.AnimationName = attackName;
-                anim.timeScale = attackAnimationScale;
-            }
+            var goCollider = coll.gameObject.GetComponent<Damageable>();
+            if (goCollider == null) return;
+            target = goCollider;
+            target.onDeath += OnTargetDeath;
+            anim.AnimationName = attackName;
+            anim.timeScale = attackAnimationScale;
         }
 
-        void OnTargetDeath()
+        private void OnTargetDeath()
         {
             target = null;
             anim.AnimationName = afterKillName;
@@ -83,9 +81,9 @@ namespace AFKHero.Behaviour
             anim.timeScale = 1f;
         }
 
-        void ComputeDamage()
+        private void ComputeDamage()
         {
-            nextDamage = ((GenericGameEvent<Attack>)EventDispatcher.Instance.Dispatch("attack.compute", new GenericGameEvent<Attack>(new Attack(this, target)))).Data.getDamage();
+            nextDamage = ((GenericGameEvent<Attack>)EventDispatcher.Instance.Dispatch(Events.Attack.COMPUTE, new GenericGameEvent<Attack>(new Attack(this, target)))).Data.getDamage();
         }
 
         public Damage getNextDamage()

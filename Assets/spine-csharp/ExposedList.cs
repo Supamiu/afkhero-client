@@ -53,7 +53,7 @@ namespace Spine {
 			CheckCollection(collection);
 
 			// initialize to needed size (if determinable)
-			ICollection<T> c = collection as ICollection<T>;
+			var c = collection as ICollection<T>;
 			if (c == null) {
 				Items = EmptyArray;
 				AddEnumerable(collection);
@@ -84,7 +84,7 @@ namespace Spine {
 		}
 
 		public void GrowIfNeeded (int newCount) {
-			int minimumSize = Count + newCount;
+			var minimumSize = Count + newCount;
 			if (minimumSize > Items.Length)
 				Capacity = Math.Max(Math.Max(Capacity * 2, DefaultCapacity), minimumSize);
 		}
@@ -107,7 +107,7 @@ namespace Spine {
 		}
 
 		private void AddCollection (ICollection<T> collection) {
-			int collectionCount = collection.Count;
+			var collectionCount = collection.Count;
 			if (collectionCount == 0)
 				return;
 
@@ -117,7 +117,7 @@ namespace Spine {
 		}
 
 		private void AddEnumerable (IEnumerable<T> enumerable) {
-			foreach (T t in enumerable) {
+			foreach (var t in enumerable) {
 				Add(t);
 			}
 		}
@@ -125,7 +125,7 @@ namespace Spine {
 		public void AddRange (IEnumerable<T> collection) {
 			CheckCollection(collection);
 
-			ICollection<T> c = collection as ICollection<T>;
+			var c = collection as ICollection<T>;
 			if (c != null)
 				AddCollection(c);
 			else
@@ -161,8 +161,8 @@ namespace Spine {
 		public ExposedList<TOutput> ConvertAll<TOutput> (Converter<T, TOutput> converter) {
 			if (converter == null)
 				throw new ArgumentNullException("converter");
-			ExposedList<TOutput> u = new ExposedList<TOutput>(Count);
-			for (int i = 0; i < Count; i++)
+			var u = new ExposedList<TOutput>(Count);
+			for (var i = 0; i < Count; i++)
 				u.Items[i] = converter(Items[i]);
 
 			u.Count = Count;
@@ -189,7 +189,7 @@ namespace Spine {
 
 		public T Find (Predicate<T> match) {
 			CheckMatch(match);
-			int i = GetIndex(0, Count, match);
+			var i = GetIndex(0, Count, match);
 			return (i != -1) ? Items[i] : default(T);
 		}
 
@@ -204,8 +204,8 @@ namespace Spine {
 		}
 
 		private ExposedList<T> FindAllList (Predicate<T> match) {
-			ExposedList<T> results = new ExposedList<T>();
-			for (int i = 0; i < Count; i++)
+			var results = new ExposedList<T>();
+			for (var i = 0; i < Count; i++)
 				if (match(Items[i]))
 					results.Add(Items[i]);
 
@@ -230,8 +230,8 @@ namespace Spine {
 		}
 
 		private int GetIndex (int startIndex, int count, Predicate<T> match) {
-			int end = startIndex + count;
-			for (int i = startIndex; i < end; i++)
+			var end = startIndex + count;
+			for (var i = startIndex; i < end; i++)
 				if (match(Items[i]))
 					return i;
 
@@ -240,7 +240,7 @@ namespace Spine {
 
 		public T FindLast (Predicate<T> match) {
 			CheckMatch(match);
-			int i = GetLastIndex(0, Count, match);
+			var i = GetLastIndex(0, Count, match);
 			return i == -1 ? default(T) : Items[i];
 		}
 
@@ -257,14 +257,14 @@ namespace Spine {
 
 		public int FindLastIndex (int startIndex, int count, Predicate<T> match) {
 			CheckMatch(match);
-			int start = startIndex - count + 1;
+			var start = startIndex - count + 1;
 			CheckRange(start, count);
 			return GetLastIndex(start, count, match);
 		}
 
 		private int GetLastIndex (int startIndex, int count, Predicate<T> match) {
 			// unlike FindLastIndex, takes regular params for search range
-			for (int i = startIndex + count; i != startIndex; )
+			for (var i = startIndex + count; i != startIndex; )
 				if (match(Items[--i]))
 					return i;
 			return -1;
@@ -273,7 +273,7 @@ namespace Spine {
 		public void ForEach (Action<T> action) {
 			if (action == null)
 				throw new ArgumentNullException("action");
-			for (int i = 0; i < Count; i++)
+			for (var i = 0; i < Count; i++)
 				action(Items[i]);
 		}
 
@@ -283,7 +283,7 @@ namespace Spine {
 
 		public ExposedList<T> GetRange (int index, int count) {
 			CheckRange(index, count);
-			T[] tmpArray = new T[count];
+			var tmpArray = new T[count];
 			Array.Copy(Items, index, tmpArray, 0, count);
 			return new ExposedList<T>(tmpArray, count);
 		}
@@ -346,13 +346,13 @@ namespace Spine {
 			CheckCollection(collection);
 			CheckIndex(index);
 			if (collection == this) {
-				T[] buffer = new T[Count];
+				var buffer = new T[Count];
 				CopyTo(buffer, 0);
 				GrowIfNeeded(Count);
 				Shift(index, buffer.Length);
 				Array.Copy(buffer, 0, Items, index, buffer.Length);
 			} else {
-				ICollection<T> c = collection as ICollection<T>;
+				var c = collection as ICollection<T>;
 				if (c != null)
 					InsertCollection(index, c);
 				else
@@ -362,7 +362,7 @@ namespace Spine {
 		}
 
 		private void InsertCollection (int index, ICollection<T> collection) {
-			int collectionCount = collection.Count;
+			var collectionCount = collection.Count;
 			GrowIfNeeded(collectionCount);
 
 			Shift(index, collectionCount);
@@ -370,7 +370,7 @@ namespace Spine {
 		}
 
 		private void InsertEnumeration (int index, IEnumerable<T> enumerable) {
-			foreach (T t in enumerable)
+			foreach (var t in enumerable)
 				Insert(index++, t);
 		}
 
@@ -397,7 +397,7 @@ namespace Spine {
 		}
 
 		public bool Remove (T item) {
-			int loc = IndexOf(item);
+			var loc = IndexOf(item);
 			if (loc != -1)
 				RemoveAt(loc);
 
@@ -406,8 +406,8 @@ namespace Spine {
 
 		public int RemoveAll (Predicate<T> match) {
 			CheckMatch(match);
-			int i = 0;
-			int j = 0;
+			var i = 0;
+			var j = 0;
 
 			// Find the first item to remove
 			for (i = 0; i < Count; i++)
@@ -481,7 +481,7 @@ namespace Spine {
 		}
 
 		public T[] ToArray () {
-			T[] t = new T[Count];
+			var t = new T[Count];
 			Array.Copy(Items, t, Count);
 
 			return t;
@@ -494,7 +494,7 @@ namespace Spine {
 		public bool TrueForAll (Predicate<T> match) {
 			CheckMatch(match);
 
-			for (int i = 0; i < Count; i++)
+			for (var i = 0; i < Count; i++)
 				if (!match(Items[i]))
 					return false;
 

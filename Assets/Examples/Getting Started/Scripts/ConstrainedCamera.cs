@@ -6,7 +6,6 @@
 *****************************************************************************/
 
 using UnityEngine;
-using System.Collections;
 
 public class ConstrainedCamera : MonoBehaviour {
 	public Transform target;
@@ -16,8 +15,8 @@ public class ConstrainedCamera : MonoBehaviour {
 	public float smoothing = 5f;
 
 	// Update is called once per frame
-	void LateUpdate () {
-		Vector3 goalPoint = target.position + offset;
+    private void LateUpdate () {
+		var goalPoint = target.position + offset;
 		goalPoint.x = Mathf.Clamp(goalPoint.x, min.x, max.x);
 		goalPoint.y = Mathf.Clamp(goalPoint.y, min.y, max.y);
 		goalPoint.z = Mathf.Clamp(goalPoint.z, min.z, max.z);

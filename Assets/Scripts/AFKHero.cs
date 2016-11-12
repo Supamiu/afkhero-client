@@ -5,7 +5,7 @@ using AFKHero.Behaviour;
 using AFKHero.Core;
 using AFKHero.UI;
 using AFKHero.Core.Save;
-using System;
+using JetBrains.Annotations;
 
 namespace AFKHero
 {
@@ -28,14 +28,14 @@ namespace AFKHero
 		[Header ("scène principale de jeu")]
 		public string gameScene = "Game";
 
-		void Start ()
+	    private void Start ()
 		{
             hero.onDeath += () => {
 				Invoke ("GameOver", 0.5f);
 			};
 			Application.targetFrameRate = 60;
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
-			EventDispatcher.Instance.Register ("movement.moved", new Listener<GenericGameEvent<float>> ((ref GenericGameEvent<float> e) => {
+			EventDispatcher.Instance.Register (Events.Movement.MOVED, new Listener<GenericGameEvent<float>> ((ref GenericGameEvent<float> e) => {
 				if(offsetDistance - offsetDistanceDone <= 0){
 					distance += e.Data;				
 				}else{
@@ -46,11 +46,11 @@ namespace AFKHero
 
 		public static string version = "0.0.1";
 
-		private static float distance = 0f;
+		private static float distance ;
 
-		private static float offsetDistance = 10.5f;
+	    private const float offsetDistance = 10.5f;
 
-		private static float offsetDistanceDone = 0f;
+	    private static float offsetDistanceDone;
 
         public static readonly float WORLD_LENGTH = 8000f;
 
@@ -94,12 +94,13 @@ namespace AFKHero
 			SceneManager.LoadScene (gameScene);
 		}
 
-        void OnApplicationQuit()
+	    private void OnApplicationQuit()
         {
             EventDispatcher.Instance.Dispatch("save");
         }
 
-        void OnApplicationPause()
+	    [UsedImplicitly]
+	    private void OnApplicationPause()
         {
             EventDispatcher.Instance.Dispatch("save");
         }

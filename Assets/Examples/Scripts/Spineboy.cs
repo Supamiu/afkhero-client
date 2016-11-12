@@ -30,13 +30,10 @@
  *****************************************************************************/
 
 using UnityEngine;
-using System.Collections;
-using Spine;
-using System;
 using Spine.Unity;
 
 public class Spineboy : MonoBehaviour {
-	SkeletonAnimation skeletonAnimation;
+    private SkeletonAnimation skeletonAnimation;
 
 	public void Start () {
 		// Get the SkeletonAnimation component for the GameObject this script is attached to.

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace AFKHero.UI.StatsBar
 {
@@ -10,13 +9,13 @@ namespace AFKHero.UI.StatsBar
 		private int value;
 
 		// Use this for initialization
-		void Start ()
+	    private void Start ()
 		{
 			value = 1;
 		}
 
 		// Update is called once per frame
-		void Update ()
+	    private void Update ()
 		{
 			Vector2 scale = container.localScale;
 			scale.x = Mathf.Lerp (scale.x, isOpen ? 1 : 0, Time.deltaTime * 12);
@@ -28,14 +27,14 @@ namespace AFKHero.UI.StatsBar
 			isOpen = !isOpen;
 		}
 
-		public void setValue (int value)
+		public void setValue (int pValue)
 		{
-			this.value = value;
+			value = pValue;
 		}
 
 		public int getValue ()
 		{
-			return this.value;
+			return value;
 		}
 	}
 }

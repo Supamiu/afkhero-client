@@ -11,9 +11,9 @@ namespace AFKHero.UI.Golds
 		public Text text;
 
 		// Use this for initialization
-		void Start ()
+	    private void Start ()
 		{
-			AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo (0);
+			var clipInfo = animator.GetCurrentAnimatorClipInfo (0);
 			Destroy (gameObject, clipInfo [0].clip.length);
 		}
 

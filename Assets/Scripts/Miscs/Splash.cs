@@ -14,11 +14,11 @@ namespace AFKHero.Miscs
 		public float duration = 2;
 
 		// Use this for initialization
-		void Start () {
-			Invoke ("OpenMenu", (float)duration);
+        private void Start () {
+			Invoke ("OpenMenu", duration);
 		}
 
-		void OpenMenu(){
+        private static void OpenMenu(){
 			SceneManager.LoadScene ("Menu");
 		}
 	}

@@ -56,7 +56,7 @@ namespace Spine {
 			shearMix = data.shearMix;
 
 			bones = new ExposedList<Bone>();
-			foreach (BoneData boneData in data.bones)
+			foreach (var boneData in data.bones)
 				bones.Add (skeleton.FindBone (boneData.name));
 			
 			target = skeleton.FindBone(data.target.name);
@@ -68,15 +68,15 @@ namespace Spine {
 
 		public void Update () {
 			float rotateMix = this.rotateMix, translateMix = this.translateMix, scaleMix = this.scaleMix, shearMix = this.shearMix;
-			Bone target = this.target;
+			var target = this.target;
 			float ta = target.a, tb = target.b, tc = target.c, td = target.d;
-			ExposedList<Bone> bones = this.bones;
+			var bones = this.bones;
 			for (int i = 0, n = bones.Count; i < n; i++) {
-				Bone bone = bones.Items[i];
+				var bone = bones.Items[i];
 
 				if (rotateMix > 0) {
 					float a = bone.a, b = bone.b, c = bone.c, d = bone.d;
-					float r = (float)Math.Atan2(tc, ta) - (float)Math.Atan2(c, a) + data.offsetRotation * MathUtils.degRad;
+					var r = (float)Math.Atan2(tc, ta) - (float)Math.Atan2(c, a) + data.offsetRotation * MathUtils.degRad;
 					if (r > MathUtils.PI)
 						r -= MathUtils.PI2;
 					else if (r < -MathUtils.PI) r += MathUtils.PI2;
@@ -96,9 +96,9 @@ namespace Spine {
 				}
 
 				if (scaleMix > 0) {
-					float bs = (float)Math.Sqrt(bone.a * bone.a + bone.c * bone.c);
-					float ts = (float)Math.Sqrt(ta * ta + tc * tc);
-					float s = bs > 0.00001f ? (bs + (ts - bs + data.offsetScaleX) * scaleMix) / bs : 0;
+					var bs = (float)Math.Sqrt(bone.a * bone.a + bone.c * bone.c);
+					var ts = (float)Math.Sqrt(ta * ta + tc * tc);
+					var s = bs > 0.00001f ? (bs + (ts - bs + data.offsetScaleX) * scaleMix) / bs : 0;
 					bone.a *= s;
 					bone.c *= s;
 					bs = (float)Math.Sqrt(bone.b * bone.b + bone.d * bone.d);
@@ -110,13 +110,13 @@ namespace Spine {
 
 				if (shearMix > 0) {
 					float b = bone.b, d = bone.d;
-					float by = MathUtils.Atan2(d, b);
-					float r = MathUtils.Atan2(td, tb) - MathUtils.Atan2(tc, ta) - (by - MathUtils.Atan2(bone.c, bone.a));
+					var by = MathUtils.Atan2(d, b);
+					var r = MathUtils.Atan2(td, tb) - MathUtils.Atan2(tc, ta) - (by - MathUtils.Atan2(bone.c, bone.a));
 					if (r > MathUtils.PI)
 						r -= MathUtils.PI2;
 					else if (r < -MathUtils.PI) r += MathUtils.PI2;
 					r = by + (r + data.offsetShearY * MathUtils.degRad) * shearMix;
-					float s = (float)Math.Sqrt(b * b + d * d);
+					var s = (float)Math.Sqrt(b * b + d * d);
 					bone.b = MathUtils.Cos(r) * s;
 					bone.d = MathUtils.Sin(r) * s;
 				}

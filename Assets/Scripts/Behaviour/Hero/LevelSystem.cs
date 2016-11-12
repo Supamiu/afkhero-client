@@ -10,19 +10,19 @@ namespace AFKHero.Behaviour.Hero
 	{
 		private double level = 1;
 
-		private double xp = 0;
+	    private double xp;
 
 		public double xpForNextLevel = 5;
 
-		void Start ()
+	    private void Start ()
 		{
-			EventDispatcher.Instance.Register ("experience", new Listener<GenericGameEvent<double>> ((ref GenericGameEvent<double> e) => {
+			EventDispatcher.Instance.Register (Events.EXPERIENCE_GAIN, new Listener<GenericGameEvent<double>> ((ref GenericGameEvent<double> e) => {
                 ReceiveXp(e.Data);
 			}));
-			EventDispatcher.Instance.Dispatch ("level.update", new GenericGameEvent<LevelUp> (new LevelUp (level, GetXpForLevel(level), xp)));
+			EventDispatcher.Instance.Dispatch (Events.Level.UPDATE, new GenericGameEvent<LevelUp> (new LevelUp (level, GetXpForLevel(level), xp)));
 		}
 
-		void ReceiveXp (double amount)
+	    private void ReceiveXp (double amount)
 		{
 			
 			while (xp + amount >= xpForNextLevel) {
@@ -30,15 +30,15 @@ namespace AFKHero.Behaviour.Hero
                 xp = 0;
                 level++;
                 xpForNextLevel = GetXpForLevel(level);
-				EventDispatcher.Instance.Dispatch ("level.up", new GenericGameEvent<LevelUp> (new LevelUp (level, GetXpForLevel(level), xp)));
+				EventDispatcher.Instance.Dispatch (Events.Level.UP, new GenericGameEvent<LevelUp> (new LevelUp (level, GetXpForLevel(level), xp)));
 			}
             xp += amount;
-			EventDispatcher.Instance.Dispatch ("experience.ui", new GenericGameEvent<XPGain> (new XPGain (xp, xpForNextLevel)));
+			EventDispatcher.Instance.Dispatch (Events.UI.EXPERIENCE, new GenericGameEvent<XPGain> (new XPGain (xp, xpForNextLevel)));
 		}
 
-		private double GetXpForLevel (double level)
+		private static double GetXpForLevel (double pLevel)
 		{
-			return Math.Round (5 * (Math.Pow (level, 1.5f)));
+			return Math.Round (5 * Math.Pow (pLevel, 1.5f));
 		}
 
 		public SaveData Save (SaveData save)
@@ -55,8 +55,8 @@ namespace AFKHero.Behaviour.Hero
             xp = save.xp;
 			xpForNextLevel = save.xpForNextLevel;
 
-            EventDispatcher.Instance.Dispatch("level.update", new GenericGameEvent<LevelUp>(new LevelUp(level, GetXpForLevel(level), xp)));
-            EventDispatcher.Instance.Dispatch("experience.ui", new GenericGameEvent<XPGain>(new XPGain(xp, xpForNextLevel)));
+            EventDispatcher.Instance.Dispatch(Events.Level.UPDATE, new GenericGameEvent<LevelUp>(new LevelUp(level, GetXpForLevel(level), xp)));
+            EventDispatcher.Instance.Dispatch(Events.UI.EXPERIENCE, new GenericGameEvent<XPGain>(new XPGain(xp, xpForNextLevel)));
         }
 	}
 }

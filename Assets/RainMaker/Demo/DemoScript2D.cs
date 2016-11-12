@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace DigitalRuby.RainMaker
 {
@@ -14,9 +13,9 @@ namespace DigitalRuby.RainMaker
 
         private void Update()
         {
-            Vector3 worldBottomLeft = Camera.main.ViewportToWorldPoint(Vector3.zero);
-            Vector3 worldTopRight = Camera.main.ViewportToWorldPoint(Vector3.one);
-            float visibleWorldWidth = worldTopRight.x - worldBottomLeft.x;
+            var worldBottomLeft = Camera.main.ViewportToWorldPoint(Vector3.zero);
+            var worldTopRight = Camera.main.ViewportToWorldPoint(Vector3.one);
+            var visibleWorldWidth = worldTopRight.x - worldBottomLeft.x;
 
             if (Input.GetKey(KeyCode.LeftArrow))
             {

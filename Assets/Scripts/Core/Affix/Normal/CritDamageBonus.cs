@@ -1,4 +1,3 @@
-using System;
 using AFKHero.Core.Event;
 using AFKHero.EventData;
 using AFKHero.Model.Affix;
@@ -14,7 +13,7 @@ namespace AFKHero.Core.Affix.Normal
 
         public override string GetEventName()
         {
-            return "attack.compute";
+            return Events.Attack.COMPUTE;
         }
 
         public override IListener GetListener()

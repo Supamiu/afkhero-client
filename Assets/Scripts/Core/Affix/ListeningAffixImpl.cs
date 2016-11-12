@@ -7,7 +7,7 @@ namespace AFKHero.Core.Affix
     {
         protected float value;
 
-        private IListener listener;
+        private readonly IListener listener;
 
         public abstract IListener GetListener();
 
@@ -15,7 +15,7 @@ namespace AFKHero.Core.Affix
 
         protected GameObject gameObject;
 
-        public ListeningAffixImpl()
+        protected ListeningAffixImpl()
         {
             listener = GetListener();
         }

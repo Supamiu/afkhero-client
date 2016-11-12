@@ -8,51 +8,54 @@ using AFKHero.Core.Save;
 namespace AFKHero.Behaviour.Hero
 {
     public class StatSystem : MonoBehaviour, Saveable
-	{
-		private int points;
+    {
+        private int points;
 
-		private Dictionary<string, AbstractStat> stats = new Dictionary<string, AbstractStat> ();
+        private readonly Dictionary<string, AbstractStat> stats = new Dictionary<string, AbstractStat>();
 
-		void Start ()
-		{
-			AbstractStat[] stats = GetComponents<AbstractStat> ();
-			foreach (AbstractStat s in stats) {
-				this.stats.Add (s.GetName (), s);
-			}
-			EventDispatcher.Instance.Register ("level.up", new Listener<GenericGameEvent<LevelUp> > ((ref GenericGameEvent<LevelUp>  e) => {
-                AddPoints(AFKHero.Config.STAT_POINTS_PER_LEVEL);
-			}));
-			EventDispatcher.Instance.Register ("ui.stat.increase", new Listener<GenericGameEvent<StatIncrease>> ((ref GenericGameEvent<StatIncrease> e) => {
-				if (points - e.Data.value >= 0) {
-					this.stats [e.Data.stat.GetName ()].Add (e.Data.value);
+        private void Start()
+        {
+            var currentStats = GetComponents<AbstractStat>();
+            foreach (var s in currentStats)
+            {
+                stats.Add(s.GetName(), s);
+            }
+            EventDispatcher.Instance.Register(Events.Level.UP,
+                new Listener<GenericGameEvent<LevelUp>>(
+                    (ref GenericGameEvent<LevelUp> e) => { AddPoints(AFKHero.Config.STAT_POINTS_PER_LEVEL); }));
+            EventDispatcher.Instance.Register(Events.UI.STAT_INCREASE,
+                new Listener<GenericGameEvent<StatIncrease>>((ref GenericGameEvent<StatIncrease> e) =>
+                {
+                    if (points - e.Data.value < 0) return;
+                    stats[e.Data.stat.GetName()].Add(e.Data.value);
                     RemovePoints(e.Data.value);
-					EventDispatcher.Instance.Dispatch ("ui.stat.updated", new GenericGameEvent<AbstractStat> (this.stats [e.Data.stat.GetName ()]));
-				}
-			}));
-		}
+                    EventDispatcher.Instance.Dispatch(Events.UI.STAT_UPDATED,
+                        new GenericGameEvent<AbstractStat>(stats[e.Data.stat.GetName()]));
+                }));
+        }
 
-		void AddPoints (int amount)
-		{
+        private void AddPoints(int amount)
+        {
             points += amount;
-			EventDispatcher.Instance.Dispatch ("stat.points.updated", new GenericGameEvent<int> (points));
-		}
+            EventDispatcher.Instance.Dispatch(Events.Stat.Points.UPDATED, new GenericGameEvent<int>(points));
+        }
 
-		void RemovePoints (int amount)
-		{
+        private void RemovePoints(int amount)
+        {
             points -= amount;
-			EventDispatcher.Instance.Dispatch ("stat.points.updated", new GenericGameEvent<int> (points));
-		}
+            EventDispatcher.Instance.Dispatch(Events.Stat.Points.UPDATED, new GenericGameEvent<int>(points));
+        }
 
-		public SaveData Save (SaveData data)
-		{
-			data.statPoints = points;
-			return data;
-		}
+        public SaveData Save(SaveData data)
+        {
+            data.statPoints = points;
+            return data;
+        }
 
-		public void Load (SaveData data)
-		{
+        public void Load(SaveData data)
+        {
             points = data.statPoints;
-			EventDispatcher.Instance.Dispatch ("stat.points.updated", new GenericGameEvent<int> (points));
-		}
-	}
+            EventDispatcher.Instance.Dispatch(Events.Stat.Points.UPDATED, new GenericGameEvent<int>(points));
+        }
+    }
 }

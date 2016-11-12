@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace AFKHero.Core.Tools
 {
-	/// <summary>
-	/// Dictionary that is Unity serializable.
-	/// Simply two lists. Missing some common methods.
-	/// </summary>
-	/// <typeparam name="Key"></typeparam>
-	/// <typeparam name="Value"></typeparam>
-	[Serializable]
+    /// <summary>
+    /// Dictionary that is Unity serializable.
+    /// Simply two lists. Missing some common methods.
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
+    [Serializable]
 	public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
 	{
 		[SerializeField]
@@ -25,7 +25,7 @@ namespace AFKHero.Core.Tools
 		{
 			keys.Clear();
 			values.Clear();
-			foreach(KeyValuePair<TKey, TValue> pair in this)
+			foreach(var pair in this)
 			{
 				keys.Add(pair.Key);
 				values.Add(pair.Value);
@@ -38,9 +38,9 @@ namespace AFKHero.Core.Tools
             Clear();
 
 			if(keys.Count != values.Count)
-				throw new System.Exception(string.Format("there are {0} keys and {1} values after deserialization. Make sure that both key and value types are serializable."));
+				throw new Exception(string.Format("there are {0} keys and {1} values after deserialization. Make sure that both key and value types are serializable.", keys.Count, values.Count));
 
-			for(int i = 0; i < keys.Count; i++)
+			for(var i = 0; i < keys.Count; i++)
                 Add(keys[i], values[i]);
 		}
 	}

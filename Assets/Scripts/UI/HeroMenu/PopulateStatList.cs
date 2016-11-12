@@ -10,18 +10,16 @@ namespace AFKHero.UI.HeroMenu
         public StatElement prefab;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
-            AbstractStat[] stats = hero.GetComponents<AbstractStat>();
+            var stats = hero.GetComponents<AbstractStat>();
 
-            foreach (AbstractStat stat in stats)
+            foreach (var stat in stats)
             {
-                if (stat.GetStatType() == StatType.PRIMARY)
-                {
-                    StatElement instance = Instantiate(prefab);
-                    instance.transform.SetParent(gameObject.transform, false);
-                    instance.SetStat(stat);
-                }
+                if (stat.GetStatType() != StatType.PRIMARY) continue;
+                var instance = Instantiate(prefab);
+                instance.transform.SetParent(gameObject.transform, false);
+                instance.SetStat(stat);
             }
         }
     }

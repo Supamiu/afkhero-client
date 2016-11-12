@@ -29,8 +29,6 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 using UnityEngine;
-using Spine;
-using Spine.Unity;
 
 namespace Spine.Unity.Modules {
 	public class CustomSkin : MonoBehaviour {
@@ -61,11 +59,11 @@ namespace Spine.Unity.Modules {
 		public Skin customSkin;
 		#endregion
 
-		SkeletonRenderer skeletonRenderer;
+	    private SkeletonRenderer skeletonRenderer;
 
-		void Start () {
+	    private void Start () {
 			skeletonRenderer = GetComponent<SkeletonRenderer>();
-			Skeleton skeleton = skeletonRenderer.skeleton;
+			var skeleton = skeletonRenderer.skeleton;
 
 			customSkin = new Skin("CustomSkin");
 

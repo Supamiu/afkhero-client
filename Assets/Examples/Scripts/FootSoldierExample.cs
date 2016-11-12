@@ -38,16 +38,16 @@ public class FootSoldierExample : MonoBehaviour {
 
 	private SkeletonAnimation skeletonAnimation;
 
-	void Awake() {
+    private void Awake() {
 		skeletonAnimation = GetComponent<SkeletonAnimation>();
 		skeletonAnimation.OnRebuild += Apply;
 	}
 
-	void Apply(SkeletonRenderer skeletonRenderer) {
+    private void Apply(SkeletonRenderer skeletonRenderer) {
 		StartCoroutine("Blink");
 	}
 
-	void Update() {
+    private void Update() {
 		if (Input.GetKey(attackKey)) {
 			skeletonAnimation.AnimationName = attackAnimation;
 		} else {
@@ -65,7 +65,7 @@ public class FootSoldierExample : MonoBehaviour {
 		}
 	}
 
-	IEnumerator Blink() {
+    private IEnumerator Blink() {
 		while (true) {
 			yield return new WaitForSeconds(Random.Range(0.25f, 3f));
 			skeletonAnimation.skeleton.SetAttachment(eyesSlot, blinkAttachment);

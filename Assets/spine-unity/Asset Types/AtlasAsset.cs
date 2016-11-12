@@ -32,7 +32,6 @@
 using System;
 using System.IO;
 using UnityEngine;
-using Spine;
 
 namespace Spine.Unity {
 	/// <summary>Loads and stores a Spine atlas and list of materials.</summary>
@@ -73,7 +72,7 @@ namespace Spine.Unity {
 		}
 
 		public Sprite GenerateSprite (string name, out Material material) {
-			AtlasRegion region = atlas.FindRegion(name);
+			var region = atlas.FindRegion(name);
 
 			Sprite sprite = null;
 			material = null;
@@ -86,7 +85,7 @@ namespace Spine.Unity {
 		}
 
 		public Mesh GenerateMesh (string name, Mesh mesh, out Material material, float scale = 0.01f) {
-			AtlasRegion region = atlas.FindRegion(name);
+			var region = atlas.FindRegion(name);
 			material = null;
 			if (region != null) {
 				if (mesh == null) {
@@ -94,10 +93,10 @@ namespace Spine.Unity {
 					mesh.name = name;
 				}
 
-				Vector3[] verts = new Vector3[4];
-				Vector2[] uvs = new Vector2[4];
-				Color[] colors = new Color[4] { Color.white, Color.white, Color.white, Color.white };
-				int[] triangles = new int[6] { 0, 1, 2, 2, 3, 0 };
+				var verts = new Vector3[4];
+				var uvs = new Vector2[4];
+				var colors = new Color[4] { Color.white, Color.white, Color.white, Color.white };
+				var triangles = new int[6] { 0, 1, 2, 2, 3, 0 };
 
 				float left, right, top, bottom;
 				left = region.width / -2f;
@@ -145,16 +144,16 @@ namespace Spine.Unity {
 	}
 
 	public class MaterialsTextureLoader : TextureLoader {
-		AtlasAsset atlasAsset;
+	    private AtlasAsset atlasAsset;
 
 		public MaterialsTextureLoader (AtlasAsset atlasAsset) {
 			this.atlasAsset = atlasAsset;
 		}
 
 		public void Load (AtlasPage page, String path) {
-			String name = Path.GetFileNameWithoutExtension(path);
+			var name = Path.GetFileNameWithoutExtension(path);
 			Material material = null;
-			foreach (Material other in atlasAsset.materials) {
+			foreach (var other in atlasAsset.materials) {
 				if (other.mainTexture == null) {
 					Debug.LogError("Material is missing texture: " + other.name, other);
 					return;

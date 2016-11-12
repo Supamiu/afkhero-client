@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using AFKHero.Core.Event;
 using AFKHero.Core.Save;
 using AFKHero.EventData;
@@ -8,7 +7,6 @@ namespace AFKHero.Stat
 {
     public abstract class AbstractStat : MonoBehaviour, Saveable
     {
-
         /// <summary>
         /// Montant actuel contenu dans la stat
         /// </summary>
@@ -29,19 +27,22 @@ namespace AFKHero.Stat
 
         public abstract StatType GetStatType();
 
-		public abstract string GetAbbreviation ();
+        public abstract string GetAbreviation();
 
         public void Load(SaveData data)
         {
             DoLoad(data);
-            EventDispatcher.Instance.Dispatch("ui.stat.updated", new GenericGameEvent<AbstractStat>(this));
+            EventDispatcher.Instance.Dispatch(Events.UI.STAT_UPDATED, new GenericGameEvent<AbstractStat>(this));
         }
 
         public double Value
         {
             get
             {
-                StatCompute data = ((GenericGameEvent<StatCompute>)EventDispatcher.Instance.Dispatch("stat.compute." + GetName(), new GenericGameEvent<StatCompute>(new StatCompute(gameObject, this, amount, ratio)))).Data;
+                var data =
+                ((GenericGameEvent<StatCompute>)
+                    EventDispatcher.Instance.Dispatch(Events.Stat.STAT_COMPUTE_BASE + GetName(),
+                        new GenericGameEvent<StatCompute>(new StatCompute(gameObject, this, amount, ratio)))).Data;
                 return data.amount * data.ratio;
             }
         }

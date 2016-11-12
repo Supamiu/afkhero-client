@@ -32,7 +32,6 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections;
 using System.Globalization;
 using System.Collections.Generic;
 
@@ -77,7 +76,7 @@ namespace Spine {
  */
 namespace SharpJson
 {
-	class Lexer
+    internal class Lexer
 	{
 		public enum Token {
 			None,
@@ -110,10 +109,10 @@ namespace SharpJson
 			set;
 		}
 
-		char[] json;
-		int index = 0;
-		bool success = true;
-		char[] stringBuffer = new char[4096];
+	    private char[] json;
+	    private int index = 0;
+	    private bool success = true;
+	    private char[] stringBuffer = new char[4096];
 
 		public Lexer(string text)
 		{
@@ -132,16 +131,16 @@ namespace SharpJson
 
 		public string ParseString()
 		{
-			int idx = 0;
+			var idx = 0;
 			StringBuilder builder = null;
 			
 			SkipWhiteSpaces();
 			
 			// "
-			char c = json[index++];
+			var c = json[index++];
 			
-			bool failed = false;
-			bool complete = false;
+			var failed = false;
+			var complete = false;
 			
 			while (!complete && !failed) {
 				if (index == json.Length)
@@ -183,7 +182,7 @@ namespace SharpJson
 						stringBuffer[idx++] = '\t';
 						break;
 					case 'u':
-						int remainingLength = json.Length - index;
+						var remainingLength = json.Length - index;
 						if (remainingLength >= 4) {
 							var hex = new string(json, index, 4);
 							
@@ -220,13 +219,13 @@ namespace SharpJson
 			else
 				return new string (stringBuffer, 0, idx);
 		}
-		
-		string GetNumberString()
+
+	    private string GetNumberString()
 		{
 			SkipWhiteSpaces();
 
-			int lastIndex = GetLastIndexOfNumber(index);
-			int charLength = (lastIndex - index) + 1;
+			var lastIndex = GetLastIndexOfNumber(index);
+			var charLength = (lastIndex - index) + 1;
 			
 			var result = new string (json, index, charLength);
 			
@@ -256,13 +255,13 @@ namespace SharpJson
 			
 			return number;
 		}
-		
-		int GetLastIndexOfNumber(int index)
+
+	    private int GetLastIndexOfNumber(int index)
 		{
 			int lastIndex;
 			
 			for (lastIndex = index; lastIndex < json.Length; lastIndex++) {
-				char ch = json[lastIndex];
+				var ch = json[lastIndex];
 				
 				if ((ch < '0' || ch > '9') && ch != '+' && ch != '-'
 				    && ch != '.' && ch != 'e' && ch != 'E')
@@ -272,10 +271,10 @@ namespace SharpJson
 			return lastIndex - 1;
 		}
 
-		void SkipWhiteSpaces()
+	    private void SkipWhiteSpaces()
 		{
 			for (; index < json.Length; index++) {
-				char ch = json[index];
+				var ch = json[index];
 
 				if (ch == '\n')
 					lineNumber++;
@@ -289,7 +288,7 @@ namespace SharpJson
 		{
 			SkipWhiteSpaces();
 
-			int savedIndex = index;
+			var savedIndex = index;
 			return NextToken(json, ref savedIndex);
 		}
 
@@ -299,12 +298,12 @@ namespace SharpJson
 			return NextToken(json, ref index);
 		}
 
-		static Token NextToken(char[] json, ref int index)
+	    private static Token NextToken(char[] json, ref int index)
 		{
 			if (index == json.Length)
 				return Token.None;
 			
-			char c = json[index++];
+			var c = json[index++];
 			
 			switch (c) {
 			case '{':
@@ -329,7 +328,7 @@ namespace SharpJson
 
 			index--;
 			
-			int remainingLength = json.Length - index;
+			var remainingLength = json.Length - index;
 			
 			// false
 			if (remainingLength >= 5) {
@@ -381,7 +380,7 @@ namespace SharpJson
 			set;
 		}
 
-		Lexer lexer;
+	    private Lexer lexer;
 
 		public JsonDecoder()
 		{
@@ -405,7 +404,7 @@ namespace SharpJson
 			return builder.Decode(text);
 		}
 
-		IDictionary<string, object> ParseObject()
+	    private IDictionary<string, object> ParseObject()
 		{
 			var table = new Dictionary<string, object>();
 
@@ -427,7 +426,7 @@ namespace SharpJson
 					return table;
 				default:
 					// name
-					string name = EvalLexer(lexer.ParseString());
+					var name = EvalLexer(lexer.ParseString());
 
 					if (errorMessage != null)
 						return null;
@@ -441,7 +440,7 @@ namespace SharpJson
 					}
 					
 					// value
-					object value = ParseValue();
+					var value = ParseValue();
 
 					if (errorMessage != null)
 						return null;
@@ -454,7 +453,7 @@ namespace SharpJson
 			//return null; // Unreachable code
 		}
 
-		IList<object> ParseArray()
+	    private IList<object> ParseArray()
 		{
 			var array = new List<object>();
 			
@@ -475,7 +474,7 @@ namespace SharpJson
 					lexer.NextToken();
 					return array;
 				default:
-					object value = ParseValue();
+					var value = ParseValue();
 
 					if (errorMessage != null)
 						return null;
@@ -488,7 +487,7 @@ namespace SharpJson
 			//return null; // Unreachable code
 		}
 
-		object ParseValue()
+	    private object ParseValue()
 		{
 			switch (lexer.LookAhead()) {
 			case Lexer.Token.String:
@@ -519,13 +518,13 @@ namespace SharpJson
 			return null;
 		}
 
-		void TriggerError(string message)
+	    private void TriggerError(string message)
 		{
 			errorMessage = string.Format("Error: '{0}' at line {1}",
 			                             message, lexer.lineNumber);
 		}
 
-		T EvalLexer<T>(T value)
+	    private T EvalLexer<T>(T value)
 		{
 			if (lexer.hasError)
 				TriggerError("Lexical error ocurred");

@@ -2,7 +2,6 @@ using AFKHero.Core.Event;
 using AFKHero.EventData;
 using AFKHero.Behaviour;
 using AFKHero.Model.Affix;
-using System;
 
 namespace AFKHero.Core.Affix.Legendary
 {
@@ -15,7 +14,7 @@ namespace AFKHero.Core.Affix.Legendary
 
         public override string GetEventName()
         {
-            return "attack.damage";
+            return Events.Attack.DAMAGE;
         }
 
         public override IListener GetListener()
@@ -24,7 +23,7 @@ namespace AFKHero.Core.Affix.Legendary
             {
                 if (e.Data.attacker.gameObject == gameObject && e.Data.target.gameObject != gameObject)
                 {
-                    EventDispatcher.Instance.Dispatch("attack.damage",
+                    EventDispatcher.Instance.Dispatch(Events.Attack.DAMAGE,
                         new GenericGameEvent<Damage>(new Damage(gameObject.GetComponent<Agressive>(), gameObject.GetComponent<Damageable>(), value, false, true)));
                 }
             }, -100);

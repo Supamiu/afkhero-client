@@ -6,6 +6,7 @@ using AFKHero.Error;
 using AFKHero.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AFKHero.Inventory
@@ -18,16 +19,16 @@ namespace AFKHero.Inventory
 
         public int capacity = 24;
 
-        public double dust = 0;
+        public double dust;
 
         public event Action OnContentChanged;
 
-        void Start()
+        private void Start()
         {
             SetCapacity(capacity);
-            EventDispatcher.Instance.Register("drop", new Listener<GenericGameEvent<Drop>>((ref GenericGameEvent<Drop> drop) =>
+            EventDispatcher.Instance.Register(Events.DROP, new Listener<GenericGameEvent<Drop>>((ref GenericGameEvent<Drop> drop) =>
             {
-                Item i = ItemDatabaseConnector.Instance.GetItem(drop.Data.itemID);
+                var i = ItemDatabaseConnector.Instance.GetItem(drop.Data.itemID);
                 if (i.GetType() == typeof(Wearable))
                 {
                     ((Wearable)i).Roll();
@@ -35,7 +36,7 @@ namespace AFKHero.Inventory
                 AddItem(i);
             }));
 
-            EventDispatcher.Instance.Register("dust", new Listener<GenericGameEvent<double>>((ref GenericGameEvent<double> e) =>
+            EventDispatcher.Instance.Register(Events.DUST, new Listener<GenericGameEvent<double>>((ref GenericGameEvent<double> e) =>
             {
                 dust += e.Data;
                 NotifyContentChanged();
@@ -48,32 +49,28 @@ namespace AFKHero.Inventory
         /// <param name="item"></param>
         public void Remove(Item item)
         {
-            foreach (Slot slot in slots)
+            foreach (var slot in slots)
             {
-                if (slot.item == item)
+                if (slot.item != item) continue;
+                if (slot.stack > 1)
                 {
-                    if (slot.stack > 1)
-                    {
-                        slot.RemoveOne();
-                    }
-                    else
-                    {
-                        slot.Empty();
-                    }
-                    NotifyContentChanged();
+                    slot.RemoveOne();
                 }
+                else
+                {
+                    slot.Empty();
+                }
+                NotifyContentChanged();
             }
         }
 
         public void RemoveAll(Item item)
         {
-            foreach (Slot slot in slots)
+            foreach (var slot in slots)
             {
-                if (slot.item == item)
-                {
-                    slot.Empty();
-                    NotifyContentChanged();
-                }
+                if (slot.item != item) continue;
+                slot.Empty();
+                NotifyContentChanged();
             }
         }
 
@@ -83,20 +80,13 @@ namespace AFKHero.Inventory
         /// <returns></returns>
         public bool HasFreeSlot()
         {
-            foreach (Slot slot in slots)
-            {
-                if (slot.IsFree())
-                {
-                    return true;
-                }
-            }
-            return false;
+            return slots.Any(slot => slot.IsFree());
         }
 
         /// <summary>
-        /// Ajoute un item � l'inventaire.
+        /// Ajoute un item à l'inventaire.
         /// 
-        /// SI celui-ci est vide, une InventoryFullException est lev�e.
+        /// SI celui-ci est vide, une InventoryFullException est levée.
         /// </summary>
         /// <param name="item"></param>
         public void AddItem(Item item)
@@ -106,15 +96,8 @@ namespace AFKHero.Inventory
             {
                 return;
             }
-            foreach (Slot slot in slots)
-            {
-                if (slot.Store(item))
-                {
-                    NotifyContentChanged();
-                    return;
-                }
-            }
-            throw new InventoryFullException();
+            if (!slots.Any(slot => slot.Store(item))) throw new InventoryFullException();
+            NotifyContentChanged();
         }
 
         /// <summary>
@@ -126,15 +109,15 @@ namespace AFKHero.Inventory
         }
 
         /// <summary>
-        /// Change la capacit� de l'inventaire.
+        /// Change la capacité de l'inventaire.
         /// </summary>
-        /// <param name="capacity"></param>
-        public void SetCapacity(int capacity)
+        /// <param name="pCapacity"></param>
+        public void SetCapacity(int pCapacity)
         {
-            this.capacity = capacity;
-            Slot[] newSlots = new Slot[capacity];
+            capacity = pCapacity;
+            var newSlots = new Slot[capacity];
             slots.CopyTo(newSlots, 0);
-            for (int i = 0; i < newSlots.Length; i++)
+            for (var i = 0; i < newSlots.Length; i++)
             {
                 if (newSlots[i] == null)
                 {
@@ -146,7 +129,7 @@ namespace AFKHero.Inventory
         }
 
         /// <summary>
-        /// Ajoute de la capacit� � l'inventaire.
+        /// Ajoute de la capacité à l'inventaire.
         /// </summary>
         /// <param name="amount"></param>
         public void AddCapacity(int amount)
@@ -162,22 +145,20 @@ namespace AFKHero.Inventory
             save.wearableInventory = new List<Wearable>();
             save.consumableInventory = new List<Consumable>();
             save.otherInventory = new List<Item>();
-            foreach (Slot slot in slots)
+            foreach (var slot in slots)
             {
-                if (slot.item != null)
+                if (slot.item == null) continue;
+                if (slot.item.GetType() == typeof(Wearable))
                 {
-                    if (slot.item.GetType() == typeof(Wearable))
-                    {
-                        save.wearableInventory.Add((Wearable)slot.item);
-                    }
-                    else if (slot.item.GetType() == typeof(Consumable))
-                    {
-                        save.consumableInventory.Add((Consumable)slot.item);
-                    }
-                    else
-                    {
-                        save.otherInventory.Add(slot.item);
-                    }
+                    save.wearableInventory.Add((Wearable)slot.item);
+                }
+                else if (slot.item.GetType() == typeof(Consumable))
+                {
+                    save.consumableInventory.Add((Consumable)slot.item);
+                }
+                else
+                {
+                    save.otherInventory.Add(slot.item);
                 }
             }
             return save;
@@ -188,15 +169,15 @@ namespace AFKHero.Inventory
             slots = new Slot[capacity];
             SetCapacity(data.capacity);
             dust = data.dust;
-            foreach (Wearable item in data.wearableInventory)
+            foreach (var item in data.wearableInventory)
             {
                 AddItem(item);
             }
-            foreach (Consumable item in data.consumableInventory)
+            foreach (var item in data.consumableInventory)
             {
                 AddItem(item);
             }
-            foreach (Item item in data.otherInventory)
+            foreach (var item in data.otherInventory)
             {
                 AddItem(item);
             }

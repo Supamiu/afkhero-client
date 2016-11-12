@@ -9,10 +9,10 @@ namespace AFKHero.UI
         public GameObject layout;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             menus = layout.GetComponentsInChildren<Menu>();
-            foreach (Menu m in menus)
+            foreach (var m in menus)
             {
                 m.Hide();
             }
@@ -26,7 +26,7 @@ namespace AFKHero.UI
         public void Show(string menuName)
         {
             layout.SetActive(true);
-            foreach (Menu m in menus)
+            foreach (var m in menus)
             {
                 if (m.id == menuName)
                 {
@@ -45,7 +45,7 @@ namespace AFKHero.UI
         /// <param name="menuName">Menu name.</param>
         public void Toggle(string menuName)
         {
-            foreach (Menu m in menus)
+            foreach (var m in menus)
             {
                 if (m.id == menuName)
                 {
@@ -72,7 +72,7 @@ namespace AFKHero.UI
         /// </summary>
         public void Close()
         {
-            foreach (Menu m in menus)
+            foreach (var m in menus)
             {
                 m.Hide();
             }

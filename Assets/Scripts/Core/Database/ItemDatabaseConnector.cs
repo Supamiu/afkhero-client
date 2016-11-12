@@ -1,9 +1,8 @@
 using AFKHero.Core.Tools;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using AFKHero.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AFKHero.Model.Affix;
 
 namespace AFKHero.Core.Database
@@ -13,23 +12,16 @@ namespace AFKHero.Core.Database
 
         public class ItemNotFoundException : Exception
         {
-            public ItemNotFoundException(int id) : base("Objet non trouv� dans les bases : " + id) { }
+            public ItemNotFoundException(int id) : base("Objet non trouvé dans les bases : " + id) { }
         }
 
-        WearableDatabase wearables = ResourceLoader.Instance.LoadWearableDatabase();
-        ConsumableDatabase consumables = ResourceLoader.Instance.LoadConsumableDatabase();
+        private readonly WearableDatabase wearables = ResourceLoader.Instance.LoadWearableDatabase();
+        private readonly ConsumableDatabase consumables = ResourceLoader.Instance.LoadConsumableDatabase();
 
         public List<Item> GetAllItems()
         {
-            List<Item> allItems = new List<Item>();
-            foreach (Wearable w in wearables.wearables)
-            {
-                allItems.Add(w);
-            }
-            foreach (Consumable c in consumables.consumables)
-            {
-                allItems.Add(c);
-            }
+            var allItems = wearables.wearables.Cast<Item>().ToList();
+            allItems.AddRange(consumables.consumables.Cast<Item>());
             return allItems;
         }
 
@@ -56,17 +48,19 @@ namespace AFKHero.Core.Database
             return CloneConsumable(consumables.GetItem(id));
         }
         
-        private Consumable CloneConsumable(Consumable c)
+        private static Consumable CloneConsumable(Consumable c)
         {
             return c;
         }
 
-        private Wearable CloneWearable(Wearable w)
+        private static Wearable CloneWearable(Wearable w)
         {
-            Wearable wCopy = new Wearable();
-            wCopy.id = w.GetId();
-            wCopy.affixPool = new List<AffixModel>();
-            foreach (AffixModel a in w.affixPool)
+            var wCopy = new Wearable
+            {
+                id = w.GetId(),
+                affixPool = new List<AffixModel>()
+            };
+            foreach (var a in w.affixPool)
             {
                 wCopy.affixPool.Add(new AffixModel(a.type, a.minValue, a.maxValue));
             }

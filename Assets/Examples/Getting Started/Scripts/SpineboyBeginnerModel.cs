@@ -15,7 +15,7 @@ public class SpineboyBeginnerModel : MonoBehaviour {
 	public float shootInterval = 0.12f;
 	#endregion
 
-	float lastShootTime;
+    private float lastShootTime;
 	public event System.Action ShootEvent;	// Lets other scripts know when Spineboy is shooting. Check C# Documentation to learn more about events and delegates.
 
 	#region API
@@ -24,7 +24,7 @@ public class SpineboyBeginnerModel : MonoBehaviour {
 	}
 
 	public void TryShoot () {
-		float currentTime = Time.time;
+		var currentTime = Time.time;
 
 		if (currentTime - lastShootTime > shootInterval) {
 			lastShootTime = currentTime;
@@ -36,7 +36,7 @@ public class SpineboyBeginnerModel : MonoBehaviour {
 		currentSpeed = speed; // show the "speed" in the Inspector.
 
 		if (speed != 0) {
-			bool speedIsNegative = (speed < 0f);
+			var speedIsNegative = (speed < 0f);
 			facingLeft = speedIsNegative; // Change facing direction whenever speed is not 0.
 		}
 			
@@ -47,7 +47,7 @@ public class SpineboyBeginnerModel : MonoBehaviour {
 	}
 	#endregion
 
-	IEnumerator JumpRoutine () {
+    private IEnumerator JumpRoutine () {
 		if (state == SpineBeginnerBodyState.Jumping) yield break;	// Don't jump when already jumping.
 
 		state = SpineBeginnerBodyState.Jumping;
@@ -59,12 +59,12 @@ public class SpineboyBeginnerModel : MonoBehaviour {
 			const float half = jumpTime * 0.5f;
 			const float jumpPower = 20f;
 			for (float t = 0; t < half; t += Time.deltaTime) {
-				float d = jumpPower * (half - t);
+				var d = jumpPower * (half - t);
 				transform.Translate((d * Time.deltaTime) * Vector3.up);
 				yield return null;
 			}
 			for (float t = 0; t < half; t += Time.deltaTime) {
-				float d = jumpPower * t;
+				var d = jumpPower * t;
 				transform.Translate((d * Time.deltaTime) * Vector3.down);
 				yield return null;
 			}

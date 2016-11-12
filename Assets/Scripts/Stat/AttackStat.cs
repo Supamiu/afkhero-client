@@ -14,13 +14,13 @@ namespace AFKHero.Stat
 
         private Strength strength;
 
-        void Awake()
+        private void Awake()
         {
             amount = 0;
             agressive = GetComponent<Agressive>();
             strength = GetComponent<Strength>();
 
-            EventDispatcher.Instance.Register("attack.compute", new Listener<GenericGameEvent<Attack>>((ref GenericGameEvent<Attack> gameEvent) =>
+            EventDispatcher.Instance.Register(Events.Attack.COMPUTE, new Listener<GenericGameEvent<Attack>>((ref GenericGameEvent<Attack> gameEvent) =>
             {
                 if (gameEvent.Data.attacker == agressive)
                 {
@@ -28,7 +28,7 @@ namespace AFKHero.Stat
                 }
             }, 4000));
 
-            EventDispatcher.Instance.Register("gearstat.attack", new Listener<GenericGameEvent<GearStat>>((ref GenericGameEvent<GearStat> e) =>
+            EventDispatcher.Instance.Register(Events.GearStat.ATTACK, new Listener<GenericGameEvent<GearStat>>((ref GenericGameEvent<GearStat> e) =>
             {
                 if (e.Data.subject == gameObject)
                 {
@@ -37,9 +37,9 @@ namespace AFKHero.Stat
             }));
         }
 
-        public override void Add(int amount)
+        public override void Add(int pAmount)
         {
-            this.amount += amount;
+            amount += pAmount;
         }
 
         public override void DoLoad(SaveData data){}
@@ -59,7 +59,7 @@ namespace AFKHero.Stat
             return save;
 		}
 
-		public override string GetAbbreviation() 
+		public override string GetAbreviation() 
 		{
 			return "Atk";
 		}

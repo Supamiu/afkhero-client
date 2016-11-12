@@ -30,7 +30,6 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
 namespace Spine {
 	/// <summary>>An attachment with vertices that are transformed by one or more bones and can be deformed by a slot's vertices.</summary> 
@@ -53,14 +52,14 @@ namespace Spine {
 
 		public void ComputeWorldVertices (Slot slot, int start, int count, float[] worldVertices, int offset) {
 			count += offset;
-			Skeleton skeleton = slot.Skeleton;
+			var skeleton = slot.Skeleton;
 			float x = skeleton.x, y = skeleton.y;
 			var deformArray = slot.attachmentVertices;
-			float[] vertices = this.vertices;
-			int[] bones = this.bones;
+			var vertices = this.vertices;
+			var bones = this.bones;
 			if (bones == null) {
 				if (deformArray.Count > 0) vertices = deformArray.Items;
-				Bone bone = slot.bone;
+				var bone = slot.bone;
 				x += bone.worldX;
 				y += bone.worldY;
 				float a = bone.a, b = bone.b, c = bone.c, d = bone.d;
@@ -72,19 +71,19 @@ namespace Spine {
 				return;
 			}
 			int v = 0, skip = 0;
-			for (int i = 0; i < start; i += 2) {
-				int n = bones[v];
+			for (var i = 0; i < start; i += 2) {
+				var n = bones[v];
 				v += n + 1;
 				skip += n;
 			}
-			Bone[] skeletonBones = skeleton.Bones.Items;
+			var skeletonBones = skeleton.Bones.Items;
 			if (deformArray.Count == 0) {
 				for (int w = offset, b = skip * 3; w < count; w += 2) {
 					float wx = x, wy = y;
-					int n = bones[v++];
+					var n = bones[v++];
 					n += v;
 					for (; v < n; v++, b += 3) {
-						Bone bone = skeletonBones[bones[v]];
+						var bone = skeletonBones[bones[v]];
 						float vx = vertices[b], vy = vertices[b + 1], weight = vertices[b + 2];
 						wx += (vx * bone.a + vy * bone.b + bone.worldX) * weight;
 						wy += (vx * bone.c + vy * bone.d + bone.worldY) * weight;
@@ -93,13 +92,13 @@ namespace Spine {
 					worldVertices[w + 1] = wy;
 				}
 			} else {
-				float[] deform = deformArray.Items;
+				var deform = deformArray.Items;
 				for (int w = offset, b = skip * 3, f = skip << 1; w < count; w += 2) {
 					float wx = x, wy = y;
-					int n = bones[v++];
+					var n = bones[v++];
 					n += v;
 					for (; v < n; v++, b += 3, f += 2) {
-						Bone bone = skeletonBones[bones[v]];
+						var bone = skeletonBones[bones[v]];
 						float vx = vertices[b] + deform[f], vy = vertices[b + 1] + deform[f + 1], weight = vertices[b + 2];
 						wx += (vx * bone.a + vy * bone.b + bone.worldX) * weight;
 						wy += (vx * bone.c + vy * bone.d + bone.worldY) * weight;

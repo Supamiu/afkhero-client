@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace DigitalRuby.RainMaker
 {
@@ -39,14 +38,14 @@ namespace DigitalRuby.RainMaker
 
         private void EmitExplosion(ref Vector3 pos)
         {
-            int count = UnityEngine.Random.Range(2, 5);
+            var count = UnityEngine.Random.Range(2, 5);
             while (count != 0)
             {
-                float xVelocity = UnityEngine.Random.Range(-2.0f, 2.0f) * cameraMultiplier;
-                float yVelocity = UnityEngine.Random.Range(1.0f, 3.0f) * cameraMultiplier;
-                float lifetime = UnityEngine.Random.Range(0.1f, 0.2f);
-                float size = UnityEngine.Random.Range(0.05f, 0.1f) * cameraMultiplier;
-                ParticleSystem.EmitParams param = new ParticleSystem.EmitParams();
+                var xVelocity = UnityEngine.Random.Range(-2.0f, 2.0f) * cameraMultiplier;
+                var yVelocity = UnityEngine.Random.Range(1.0f, 3.0f) * cameraMultiplier;
+                var lifetime = UnityEngine.Random.Range(0.1f, 0.2f);
+                var size = UnityEngine.Random.Range(0.05f, 0.1f) * cameraMultiplier;
+                var param = new ParticleSystem.EmitParams();
                 param.position = pos;
                 param.velocity = new Vector3(xVelocity, yVelocity, 0.0f);
                 param.startLifetime = lifetime;
@@ -72,17 +71,17 @@ namespace DigitalRuby.RainMaker
 
         private void CheckForCollisionsRainParticles()
         {
-            int count = 0;
-            bool changes = false;
+            var count = 0;
+            var changes = false;
 
             if (CollisionMask != 0)
             {
                 count = RainFallParticleSystem.GetParticles(particles);
                 RaycastHit2D hit;
 
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
-                    Vector3 pos = particles[i].position + RainFallParticleSystem.transform.position;
+                    var pos = particles[i].position + RainFallParticleSystem.transform.position;
                     hit = Physics2D.Raycast(pos, particles[i].velocity.normalized, particles[i].velocity.magnitude * Time.deltaTime);
                     if (hit.collider != null && ((1 << hit.collider.gameObject.layer) & CollisionMask) != 0)
                     {
@@ -106,11 +105,11 @@ namespace DigitalRuby.RainMaker
                 {
                     count = RainFallParticleSystem.GetParticles(particles);
                 }
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     if (particles[i].lifetime < 0.24f)
                     {
-                        Vector3 pos = particles[i].position + RainFallParticleSystem.transform.position;
+                        var pos = particles[i].position + RainFallParticleSystem.transform.position;
                         EmitExplosion(ref pos);
                     }
                 }
@@ -128,13 +127,13 @@ namespace DigitalRuby.RainMaker
                 return;
             }
 
-            int count = RainMistParticleSystem.GetParticles(particles);
-            bool changes = false;
+            var count = RainMistParticleSystem.GetParticles(particles);
+            var changes = false;
             RaycastHit2D hit;
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                Vector3 pos = particles[i].position + RainMistParticleSystem.transform.position;
+                var pos = particles[i].position + RainMistParticleSystem.transform.position;
                 hit = Physics2D.Raycast(pos, particles[i].velocity.normalized, particles[i].velocity.magnitude * Time.deltaTime);
                 if (hit.collider != null && ((1 << hit.collider.gameObject.layer) & CollisionMask) != 0)
                 {

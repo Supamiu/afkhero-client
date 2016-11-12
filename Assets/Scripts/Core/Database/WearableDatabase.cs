@@ -1,6 +1,7 @@
 using AFKHero.Core.Gear;
 using AFKHero.Model;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AFKHero.Core.Database
@@ -13,39 +14,17 @@ namespace AFKHero.Core.Database
 
         public Wearable GetItem(int id)
         {
-            foreach(Wearable w in wearables)
-            {
-                if(w.GetId() == id)
-                {
-                    return w;
-                }
-            }
-            return null;
+            return wearables.FirstOrDefault(w => w.GetId() == id);
         }
 
         public bool HasItem(int id)
         {
-            foreach (Wearable w in wearables)
-            {
-                if (w.GetId() == id)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return wearables.Any(w => w.GetId() == id);
         }
 
         public List<Wearable> GetAllItemsOfType(GearType type)
         {
-            List<Wearable> res = new List<Wearable>();
-            foreach(Wearable w in wearables)
-            {
-                if(w.type == type)
-                {
-                    res.Add(w);
-                }
-            }
-            return res;
+            return wearables.Where(w => w.type == type).ToList();
         }
     }
 }

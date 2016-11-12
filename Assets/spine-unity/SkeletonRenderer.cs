@@ -82,7 +82,8 @@ namespace Spine.Unity {
 		#if SPINE_OPTIONAL_RENDEROVERRIDE
 		public bool disableRenderingOnOverride = true;
 		public delegate void InstructionDelegate (SkeletonRenderer.SmartMesh.Instruction instruction);
-		event InstructionDelegate generateMeshOverride;
+
+	    private event InstructionDelegate generateMeshOverride;
 		public event InstructionDelegate GenerateMeshOverride {
 			add {
 				generateMeshOverride += value;
@@ -106,17 +107,17 @@ namespace Spine.Unity {
 		#endif
 
 		#if SPINE_OPTIONAL_MATERIALOVERRIDE
-		[System.NonSerialized] readonly Dictionary<Material, Material> customMaterialOverride = new Dictionary<Material, Material>();
+		[System.NonSerialized] private readonly Dictionary<Material, Material> customMaterialOverride = new Dictionary<Material, Material>();
 		public Dictionary<Material, Material> CustomMaterialOverride { get { return customMaterialOverride; } }
 		#endif
 
 		// Custom Slot Material
-		[System.NonSerialized] readonly Dictionary<Slot, Material> customSlotMaterials = new Dictionary<Slot, Material>();
+		[System.NonSerialized] private readonly Dictionary<Slot, Material> customSlotMaterials = new Dictionary<Slot, Material>();
 		public Dictionary<Slot, Material> CustomSlotMaterials { get { return customSlotMaterials; } }
 		#endregion
 
-		MeshRenderer meshRenderer;
-		MeshFilter meshFilter;
+	    private MeshRenderer meshRenderer;
+	    private MeshFilter meshFilter;
 
 		[System.NonSerialized] public bool valid;
 		[System.NonSerialized] public Skeleton skeleton;
@@ -127,21 +128,21 @@ namespace Spine.Unity {
 			}
 		}
 
-		Spine.Unity.DoubleBuffered<SkeletonRenderer.SmartMesh> doubleBufferedMesh;
-		readonly SmartMesh.Instruction currentInstructions = new SmartMesh.Instruction();
-		readonly ExposedList<ArraysMeshGenerator.SubmeshTriangleBuffer> submeshes = new ExposedList<ArraysMeshGenerator.SubmeshTriangleBuffer>();
-		readonly ExposedList<Material> submeshMaterials = new ExposedList<Material>();
-		Material[] sharedMaterials = new Material[0];
-		float[] tempVertices = new float[8];
-		Vector3[] vertices;
-		Color32[] colors;
-		Vector2[] uvs;
+	    private Spine.Unity.DoubleBuffered<SkeletonRenderer.SmartMesh> doubleBufferedMesh;
+	    private readonly SmartMesh.Instruction currentInstructions = new SmartMesh.Instruction();
+	    private readonly ExposedList<ArraysMeshGenerator.SubmeshTriangleBuffer> submeshes = new ExposedList<ArraysMeshGenerator.SubmeshTriangleBuffer>();
+	    private readonly ExposedList<Material> submeshMaterials = new ExposedList<Material>();
+	    private Material[] sharedMaterials = new Material[0];
+	    private float[] tempVertices = new float[8];
+	    private Vector3[] vertices;
+	    private Color32[] colors;
+	    private Vector2[] uvs;
 		#if SPINE_OPTIONAL_NORMALS
-		Vector3[] normals;
+	    private Vector3[] normals;
 		#endif
 		#if SPINE_OPTIONAL_SOLVETANGENTS
-		Vector4[] tangents;
-		Vector2[] tempTanBuffer;
+	    private Vector4[] tangents;
+	    private Vector2[] tempTanBuffer;
 		#endif
 
 		#region Runtime Instantiation
@@ -195,7 +196,7 @@ namespace Spine.Unity {
 
 				return;
 			}
-			SkeletonData skeletonData = skeletonDataAsset.GetSkeletonData(false);
+			var skeletonData = skeletonDataAsset.GetSkeletonData(false);
 			if (skeletonData == null)
 				return;
 			valid = true;
@@ -210,7 +211,7 @@ namespace Spine.Unity {
 				skeleton.SetSkin(initialSkinName);
 
 			separatorSlots.Clear();
-			for (int i = 0; i < separatorSlotNames.Length; i++)
+			for (var i = 0; i < separatorSlotNames.Length; i++)
 				separatorSlots.Add(skeleton.FindSlot(separatorSlotNames[i]));
 
 			#if SPINE_OPTIONAL_SUBMESHRENDERER
@@ -240,10 +241,10 @@ namespace Spine.Unity {
 			
 
 			// STEP 1. Determine a SmartMesh.Instruction. Split up instructions into submeshes. ============================================================
-			ExposedList<Slot> drawOrder = skeleton.drawOrder;
+			var drawOrder = skeleton.drawOrder;
 			var drawOrderItems = drawOrder.Items;
-			int drawOrderCount = drawOrder.Count;
-			bool renderMeshes = this.renderMeshes;
+			var drawOrderCount = drawOrder.Count;
+			var renderMeshes = this.renderMeshes;
 
 			// Clear last state of attachments and submeshes
 			var workingInstruction = this.currentInstructions;
@@ -265,16 +266,16 @@ namespace Spine.Unity {
 			workingSubmeshInstructions.Clear(false);
 
 			#if !SPINE_TK2D
-			bool isCustomSlotMaterialsPopulated = customSlotMaterials.Count > 0;
+			var isCustomSlotMaterialsPopulated = customSlotMaterials.Count > 0;
 			#endif
 
-			int vertexCount = 0;
-			int submeshVertexCount = 0;
+			var vertexCount = 0;
+			var submeshVertexCount = 0;
 			int submeshTriangleCount = 0, submeshFirstVertex = 0, submeshStartSlotIndex = 0;
 			Material lastMaterial = null;
-			for (int i = 0; i < drawOrderCount; i++) {
-				Slot slot = drawOrderItems[i];
-				Attachment attachment = slot.attachment;
+			for (var i = 0; i < drawOrderCount; i++) {
+				var slot = drawOrderItems[i];
+				var attachment = slot.attachment;
 				workingAttachmentsItems[i] = attachment;
 
 				#if SPINE_OPTIONAL_FRONTFACING
@@ -317,7 +318,7 @@ namespace Spine.Unity {
 				#endif
 
 				// Create a new SubmeshInstruction when material changes. (or when forced to separate by a submeshSeparator)
-				bool forceSeparate = (separatorSlots.Count > 0 && separatorSlots.Contains(slot));
+				var forceSeparate = (separatorSlots.Count > 0 && separatorSlots.Contains(slot));
 				if (vertexCount > 0 && (lastMaterial.GetInstanceID() != material.GetInstanceID() || forceSeparate)) {
 					workingSubmeshInstructions.Add(
 						new Spine.Unity.MeshGeneration.SubmeshInstruction {
@@ -373,7 +374,7 @@ namespace Spine.Unity {
 			// and will still go through the normal material match check step in STEP 3.
 			if (customMaterialOverride.Count > 0) { // isCustomMaterialOverridePopulated 
 				var workingSubmeshInstructionsItems = workingSubmeshInstructions.Items;
-				for (int i = 0; i < workingSubmeshInstructions.Count; i++) {
+				for (var i = 0; i < workingSubmeshInstructions.Count; i++) {
 					var m = workingSubmeshInstructionsItems[i].material;
 					Material mo;
 					if (customMaterialOverride.TryGetValue(m, out mo)) {
@@ -392,12 +393,12 @@ namespace Spine.Unity {
 
 			// STEP 2. Update vertex buffer based on verts from the attachments.  ============================================================
 			// Uses values that were also stored in workingInstruction.
-			bool vertexCountIncreased = ArraysMeshGenerator.EnsureSize(vertexCount, ref this.vertices, ref this.uvs, ref this.colors);
+			var vertexCountIncreased = ArraysMeshGenerator.EnsureSize(vertexCount, ref this.vertices, ref this.uvs, ref this.colors);
 			#if SPINE_OPTIONAL_NORMALS
 			if (vertexCountIncreased && calculateNormals) {
-				Vector3[] localNormals = this.normals = new Vector3[vertexCount];
-				Vector3 normal = new Vector3(0, 0, -1);
-				for (int i = 0; i < vertexCount; i++)
+				var localNormals = this.normals = new Vector3[vertexCount];
+				var normal = new Vector3(0, 0, -1);
+				for (var i = 0; i < vertexCount; i++)
 					localNormals[i] = normal;
 			}
 			#endif
@@ -421,7 +422,7 @@ namespace Spine.Unity {
 					meshBoundsMax.z = 0f;
 				}
 			}
-			int vertexIndex = 0;
+			var vertexIndex = 0;
 			ArraysMeshGenerator.FillVerts(skeleton, 0, drawOrderCount, this.zSpacing, pmaVertexColors, this.vertices, this.uvs, this.colors, ref vertexIndex, ref tempVertices, ref meshBoundsMin, ref meshBoundsMax, renderMeshes);
 
 
@@ -441,16 +442,16 @@ namespace Spine.Unity {
 
 			// Check if the triangles should also be updated.
 			// This thorough structure check is cheaper than updating triangles every frame.
-			bool mustUpdateMeshStructure = CheckIfMustUpdateMeshStructure(workingInstruction, currentSmartMeshInstructionUsed);
-			int submeshCount = workingSubmeshInstructions.Count;
+			var mustUpdateMeshStructure = CheckIfMustUpdateMeshStructure(workingInstruction, currentSmartMeshInstructionUsed);
+			var submeshCount = workingSubmeshInstructions.Count;
 			if (mustUpdateMeshStructure) {
 				var thisSubmeshMaterials = this.submeshMaterials;
 				thisSubmeshMaterials.Clear(false);
 
-				int oldSubmeshCount = submeshes.Count;
+				var oldSubmeshCount = submeshes.Count;
 
 				submeshes.Capacity = submeshCount;
-				for (int i = oldSubmeshCount; i < submeshCount; i++)
+				for (var i = oldSubmeshCount; i < submeshCount; i++)
 					submeshes.Items[i] = new ArraysMeshGenerator.SubmeshTriangleBuffer(workingSubmeshInstructions.Items[i].triangleCount);
 
 				var mutableTriangles = !workingInstruction.immutableTriangles;
@@ -461,7 +462,7 @@ namespace Spine.Unity {
 	
 						#if !SPINE_OPTIONAL_FRONTFACING
 						var currentSubmesh = submeshes.Items[i];
-						int instructionTriangleCount = submeshInstruction.triangleCount;
+						var instructionTriangleCount = submeshInstruction.triangleCount;
 						if (renderMeshes) {
 							ArraysMeshGenerator.FillTriangles(ref currentSubmesh.triangles, skeleton, instructionTriangleCount, submeshInstruction.firstVertexIndex, submeshInstruction.startSlot, submeshInstruction.endSlot, (i == last));
 							currentSubmesh.triangleCount = instructionTriangleCount;
@@ -479,14 +480,14 @@ namespace Spine.Unity {
 
 				currentMesh.subMeshCount = submeshCount;
 
-				for (int i = 0; i < submeshCount; ++i)
+				for (var i = 0; i < submeshCount; ++i)
 					currentMesh.SetTriangles(submeshes.Items[i].triangles, i);
 			}
 
 			#if SPINE_OPTIONAL_SOLVETANGENTS
 			if (calculateTangents) {
 				ArraysMeshGenerator.SolveTangents2DEnsureSize(ref this.tangents, ref this.tempTanBuffer, vertices.Length);
-				for (int i = 0; i < submeshCount; i++) {
+				for (var i = 0; i < submeshCount; i++) {
 					var submesh = submeshes.Items[i];
 					ArraysMeshGenerator.SolveTangents2DTriangles(this.tempTanBuffer, submesh.triangles, submesh.triangleCount, this.vertices, this.uvs, vertexCount);
 				}
@@ -499,7 +500,7 @@ namespace Spine.Unity {
 			// Needs to check against the Working Submesh Instructions Materials instead of the cached submeshMaterials.
 			{
 				var lastPushedMaterials = this.sharedMaterials;
-				bool mustUpdateRendererMaterials = mustUpdateMeshStructure ||
+				var mustUpdateRendererMaterials = mustUpdateMeshStructure ||
 					(lastPushedMaterials.Length != submeshCount);
 
 				if (!mustUpdateRendererMaterials) {
@@ -541,7 +542,7 @@ namespace Spine.Unity {
 			#endif
 		}
 
-		static bool CheckIfMustUpdateMeshStructure (SmartMesh.Instruction a, SmartMesh.Instruction b) {
+	    private static bool CheckIfMustUpdateMeshStructure (SmartMesh.Instruction a, SmartMesh.Instruction b) {
 
 			#if UNITY_EDITOR
 			if (!Application.isPlaying)
@@ -554,13 +555,13 @@ namespace Spine.Unity {
 			if (a.immutableTriangles != b.immutableTriangles)
 				return true;
 
-			int attachmentCountB = b.attachments.Count;
+			var attachmentCountB = b.attachments.Count;
 			if (a.attachments.Count != attachmentCountB) // Bounds check for the looped storedAttachments count below.
 				return true;
 
 			var attachmentsA = a.attachments.Items;
 			var attachmentsB = b.attachments.Items;		
-			for (int i = 0; i < attachmentCountB; i++) {
+			for (var i = 0; i < attachmentCountB; i++) {
 				if (attachmentsA[i] != attachmentsB[i])
 					return true;
 			}
@@ -579,15 +580,15 @@ namespace Spine.Unity {
 			#endif
 
 			// Submesh count changed
-			int submeshCountA = a.submeshInstructions.Count;
-			int submeshCountB = b.submeshInstructions.Count;
+			var submeshCountA = a.submeshInstructions.Count;
+			var submeshCountB = b.submeshInstructions.Count;
 			if (submeshCountA != submeshCountB)
 				return true;
 
 			// Submesh Instruction mismatch
 			var submeshInstructionsItemsA = a.submeshInstructions.Items;
 			var submeshInstructionsItemsB = b.submeshInstructions.Items;
-			for (int i = 0; i < submeshCountB; i++) {
+			for (var i = 0; i < submeshCountB; i++) {
 				var submeshA = submeshInstructionsItemsA[i];
 				var submeshB = submeshInstructionsItemsB[i];
 
@@ -705,15 +706,15 @@ namespace Spine.Unity {
 		#endif
 
 		#if UNITY_EDITOR
-		void OnDrawGizmos () {
+	    private void OnDrawGizmos () {
 			// Make scene view selection easier by drawing a clear gizmo over the skeleton.
 			meshFilter = GetComponent<MeshFilter>();
 			if (meshFilter == null) return;
 
-			Mesh mesh = meshFilter.sharedMesh;
+			var mesh = meshFilter.sharedMesh;
 			if (mesh == null) return;
 
-			Bounds meshBounds = mesh.bounds;
+			var meshBounds = mesh.bounds;
 			Gizmos.color = Color.clear;
 			Gizmos.matrix = transform.localToWorldMatrix;
 			Gizmos.DrawCube(meshBounds.center, meshBounds.size);

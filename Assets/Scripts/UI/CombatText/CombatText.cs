@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace AFKHero.UI.CombatText
@@ -6,33 +6,35 @@ namespace AFKHero.UI.CombatText
     public class CombatText : MonoBehaviour {
 		private Text damageText;
 
-		float opacity;
+        private float opacity;
 
-		void OnEnable() {
+        private void OnEnable() {
 			damageText = GetComponent<Text> ();
 			opacity = damageText.color.a;
 		}
 
-		void Start()  {
-			Vector2 vector = new Vector2 ();
-			vector.x = Random.Range (-4, 4);
-			vector.y = Random.Range (10, 10);
+        private void Start()  {
+            var vector = new Vector2
+            {
+                x = Random.Range(-4, 4),
+                y = Random.Range(10, 10)
+            };
 
-			GetComponent<Rigidbody2D> ().gravityScale = 3;
+            GetComponent<Rigidbody2D> ().gravityScale = 3;
 			GetComponent<Rigidbody2D>().AddForce (vector, ForceMode2D.Impulse);
 		}
 
-		void OnCollisionEnter2D(Collision2D collision)
+        private void OnCollisionEnter2D(Collision2D collision)
 		{
 			opacity = 0;
 		}
 
-		void Update() 
+        private void Update() 
 		{
 			if (damageText.color.a <= 0.1f) {
 				Destroy (gameObject);
 			} else {
-				Color color = damageText.color;
+				var color = damageText.color;
 				color.a -= (color.a - opacity) * Time.deltaTime * 2;
 				damageText.color = color;
 			}

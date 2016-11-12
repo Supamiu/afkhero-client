@@ -38,19 +38,19 @@ namespace Spine {
 		public const float radDeg = 180f / PI;
 		public const float degRad = PI / 180;
 
-		const int SIN_BITS = 14; // 16KB. Adjust for accuracy.
-		const int SIN_MASK = ~(-1 << SIN_BITS);
-		const int SIN_COUNT = SIN_MASK + 1;
-		const float radFull = PI * 2;
-		const float degFull = 360;
-		const float radToIndex = SIN_COUNT / radFull;
-		const float degToIndex = SIN_COUNT / degFull;
-		static float[] sin = new float[SIN_COUNT];
+	    private const int SIN_BITS = 14; // 16KB. Adjust for accuracy.
+	    private const int SIN_MASK = ~(-1 << SIN_BITS);
+	    private const int SIN_COUNT = SIN_MASK + 1;
+	    private const float radFull = PI * 2;
+	    private const float degFull = 360;
+	    private const float radToIndex = SIN_COUNT / radFull;
+	    private const float degToIndex = SIN_COUNT / degFull;
+	    private static float[] sin = new float[SIN_COUNT];
 
 		static MathUtils () {
-			for (int i = 0; i < SIN_COUNT; i++)
+			for (var i = 0; i < SIN_COUNT; i++)
 				sin[i] = (float)Math.Sin((i + 0.5f) / SIN_COUNT * radFull);
-			for (int i = 0; i < 360; i += 90)
+			for (var i = 0; i < 360; i += 90)
 				sin[(int)(i * degToIndex) & SIN_MASK] = (float)Math.Sin(i * degRad);
 		}
 
